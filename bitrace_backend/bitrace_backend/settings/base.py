@@ -62,6 +62,7 @@ BUILTIN_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_celery_results',
+    'graphene_django',
 ]
 
 LOCAL_APPS = [
@@ -226,3 +227,9 @@ CELERY_CACHE_BACKEND = 'django-cache'
 # CryptoCompare API
 
 CRYPTO_COMPARE_API_KEY = get_env_variable('CRYPTO_COMPARE_API_KEY')
+
+# For graphQL
+
+GRAPHENE = {
+    'SCHEMA': 'bitrace_backend.schema.schema',
+}
