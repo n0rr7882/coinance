@@ -11,6 +11,10 @@ djangorestframework = "^3.11.0"
 markdown = "^3.2.1"
 djangorestframework-simplejwt = "^4.4.0"
 django = "^3.0.3"
+python-dotenv = "^0.11.0"
+mysqlclient = "^1.4.6"
+celery = {extras = ["redis"], version = "^4.4.0"}
+django-celery-results = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^2.2"
