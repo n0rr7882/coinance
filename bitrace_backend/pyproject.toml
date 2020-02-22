@@ -10,12 +10,16 @@ django-filter = "^2.2.0"
 djangorestframework = "^3.11.0"
 markdown = "^3.2.1"
 djangorestframework-simplejwt = "^4.4.0"
-django = "^3.0.3"
+django = "^2.2.10"
 python-dotenv = "^0.11.0"
 mysqlclient = "^1.4.6"
 celery = {extras = ["redis"], version = "^4.4.0"}
 django-celery-results = "^1.2.0"
-graphene-django = "^2.8.1"
+channels = "^2.4.0"
+django-celery-beat = "^1.6.0"
+requests = "^2.22.0"
+django-model-utils = "^4.0.0"
+websocket-client = "^0.57.0"
 
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^2.2"

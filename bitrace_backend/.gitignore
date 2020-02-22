@@ -91,3 +91,7 @@ db.sqlite3
 
 # Editor / IDE
 .vscode/
+
+
+# Celery
+celerybeat-schedule

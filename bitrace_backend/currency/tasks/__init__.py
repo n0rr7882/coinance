@@ -1,0 +1,1 @@
+from .exchange_rate import update_exchange_rate_task
