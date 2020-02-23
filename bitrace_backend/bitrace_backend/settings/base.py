@@ -68,8 +68,9 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'core',
+    'poloniex',
     'currency',
+    'utils',
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + LOCAL_APPS

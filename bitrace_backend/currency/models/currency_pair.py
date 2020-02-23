@@ -28,3 +28,6 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return f'{self.currency_from}-{self.currency_to}({self.poloniex_id})'
+
+    def to_poloniex_format(self) -> str:
+        return f'{self.currency_from.symbol}_{self.currency_to.symbol}'

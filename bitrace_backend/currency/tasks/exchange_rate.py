@@ -2,7 +2,7 @@ import logging
 
 from celery import shared_task
 
-from core.dataclasses.ticker_data import TickerData
+from poloniex.dataclasses.ticker_data import TickerData
 from currency.models import ExchangeRate, CurrencyPair
 
 logger = logging.getLogger(__name__)

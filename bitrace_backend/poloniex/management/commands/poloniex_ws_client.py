@@ -6,7 +6,7 @@ import websocket
 from django.conf import settings
 from django.core.management import BaseCommand
 
-from core.dataclasses.ticker_data import TickerData
+from poloniex.dataclasses.ticker_data import TickerData
 from currency.models import CurrencyPair
 from currency.tasks import update_exchange_rate_task
 
