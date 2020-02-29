@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.core.cache import cache
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -18,7 +20,7 @@ def candle_chart_view(request: Request, currency_pair_id: int, chart_type: str) 
         candle_chart_list = cache.get_or_set(
             currency_pair.to_chart_cache_key(chart_type),
             list(map(lambda c: c.serialize(), CandleChartAPI(currency_pair).chart(chart_type))),
-            timeout=60,
+            timeout=timedelta(minutes=1).total_seconds(),
         )
 
     except NotImplementedError:

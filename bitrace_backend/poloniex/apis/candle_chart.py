@@ -17,19 +17,31 @@ logger = logging.getLogger(__name__)
 FIRST_BITCOIN_ISSUED_DATETIME = datetime.datetime(2009, 1, 3)
 
 
+class CandleChartPeriods:
+    minutes_5 = datetime.timedelta(minutes=5)
+    minutes_15 = datetime.timedelta(minutes=15)
+    minutes_30 = datetime.timedelta(minutes=30)
+    hour_1 = datetime.timedelta(hours=1)
+    hours_4 = datetime.timedelta(hours=4)
+    hours_8 = datetime.timedelta(hours=8)
+    hours_24 = datetime.timedelta(hours=24)
+
+
 class CandleChartAPI:
     def __init__(self, currency_pair: CurrencyPair):
         self.currency_pair = currency_pair
 
     def _get_candle_chart_payload(self,
                                   start: datetime.datetime,
-                                  end: datetime.datetime):
+                                  end: datetime.datetime,
+                                  period: datetime.timedelta = None):
         return dict(
             command='returnChartData',
             currencyPair=self.currency_pair.to_poloniex_format(),
             start=start.timestamp(),
             end=end.timestamp(),
-            resolution='auto',
+            resolution='auto' if period is None else None,
+            period=period.total_seconds(),
         )
 
     def chart(self, chart_type: str) -> List[CandleChartData]:
@@ -55,8 +67,9 @@ class CandleChartAPI:
     def full_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = FIRST_BITCOIN_ISSUED_DATETIME
+        period = CandleChartPeriods.hours_24
 
-        payload = self._get_candle_chart_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -65,8 +78,9 @@ class CandleChartAPI:
     def yearly_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=365)
+        period = CandleChartPeriods.hours_24
 
-        payload = self._get_candle_chart_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -75,8 +89,9 @@ class CandleChartAPI:
     def monthly_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = end - relativedelta(months=1)
+        period = CandleChartPeriods.hour_1
 
-        payload = self._get_candle_chart_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -85,8 +100,9 @@ class CandleChartAPI:
     def weekly_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=7)
+        period = CandleChartPeriods.minutes_30
 
-        payload = self._get_candle_chart_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -95,8 +111,9 @@ class CandleChartAPI:
     def daily_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(hours=24)
+        period = CandleChartPeriods.minutes_5
 
-        payload = self._get_candle_chart_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -107,6 +124,10 @@ class CandleChartAPI:
 
         if response.status_code != 200:
             message = f'Poloniex API responded with {response.status_code}: {response.text}'
+            raise PoloniexAPIException(message)
+
+        if type(response.json()) == dict and 'error' in response.json().keys():
+            message = f'Poloniex API responded with 200 error: {response.text}'
             raise PoloniexAPIException(message)
 
         chart_data_list = list(map(CandleChartData.from_raw, response.json()))
