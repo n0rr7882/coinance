@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from datetime import timedelta
+
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import find_dotenv, load_dotenv
 
@@ -63,6 +65,7 @@ BUILTIN_APPS = [
 THIRD_PARTY_APPS = [
     'channels',
     'rest_framework',
+    'rest_framework_simplejwt',
     'django_filters',
     'django_celery_results',
     'django_celery_beat',
@@ -173,10 +176,10 @@ LOGGING = {
     }
 }
 
-LOCAL_APP_FOLDERS = [app.split('.')[0] for app in LOCAL_APPS]
+LOCAL_APP_DIRECTORIES = [app.split('.')[0] for app in LOCAL_APPS]
 
-for local_app_folder in LOCAL_APP_FOLDERS:
-    LOGGING['loggers'][local_app_folder] = {
+for local_app_directory in LOCAL_APP_DIRECTORIES:
+    LOGGING['loggers'][local_app_directory] = {
         'handlers': ['console'],
         'level': 'DEBUG',
         'propagate': True
@@ -244,13 +247,25 @@ STATIC_URL = '/static/'
 # Rest framework
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ],
 }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
+
 
 # Celery
 
@@ -270,4 +285,3 @@ POLONIEX_API_URL = get_env_variable('POLONIEX_API_URL')
 POLONIEX_WS_URL = get_env_variable('POLONIEX_WS_URL')
 
 POLONIEX_WS_TICKER_CHANNEL = 1002
-
