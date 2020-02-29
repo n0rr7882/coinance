@@ -1,2 +1,1 @@
 from .exchange_rate import update_exchange_rate_task
-from .candle_chart import update_candle_charts, update_all_candle_charts

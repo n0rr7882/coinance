@@ -1,1 +1,1 @@
-from .chart_data import ChartDataAPI
+from .candle_chart import CandleChartAPI

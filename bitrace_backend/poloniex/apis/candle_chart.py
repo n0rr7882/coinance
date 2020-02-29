@@ -7,7 +7,7 @@ import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 
-from currency.models import CurrencyPair, CandleChart
+from currency.models import CurrencyPair
 from poloniex.dataclasses.chart_data import CandleChartData
 from utils.exceptions import PoloniexAPIException
 
@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 FIRST_BITCOIN_ISSUED_DATETIME = datetime.datetime(2009, 1, 3)
 
 
-class ChartDataAPI:
+class CandleChartAPI:
     def __init__(self, currency_pair: CurrencyPair):
         self.currency_pair = currency_pair
 
-    def _get_chart_data_payload(self,
-                                start: datetime.datetime,
-                                end: datetime.datetime):
+    def _get_candle_chart_payload(self,
+                                  start: datetime.datetime,
+                                  end: datetime.datetime):
         return dict(
             command='returnChartData',
             currencyPair=self.currency_pair.to_poloniex_format(),
@@ -33,19 +33,19 @@ class ChartDataAPI:
         )
 
     def chart(self, chart_type: str) -> List[CandleChartData]:
-        if chart_type == CandleChart.CHART_TYPES.full:
+        if chart_type == 'full':
             return self.full_chart
 
-        elif chart_type == CandleChart.CHART_TYPES.yearly:
+        elif chart_type == 'yearly':
             return self.yearly_chart
 
-        elif chart_type == CandleChart.CHART_TYPES.monthly:
+        elif chart_type == 'monthly':
             return self.monthly_chart
 
-        elif chart_type == CandleChart.CHART_TYPES.weekly:
+        elif chart_type == 'weekly':
             return self.weekly_chart
 
-        elif chart_type == CandleChart.CHART_TYPES.daily:
+        elif chart_type == 'daily':
             return self.daily_chart
 
         else:
@@ -56,7 +56,7 @@ class ChartDataAPI:
         end = datetime.datetime.now()
         start = FIRST_BITCOIN_ISSUED_DATETIME
 
-        payload = self._get_chart_data_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -66,7 +66,7 @@ class ChartDataAPI:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=365)
 
-        payload = self._get_chart_data_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -76,7 +76,7 @@ class ChartDataAPI:
         end = datetime.datetime.now()
         start = end - relativedelta(months=1)
 
-        payload = self._get_chart_data_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -86,7 +86,7 @@ class ChartDataAPI:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=7)
 
-        payload = self._get_chart_data_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list
@@ -96,7 +96,7 @@ class ChartDataAPI:
         end = datetime.datetime.now()
         start = end - datetime.timedelta(hours=24)
 
-        payload = self._get_chart_data_payload(start, end)
+        payload = self._get_candle_chart_payload(start, end)
         chart_data_list = self._request_chart_data(payload)
 
         return chart_data_list

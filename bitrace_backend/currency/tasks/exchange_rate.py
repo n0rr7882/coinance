@@ -2,6 +2,7 @@ import logging
 
 from celery import shared_task
 
+from currency.websocket.currency_pair import broadcast_ws_update_exchange_rate
 from poloniex.dataclasses.ticker_data import TickerData
 from currency.models import ExchangeRate, CurrencyPair
 
@@ -32,12 +33,13 @@ def update_exchange_rate_from_ticker_data(ticker_data: TickerData):
 
     exchange_rate.save()
 
-    return
+    return exchange_rate
 
 
 @shared_task
 def update_exchange_rate_task(ticker_data_serialized: str):
     ticker_data = TickerData.deserialize(ticker_data_serialized)
-    update_exchange_rate_from_ticker_data(ticker_data)
+    exchange_rate = update_exchange_rate_from_ticker_data(ticker_data)
+    broadcast_ws_update_exchange_rate(exchange_rate)
 
     return

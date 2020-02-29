@@ -1,4 +1,3 @@
-import json
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
@@ -28,8 +27,4 @@ class CandleChartData:
         )
 
     def serialize(self) -> str:
-        return json.dumps(asdict(self))
-
-    @classmethod
-    def deserialize(cls, serialized: str) -> 'CandleChartData':
-        return cls(**json.loads(serialized))
+        return asdict(self)

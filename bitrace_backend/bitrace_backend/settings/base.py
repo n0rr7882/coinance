@@ -61,6 +61,7 @@ BUILTIN_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'channels',
     'rest_framework',
     'django_filters',
     'django_celery_results',
@@ -102,6 +103,25 @@ TEMPLATES = [
         },
     },
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(get_env_variable('REDIS_HOST'), get_env_variable('REDIS_PORT'))],
+        },
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{get_env_variable("REDIS_HOST")}:{get_env_variable("REDIS_PORT")}/1',  # 1번 DB
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 LOGGING = {
     'version': 1,
@@ -163,6 +183,8 @@ for local_app_folder in LOCAL_APP_FOLDERS:
     }
 
 WSGI_APPLICATION = 'bitrace_backend.wsgi.application'
+
+ASGI_APPLICATION = 'bitrace_backend.routing.application'
 
 
 # Database
@@ -226,13 +248,13 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ],
 }
 
 # Celery
 
-CELERY_BROKER_URL = get_env_variable('CELERY_BROKER_URL')
+CELERY_BROKER_URL = f'redis://{get_env_variable("REDIS_HOST")}:{get_env_variable("REDIS_PORT")}'
 
 CELERY_RESULT_BACKEND = 'django-db'
 

@@ -31,3 +31,9 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
 
     def to_poloniex_format(self) -> str:
         return f'{self.currency_from.symbol}_{self.currency_to.symbol}'
+
+    def to_ws_group_name(self) -> str:
+        return f'currency-pair.{self.pk}'
+
+    def to_chart_cache_key(self, chart_type: str) -> str:
+        return f'candle-chart-{self.pk}-{chart_type}'
