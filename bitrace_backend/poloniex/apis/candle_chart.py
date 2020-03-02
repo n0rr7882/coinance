@@ -21,7 +21,7 @@ class CandleChartPeriods:
     minutes_5 = datetime.timedelta(minutes=5)
     minutes_15 = datetime.timedelta(minutes=15)
     minutes_30 = datetime.timedelta(minutes=30)
-    hour_1 = datetime.timedelta(hours=1)
+    hour_2 = datetime.timedelta(hours=2)
     hours_4 = datetime.timedelta(hours=4)
     hours_8 = datetime.timedelta(hours=8)
     hours_24 = datetime.timedelta(hours=24)
@@ -89,7 +89,7 @@ class CandleChartAPI:
     def monthly_chart(self) -> List[CandleChartData]:
         end = datetime.datetime.now()
         start = end - relativedelta(months=1)
-        period = CandleChartPeriods.hour_1
+        period = CandleChartPeriods.hour_2
 
         payload = self._get_candle_chart_payload(start, end, period=period)
         chart_data_list = self._request_chart_data(payload)

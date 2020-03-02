@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'mobx-react';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import LoginFormStore from './stores/forms/login';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const stores = {
+    loginForm: new LoginFormStore(),
+}
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const root = (
+    <Provider {...stores}>
+        <App />
+    </Provider>
+);
+
+ReactDOM.render(root, document.getElementById('root'));
