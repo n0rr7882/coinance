@@ -1,12 +1,20 @@
 import React from 'react';
-import Login from './components/Login';
-import Register from './components/Register';
+import { Provider } from 'mobx-react';
+import { CurrencyPairStore } from './stores/currency-pair';
+import CandleChartStore from './stores/candle-chart';
+
+const stores = {
+  currencyPairStore: new CurrencyPairStore(),
+  candleChartStore: new CandleChartStore(),
+}
 
 function App() {
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <Provider {...stores}>
+      <div className="App">
+        asdf
+      </div>
+    </Provider>
   );
 }
 
