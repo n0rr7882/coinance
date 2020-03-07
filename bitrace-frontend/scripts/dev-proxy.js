@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const target = process.env.PELICAN_API_URL;
+const target = 'http://localhost:8000';
 const proxy = httpProxy.createProxyServer();
 
 const ALLOW_HEADERS = [
@@ -37,5 +37,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(8080, () => {
-  console.log('Pelican proxy server ready!');
+  console.log('Bitrace proxy server ready!');
 });
