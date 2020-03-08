@@ -10,8 +10,6 @@ export class User {
   public readonly is_staff?: boolean;
   public readonly is_active?: boolean;
   public readonly is_superuser?: boolean;
-  public readonly created?: Date;
-  public readonly modified?: Date;
 
   constructor(data: User) {
     this.id = data.id;
@@ -20,5 +18,8 @@ export class User {
     this.first_name = data.first_name;
     this.last_name = data.last_name;
     this.email = data.email;
+    this.is_staff = data.is_staff;
+    this.is_active = data.is_active;
+    this.is_superuser = data.is_superuser;
   }
 }

@@ -1,3 +1,5 @@
+import { observable } from "mobx";
+
 export class Currency {
   public readonly id: number;
   public readonly poloniex_id: number;
@@ -45,7 +47,7 @@ export class CurrencyPair {
   public readonly poloniex_id: number;
   public readonly currency_from: Currency;
   public readonly currency_to: Currency;
-  public readonly exchange_rate: ExchangeRate;
+  @observable public exchange_rate: ExchangeRate;
 
   constructor(data: CurrencyPair) {
     this.id = data.id;

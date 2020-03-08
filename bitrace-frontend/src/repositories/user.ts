@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BITRACE_API_ENTRY_POINT } from '../constants';
 import { User } from '../models/user';
-import { getAccessToken } from '../utils/token-storage';
+import { getAuthToken } from '../utils/token';
 
 const USER_API_ENTRY_POINT = `${BITRACE_API_ENTRY_POINT}/users`;
 
@@ -15,21 +15,21 @@ class UserRepository {
   }
 
   async retrieve(id: number) {
-    const headers = { authorization: `Bearer ${getAccessToken()}` };
+    const headers = { authorization: `Bearer ${getAuthToken().access}` };
     const res = await this.api.get<User>(`/${id}/`, { headers });
 
     return res.data;
   }
 
   async update(user: User) {
-    const headers = { authorization: `Bearer ${getAccessToken()}` };
+    const headers = { authorization: `Bearer ${getAuthToken().access}` };
     const res = await this.api.put<User>(`/${user.id}/`, user, { headers });
 
     return res.data;
   }
 
   async delete(user: User) {
-    const headers = { authorization: `Bearer ${getAccessToken()}` };
+    const headers = { authorization: `Bearer ${getAuthToken().access}` };
     await this.api.delete(`/${user.id}/`, { headers });
   }
 

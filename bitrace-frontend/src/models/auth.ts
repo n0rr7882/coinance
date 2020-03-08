@@ -1,17 +1,20 @@
-export interface IRequestLogin {
+export interface ILoginData {
   username: string;
   password: string;
 }
 
-export interface IResponseLogin {
-  access: string;
+export interface IGoogleOauth2Data {
+  provider: string;
+  code: string;
+  redirect_uri: string;
+}
+
+export interface IGoogleOauth2Result {
+  token: string;
   refresh: string;
 }
 
-export interface IRequestRefresh {
-  refresh: string;
-}
-
-export interface IResponseRefresh {
+export interface IToken {
   access: string;
+  refresh: string;
 }

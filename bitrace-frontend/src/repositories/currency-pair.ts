@@ -34,8 +34,12 @@ class CurrencyPairRepository {
 
   public addHandlerWS(handler: (currencyPair: CurrencyPair) => void) {
     this.ws.onmessage = event => {
-      const currencyPair: CurrencyPair = JSON.parse(event.data.toString());
-      handler(currencyPair);
+      const raw: { type: string, data: CurrencyPair } = JSON.parse(event.data.toString());
+
+      if (raw.type === 'update_exchange_rate') {
+        const currencyPair = new CurrencyPair(raw.data);
+        handler(currencyPair);
+      }
     }
   }
 }

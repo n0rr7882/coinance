@@ -15,20 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
-from user.views import me
+from user.views import me_view, change_password_view
 
 builtin_urls = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
     path('auth/session/', include('rest_framework.urls')),
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/me/', me, name='me'),
+    path('auth/login/', include('rest_social_auth.urls_jwt_pair')),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/me/', me_view, name='me'),
+    path('auth/me/change-password', change_password_view, name='change_password'),
 ]
 
 local_app_urls = [
+    path('users/', include('user.urls')),
     path('currency/', include('currency.urls')),
 ]
 

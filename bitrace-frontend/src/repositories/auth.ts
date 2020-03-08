@@ -1,26 +1,39 @@
 import axios from 'axios';
-import { BITRACE_API_ENTRY_POINT } from '../constants';
-import { IRequestLogin, IResponseLogin, IRequestRefresh, IResponseRefresh } from '../models/auth';
+import { BITRACE_API_ENTRY_POINT, GOOGLE_OAUTH2_REDIRECT_URI } from '../constants';
 import { User } from '../models/user';
-import { getAccessToken } from '../utils/token-storage';
+import { IGoogleOauth2Data, IToken, ILoginData, IGoogleOauth2Result } from '../models/auth';
 
 const AUTH_API_ENTRY_POINT = `${BITRACE_API_ENTRY_POINT}/auth`;
 
 class AuthRepository {
   private api = axios.create({ baseURL: AUTH_API_ENTRY_POINT });
 
-  async login(data: IRequestLogin) {
-    const res = await this.api.post<IResponseLogin>('/token/', data)
+  async originalLogin(data: ILoginData): Promise<IToken> {
+    const res = await this.api.post<IToken>('/token/', data)
 
     return res.data;
   }
-  async refresh(data: IRequestRefresh) {
-    const res = await this.api.post<IResponseRefresh>('/token/refresh/', data);
 
-    return res.data;
+  async googleOauth2Login(code: string): Promise<IToken> {
+    const data: IGoogleOauth2Data = {
+      provider: 'google-oauth2',
+      code,
+      redirect_uri: GOOGLE_OAUTH2_REDIRECT_URI,
+    };
+    const res = await this.api.post<IGoogleOauth2Result>(`/login/social/jwt-pair/${data.provider}/`, data);
+
+    return { access: res.data.token, refresh: res.data.refresh };
   }
-  async me() {
-    const headers = { authorization: `Bearer ${getAccessToken()}` };
+
+  async refresh(token: IToken): Promise<IToken> {
+    const data = { refresh: token.refresh };
+    const res = await this.api.post<{ access: string }>('/token/refresh/', data);
+
+    return { access: res.data.access, refresh: data.refresh };
+  }
+
+  async me(token: IToken): Promise<User> {
+    const headers = { authorization: `Bearer ${token.access}` };
     const res = await this.api.get<User>('/me/', { headers });
 
     return res.data;
