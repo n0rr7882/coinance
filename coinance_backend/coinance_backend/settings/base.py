@@ -116,7 +116,9 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [(get_env_variable('REDIS_HOST'), get_env_variable('REDIS_PORT'))],
+            'hosts': [(get_env_variable('REDIS_HOST'), get_env_variable('REDIS_PORT'))],
+            'capacity': 4096,
+            'expiry': 10,
         },
     },
 }
