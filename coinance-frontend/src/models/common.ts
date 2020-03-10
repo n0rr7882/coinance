@@ -14,3 +14,5 @@ export enum Status {
 export interface IErrorData {
   readonly [field: string]: string[] | string | undefined;
 }
+
+export type Order = 'asc' | 'desc';
