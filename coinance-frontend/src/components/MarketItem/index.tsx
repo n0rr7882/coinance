@@ -19,7 +19,7 @@ class MarketItem extends React.Component<IProps, {}> {
     const changeRate24h = Math.round(currencyPair.exchange_rate?.change_rate_24h * 10000) / 100;
     const chipColor = changeRate24h === 0 ? 'default' : changeRate24h > 0 ? 'secondary' : 'primary';
     const chipIcon = changeRate24h === 0 ? <TrendingFlat /> : changeRate24h >= 0 ? <TrendingUp /> : <TrendingDown />;
-    const quoteVolume24h = currencyPair.exchange_rate?.quote_volume_24h;
+    const baseVolume24h = currencyPair.exchange_rate?.base_volume_24h;
 
     return (
       <TableRow key={currencyPair.id}>
@@ -35,7 +35,7 @@ class MarketItem extends React.Component<IProps, {}> {
           <Chip label={`${changeRate24h}%`} color={chipColor} icon={chipIcon} />
         </TableCell>
         <TableCell align="right">
-          {quoteVolume24h} <Chip variant="outlined" size="small" label={symbolFrom} />
+          {baseVolume24h} <Chip variant="outlined" size="small" label={symbolFrom} />
         </TableCell>
       </TableRow>
     );
