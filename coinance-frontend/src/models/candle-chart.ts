@@ -18,13 +18,14 @@ export enum ChartPeriod {
 }
 
 export class ChartOption {
-  static command = 'returnChartData';
+  public command: string;
   public currencyPair?: string;
   public period: ChartPeriod;
   public start: number;
   public end: number;
 
   constructor(period: ChartPeriod, start: number, end: number) {
+    this.command = 'returnChartData';
     this.currencyPair = undefined;
     this.period = period;
     this.start = start;

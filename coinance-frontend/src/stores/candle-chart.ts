@@ -25,6 +25,7 @@ export default class CandleChartStore {
     this.subscribe();
   }
 
+  @action
   private async loadCandleSticks() {
     this.candleSticks = await candleChartRepository.getCandleSticks(this.currencyPair!, this.chartType);
   }
@@ -37,7 +38,9 @@ export default class CandleChartStore {
       const base = Math.floor(current / ChartPeriod.minutes5) * ChartPeriod.minutes5
       const next = base + ChartPeriod.minutes5;
 
-      this.timer = setTimeout(() => this.candleSticksTimer(), next - current);
+      console.log(base, current, next);
+
+      this.timer = setTimeout(() => this.candleSticksTimer(), (next - current) * 1000);
     }
   }
 

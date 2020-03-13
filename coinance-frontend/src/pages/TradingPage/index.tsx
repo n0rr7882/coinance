@@ -1,8 +1,9 @@
 import React from 'react';
+import TradingChartContainer from '../../containers/TradingChartContainer';
 
 const TradingPage = () => (
   <div>
-    This is Trading page!
+    <TradingChartContainer />
   </div>
 );
 

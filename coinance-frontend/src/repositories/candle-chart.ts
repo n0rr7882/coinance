@@ -27,9 +27,9 @@ class CandleChartRepository {
 
   public async getCandleSticks(currencyPair: CurrencyPair, chartType: ChartType) {
     const chartOption = getChartOpton(currencyPair, chartType);
-    const res = await this.api.get<CandleStick[]>(`/`, { params: chartOption });
+    const res = await this.api.get<CandleStick[]>('', { params: chartOption });
 
-    return res.data;
+    return res.data.map(c => new CandleStick(c));
   };
 }
 
