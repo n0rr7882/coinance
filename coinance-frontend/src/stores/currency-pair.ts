@@ -24,10 +24,20 @@ export default class CurrencyPairStore {
   }
 
   @action
+  public async subscribe(currencyPair: CurrencyPair) {
+    currencyPairRepository.subscribeWS(currencyPair);
+  }
+
+  @action
   public subscribeAll() {
     this.currencyPairs.forEach(currencyPair => {
       currencyPairRepository.subscribeWS(currencyPair);
     });
+  }
+
+  @action
+  public unsubscribe(currencyPair: CurrencyPair) {
+    currencyPairRepository.unsubscribeWS(currencyPair);
   }
 
   @action

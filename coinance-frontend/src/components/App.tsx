@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import AppBarContainer from '../containers/AppBarContainer';
 import IndexPage from '../pages/IndexPage';
 import TradingPage from '../pages/TradingPage';
@@ -18,7 +18,7 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <BrowserRouter>
+    <>
       <AppBarContainer />
       <div className={classes.main}>
         <Switch>
@@ -28,6 +28,6 @@ export default function App() {
           <Route path="/" component={IndexPage} />
         </Switch>
       </div>
-    </BrowserRouter>
+    </>
   );
 }

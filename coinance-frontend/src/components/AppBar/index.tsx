@@ -75,16 +75,17 @@ const AppBar: React.FC<IProps> = props => {
   );
 
   const LoginButton = (
-    <GoogleLogin render={props => (
-      <Tooltip title="Google 계정으로 로그인하기">
-        <span>
-          <Button
-            size="small" color="inherit" variant="outlined" startIcon={<VpnKey />}
-            onClick={props.onClick} disabled={props.disabled}
-          >로그인</Button>
-        </span>
-      </Tooltip>
-    )}
+    <GoogleLogin
+      render={props => (
+        <Tooltip title="Google 계정으로 로그인하기">
+          <span>
+            <Button
+              size="small" color="inherit" variant="outlined" startIcon={<VpnKey />}
+              onClick={props.onClick} disabled={props.disabled}
+            >로그인</Button>
+          </span>
+        </Tooltip>
+      )}
       clientId={GOOGLE_OAUTH2_CLIENT_ID}
       onSuccess={login}
       onFailure={console.error}

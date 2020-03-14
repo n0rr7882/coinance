@@ -1,58 +1,60 @@
 import { observable, action } from "mobx";
+import { toast } from 'react-toastify';
 import { CurrencyPair } from "../models/currency-pair";
-import { ChartType, CandleStick, ChartPeriod } from "../models/candle-chart";
+import { ChartType, CandleStick } from "../models/candle-chart";
 import { candleChartRepository } from "../repositories/candle-chart";
 import { toTimestamp } from "../utils/timestamp";
+import { boundClass } from "autobind-decorator";
 
+@boundClass
 export default class CandleChartStore {
-  @observable public currencyPair?: CurrencyPair;
-  @observable public chartType: ChartType = ChartType.yearly;
+  private fetchInterval = 30;
+
+  @observable public chartType: ChartType = ChartType.daily;
   @observable public candleSticks: CandleStick[] = [];
   @observable private subscribed: boolean = false;
   private timer: any;
 
   @action
-  public setCurrencyPair(currencyPair: CurrencyPair) {
-    this.unsubscribe();
-    this.currencyPair = currencyPair;
-    this.subscribe();
-  }
-
-  @action
-  public setChartType(chartType: ChartType) {
-    this.unsubscribe();
-    this.chartType = chartType;
-    this.subscribe();
-  }
-
-  @action
-  private async loadCandleSticks() {
-    this.candleSticks = await candleChartRepository.getCandleSticks(this.currencyPair!, this.chartType);
-  }
-
-  private candleSticksTimer() {
-    if (this.subscribed) {
-      this.loadCandleSticks();
-
-      const current = toTimestamp(new Date());
-      const base = Math.floor(current / ChartPeriod.minutes5) * ChartPeriod.minutes5
-      const next = base + ChartPeriod.minutes5;
-
-      console.log(base, current, next);
-
-      this.timer = setTimeout(() => this.candleSticksTimer(), (next - current) * 1000);
+  private async loadCandleSticks(currencyPair: CurrencyPair) {
+    try {
+      this.candleSticks = await candleChartRepository.getCandleSticks(currencyPair, this.chartType);
+    } catch (e) {
+      toast(`차트 데이터를 가져오는 도중 오류가 발생했습니다: ${e}`);
     }
   }
 
+  private candleSticksTimer(currencyPair: CurrencyPair) {
+    if (this.subscribed) {
+      this.loadCandleSticks(currencyPair);
+
+      const current = toTimestamp(new Date());
+      const base = Math.floor(current / this.fetchInterval) * this.fetchInterval
+      const next = base + this.fetchInterval;
+
+      console.log({ base, current, next });
+
+      this.timer = setTimeout(() => this.candleSticksTimer(currencyPair), (next - current) * 1000);
+    }
+  }
+
+  private setDefaultState() {
+    this.candleSticks = [];
+    this.chartType = ChartType.daily;
+  }
+
   @action
-  public subscribe() {
+  public subscribe(currencyPair: CurrencyPair, chartType: ChartType) {
+    this.setDefaultState();
     this.subscribed = true;
-    this.candleSticksTimer();
+    this.chartType = chartType;
+    this.candleSticksTimer(currencyPair);
   }
 
   @action
   public unsubscribe() {
     this.subscribed = false;
     clearTimeout(this.timer);
+    this.setDefaultState();
   }
 }

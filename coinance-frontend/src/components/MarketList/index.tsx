@@ -13,7 +13,7 @@ import { observer } from 'mobx-react';
 import { TableSortLabel, Toolbar, Typography, Button, Theme, createStyles, Tooltip, ButtonGroup } from '@material-ui/core';
 import { Order } from '../../models/common';
 
-enum TableColumn {
+export enum MarketListTableColumn {
   symbol = 'symbol',
   price = '현재가',
   changeRate = '전일대비(%)',
@@ -100,25 +100,25 @@ const MarketList: React.FC<MarketListProps> = props => {
   }
 
   const sort = (a: CurrencyPair, b: CurrencyPair): number => {
-    if (props.orderBy === TableColumn.symbol) {
+    if (props.orderBy === MarketListTableColumn.symbol) {
       return props.order === 'asc'
         ? (a.currency_to.symbol > b.currency_to.symbol ? 0 : -1)
         : (a.currency_to.symbol < b.currency_to.symbol ? 0 : -1);
 
-    } else if (props.orderBy === TableColumn.price) {
+    } else if (props.orderBy === MarketListTableColumn.price) {
       return props.order === 'asc'
         ? (a.exchange_rate.last_trade_price > b.exchange_rate.last_trade_price ? 0 : -1)
         : (a.exchange_rate.last_trade_price < b.exchange_rate.last_trade_price ? 0 : -1);
 
-    } else if (props.orderBy === TableColumn.changeRate) {
+    } else if (props.orderBy === MarketListTableColumn.changeRate) {
       return props.order === 'asc'
         ? (a.exchange_rate.change_rate_24h > b.exchange_rate.change_rate_24h ? 0 : -1)
         : (a.exchange_rate.change_rate_24h < b.exchange_rate.change_rate_24h ? 0 : -1);
 
-    } else if (props.orderBy === TableColumn.volume) {
+    } else if (props.orderBy === MarketListTableColumn.volume) {
       return props.order === 'asc'
-        ? (a.exchange_rate.quote_volume_24h > b.exchange_rate.quote_volume_24h ? 0 : -1)
-        : (a.exchange_rate.quote_volume_24h < b.exchange_rate.quote_volume_24h ? 0 : -1);
+        ? (a.exchange_rate.base_volume_24h > b.exchange_rate.base_volume_24h ? 0 : -1)
+        : (a.exchange_rate.base_volume_24h < b.exchange_rate.base_volume_24h ? 0 : -1);
     } else {
       return 0;
     }
@@ -152,39 +152,39 @@ const MarketList: React.FC<MarketListProps> = props => {
           <TableHead>
             <TableRow>
 
-              <TableCell align="left" sortDirection={props.orderBy === TableColumn.symbol ? props.order : false}>
+              <TableCell align="left" sortDirection={props.orderBy === MarketListTableColumn.symbol ? props.order : false}>
                 <TableSortLabel
-                  active={props.orderBy === TableColumn.symbol}
+                  active={props.orderBy === MarketListTableColumn.symbol}
                   direction={props.order}
-                  onClick={() => setOrderBy(TableColumn.symbol)}>
-                  {TableColumn.symbol}
+                  onClick={() => setOrderBy(MarketListTableColumn.symbol)}>
+                  {MarketListTableColumn.symbol}
                 </TableSortLabel>
               </TableCell>
 
-              <TableCell align="right" sortDirection={props.orderBy === TableColumn.price ? props.order : false}>
+              <TableCell align="right" sortDirection={props.orderBy === MarketListTableColumn.price ? props.order : false}>
                 <TableSortLabel
-                  active={props.orderBy === TableColumn.price}
+                  active={props.orderBy === MarketListTableColumn.price}
                   direction={props.order}
-                  onClick={() => setOrderBy(TableColumn.price)}>
-                  {TableColumn.price}
+                  onClick={() => setOrderBy(MarketListTableColumn.price)}>
+                  {MarketListTableColumn.price}
                 </TableSortLabel>
               </TableCell>
 
-              <TableCell align="right" sortDirection={props.orderBy === TableColumn.changeRate ? props.order : false}>
+              <TableCell align="right" sortDirection={props.orderBy === MarketListTableColumn.changeRate ? props.order : false}>
                 <TableSortLabel
-                  active={props.orderBy === TableColumn.changeRate}
+                  active={props.orderBy === MarketListTableColumn.changeRate}
                   direction={props.order}
-                  onClick={() => setOrderBy(TableColumn.changeRate)}>
-                  {TableColumn.changeRate}
+                  onClick={() => setOrderBy(MarketListTableColumn.changeRate)}>
+                  {MarketListTableColumn.changeRate}
                 </TableSortLabel>
               </TableCell>
 
-              <TableCell align="right" sortDirection={props.orderBy === TableColumn.volume ? props.order : false}>
+              <TableCell align="right" sortDirection={props.orderBy === MarketListTableColumn.volume ? props.order : false}>
                 <TableSortLabel
-                  active={props.orderBy === TableColumn.volume}
+                  active={props.orderBy === MarketListTableColumn.volume}
                   direction={props.order}
-                  onClick={() => setOrderBy(TableColumn.volume)}>
-                  {TableColumn.volume}
+                  onClick={() => setOrderBy(MarketListTableColumn.volume)}>
+                  {MarketListTableColumn.volume}
                 </TableSortLabel>
               </TableCell>
 

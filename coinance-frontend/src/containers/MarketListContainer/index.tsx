@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import CurrencyPairStore from '../../stores/currency-pair';
-import MarketList from '../../components/MarketList';
+import MarketList, { MarketListTableColumn } from '../../components/MarketList';
 import { Order } from '../../models/common';
 import { Currency } from '../../models/currency-pair';
 
@@ -19,8 +19,8 @@ interface IState {
 @observer
 export default class MarketListContainer extends React.Component<IProps, IState> {
   state: IState = {
-    order: 'asc',
-    orderBy: 'symbol',
+    order: 'desc',
+    orderBy: MarketListTableColumn.volume,
   }
 
   public setOrder(order: Order) {

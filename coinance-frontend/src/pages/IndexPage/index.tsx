@@ -1,10 +1,10 @@
 import React from 'react';
 import MarketListContainer from '../../containers/MarketListContainer';
-import { Container, Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Container, Card, CardActionArea, CardMedia, CardContent, Typography, makeStyles, Theme } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    margin: 15,
+    margin: theme.spacing(2),
   },
   media: {
     height: 256,
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   sub: {
     marginBottom: 12,
   },
-});
+}));
 
 const IndexPage = () => {
   const classes = useStyles();
