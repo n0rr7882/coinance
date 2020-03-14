@@ -9,7 +9,7 @@ const TradingPage = () => {
   const { paper } = usePaperStyles();
 
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Paper className={paper}>
         <TradingChartContainer />
       </Paper>

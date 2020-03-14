@@ -8,7 +8,7 @@ import { boundClass } from "autobind-decorator";
 
 @boundClass
 export default class CandleChartStore {
-  private fetchInterval = 30;
+  private FETCH_INTERVAL = 15;
 
   @observable public chartType: ChartType = ChartType.daily;
   @observable public candleSticks: CandleStick[] = [];
@@ -18,9 +18,29 @@ export default class CandleChartStore {
   @action
   private async loadCandleSticks(currencyPair: CurrencyPair) {
     try {
-      this.candleSticks = await candleChartRepository.getCandleSticks(currencyPair, this.chartType);
+      if (this.candleSticks.length === 0) {
+        await this.initializeCandleSticks(currencyPair);
+      } else {
+        await this.updateCandleSticks(currencyPair);
+      }
     } catch (e) {
-      toast(`차트 데이터를 가져오는 도중 오류가 발생했습니다: ${e}`);
+      console.error(e);
+      toast.error(`차트 데이터 로드중 오류가 발생했습니다.`);
+    }
+  }
+
+  private async initializeCandleSticks(currencyPair: CurrencyPair) {
+    this.candleSticks = await candleChartRepository.getCandleSticks(currencyPair, this.chartType);
+  }
+
+  private async updateCandleSticks(currencyPair: CurrencyPair) {
+    const lastNewCandleStick = await candleChartRepository.getLastCandleStick(currencyPair, this.chartType);
+    const lastCandleStick = this.candleSticks[this.candleSticks.length - 1];
+
+    if (toTimestamp(lastCandleStick.date) === toTimestamp(lastNewCandleStick.date)) {
+      this.candleSticks[this.candleSticks.length - 1] = lastNewCandleStick;
+    } else {
+      this.candleSticks.push(lastNewCandleStick);
     }
   }
 
@@ -29,8 +49,8 @@ export default class CandleChartStore {
       this.loadCandleSticks(currencyPair);
 
       const current = toTimestamp(new Date());
-      const base = Math.floor(current / this.fetchInterval) * this.fetchInterval
-      const next = base + this.fetchInterval;
+      const base = Math.floor(current / this.FETCH_INTERVAL) * this.FETCH_INTERVAL
+      const next = base + this.FETCH_INTERVAL;
 
       console.log({ base, current, next });
 

@@ -25,12 +25,20 @@ const getChartOpton = (currencyPair: CurrencyPair, chartType: ChartType) => {
 class CandleChartRepository {
   private api = axios.create({ baseURL: POLONIEX_API_ENTRY_POINT });
 
-  public async getCandleSticks(currencyPair: CurrencyPair, chartType: ChartType) {
+  public async getCandleSticks(currencyPair: CurrencyPair, chartType: ChartType): Promise<CandleStick[]> {
     const chartOption = getChartOpton(currencyPair, chartType);
     const res = await this.api.get<CandleStick[]>('', { params: chartOption });
 
     return res.data.map(c => new CandleStick(c));
   };
+
+  public async getLastCandleStick(currencyPair: CurrencyPair, chartType: ChartType): Promise<CandleStick> {
+    const chartOption = getChartOpton(currencyPair, chartType);
+    chartOption.start = chartOption.end - (chartOption.period * 2);
+    const res = await this.api.get<CandleStick[]>('', { params: chartOption });
+
+    return new CandleStick(res.data[res.data.length - 1]);
+  }
 }
 
 export const candleChartRepository = new CandleChartRepository();

@@ -25,7 +25,7 @@ export default class TradingChartContainer extends React.Component<IProps> {
     const routerStore = this.props.routerStore!;
     const currencyPairStore = this.props.currencyPairStore!;
 
-    const currencyPairId = Number(routerStore.location.pathname.split('/').pop());
+    const currencyPairId = Number(routerStore.location.pathname.split('/').filter(i => i !== '').pop());
     return currencyPairStore.currencyPairs.find(c => c.id === currencyPairId)!;
   }
 
