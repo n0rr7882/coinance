@@ -1,5 +1,19 @@
 import { observable } from "mobx";
 
+export class UserSetting {
+  public readonly id?: number;
+  @observable public nickname: string;
+  @observable public start_currency: number;
+  @observable public start_amount: number;
+
+  constructor(data: UserSetting) {
+    this.id = data.id;
+    this.nickname = data.nickname;
+    this.start_currency = data.start_currency;
+    this.start_amount = data.start_amount;
+  }
+}
+
 export class User {
   public readonly id?: number;
   @observable public username: string;
@@ -10,6 +24,7 @@ export class User {
   public readonly is_staff?: boolean;
   public readonly is_active?: boolean;
   public readonly is_superuser?: boolean;
+  public readonly setting?: UserSetting;
 
   constructor(data: User) {
     this.id = data.id;
@@ -21,5 +36,6 @@ export class User {
     this.is_staff = data.is_staff;
     this.is_active = data.is_active;
     this.is_superuser = data.is_superuser;
+    this.setting = !!data.setting ? new UserSetting(data.setting) : undefined;
   }
 }

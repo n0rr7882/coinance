@@ -10,6 +10,7 @@ import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
 import { GOOGLE_OAUTH2_CLIENT_ID } from '../../constants';
+import UserSettingDialogContainer from '../../containers/UserSettingDialogContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +72,7 @@ const AppBar: React.FC<IProps> = props => {
         </Link>
         <MenuItem onClick={logout} className={classes.logoutButton}>로그아웃</MenuItem>
       </Menu>
+      {!!props.me?.setting ? <UserSettingDialogContainer /> : undefined}
     </>
   );
 

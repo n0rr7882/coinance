@@ -52,8 +52,8 @@ export class CurrencyPair {
   constructor(data: CurrencyPair) {
     this.id = data.id;
     this.poloniex_id = data.poloniex_id;
-    this.currency_from = data.currency_from;
-    this.currency_to = data.currency_to;
-    this.exchange_rate = data.exchange_rate;
+    this.currency_from = new Currency(data.currency_from);
+    this.currency_to = new Currency(data.currency_to);
+    this.exchange_rate = new ExchangeRate(data.exchange_rate);
   }
 }
