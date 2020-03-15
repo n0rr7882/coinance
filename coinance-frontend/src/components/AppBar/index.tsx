@@ -5,7 +5,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, VpnKey, Home, FormatListNumbered, MultilineChart } from '@material-ui/icons';
+import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart } from '@material-ui/icons';
 import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
@@ -104,13 +104,8 @@ const AppBar: React.FC<IProps> = props => {
             coinance
           </Typography>
           <span className={classes.spacer} />
-          <Link to='/' color="none">
-            <Tooltip title="홈">
-              <IconButton color="inherit" size="small" className={classes.menuButton}><Home /></IconButton>
-            </Tooltip>
-          </Link>
-          <Link to='/trading'>
-            <Tooltip title="거래소">
+          <Link to='/'>
+            <Tooltip title="거래소 홈">
               <IconButton color="inherit" size="small" className={classes.menuButton}><MultilineChart /></IconButton>
             </Tooltip>
           </Link>

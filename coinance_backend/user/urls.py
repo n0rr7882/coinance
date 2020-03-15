@@ -1,8 +1,8 @@
 from rest_framework import routers
 
-from user.views import UserViewSet
+from user.views import UserSettingViewSet
 
 router = routers.SimpleRouter()
-router.register(r'', UserViewSet)
+router.register(r'settings', UserSettingViewSet)
 
 urlpatterns = router.urls

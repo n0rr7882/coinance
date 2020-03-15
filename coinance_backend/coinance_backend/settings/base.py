@@ -77,6 +77,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'poloniex',
     'currency',
+    'trading',
+    'user',
     'utils',
 ]
 

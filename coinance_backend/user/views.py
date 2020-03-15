@@ -1,43 +1,28 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from user.permissions import IsSuperuserOrCreateAndUpdateOnly
-from user.serializers import UserSerializer, ChangePasswordSerializer
+from trading.process import initialize_user_wallets
+from user.models import UserSetting
+from user.serializers import UserSerializer, UserSettingSerializer
+from utils.permissions import IsSuperuserOrOwner
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsSuperuserOrCreateAndUpdateOnly]
+class UserSettingViewSet(viewsets.ModelViewSet):
+    queryset = UserSetting.objects.all()
+    serializer_class = UserSettingSerializer
+    permission_classes = [IsSuperuserOrOwner]
+
+    def perform_create(self, serializer: UserSettingSerializer):
+        created = serializer.save(user=self.request.user)
+        initialize_user_wallets(created)
+
+        return
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def me_view(request: Request) -> Response:
     return Response(data=UserSerializer(request.user).data, status=status.HTTP_200_OK)
-
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def change_password_view(request: Request) -> Response:
-    user: User = request.user
-    serialized = ChangePasswordSerializer(data=request.data)
-
-    if not serialized.is_valid():
-        raise ValidationError(serialized.errors)
-
-    old_password = serialized.data.get('old_password')
-
-    if not user.check_password(old_password):
-        return Response({'old_password': ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-
-    user.set_password(serialized.data.get('new_password'))
-    user.save()
-
-    return Response(status=status.HTTP_204_NO_CONTENT)

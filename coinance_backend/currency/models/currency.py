@@ -21,6 +21,10 @@ class Currency(TimeStampedModel, SoftDeletableModel):
         verbose_name='한글 화폐명',
         max_length=255,
     )
+    available_for_start = models.BooleanField(
+        verbose_name='초기자금 선택 가능 여부',
+        default=False,
+    )
 
     def __str__(self):
         return f'{self.name}({self.symbol})'

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
-from user.views import me_view, change_password_view
+from user.views import me_view
 
 builtin_urls = [
     path('admin/', admin.site.urls),
@@ -26,11 +26,10 @@ builtin_urls = [
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/me/', me_view, name='me'),
-    path('auth/me/change-password', change_password_view, name='change_password'),
 ]
 
 local_app_urls = [
-    path('users/', include('user.urls')),
+    path('user/', include('user.urls')),
     path('currency/', include('currency.urls')),
 ]
 

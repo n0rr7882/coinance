@@ -1,13 +1,11 @@
 from rest_framework import permissions
 
 
-class IsSuperuserOrCreateAndUpdateOnly(permissions.BasePermission):
+class IsSuperuserOrOwner(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method == 'POST':
-            return True
-
-        if request.user.is_authenticated and request.user.is_superuser:
-            return True
+        if request.user.is_authenticated:
+            if request.method == 'POST' or request.user.is_superuser:
+                return True
 
         return False
 
@@ -15,7 +13,7 @@ class IsSuperuserOrCreateAndUpdateOnly(permissions.BasePermission):
         if request.user.is_authenticated and request.user.is_superuser:
             return True
 
-        if request.user == obj:
+        if request.user == obj.user:
             return True
 
         return False
