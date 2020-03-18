@@ -30,7 +30,7 @@ class AuthRepository {
     const headers = { authorization: `Bearer ${token.access}` };
     const res = await this.api.get<User>('/me/', { headers });
 
-    return res.data;
+    return new User(res.data);
   }
 }
 

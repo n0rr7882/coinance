@@ -21,10 +21,10 @@ export class User {
   @observable public first_name: string;
   @observable public last_name: string;
   @observable public email: string;
+  public readonly setting: UserSetting;
   public readonly is_staff?: boolean;
   public readonly is_active?: boolean;
   public readonly is_superuser?: boolean;
-  public readonly setting?: UserSetting;
 
   constructor(data: User) {
     this.id = data.id;
@@ -33,9 +33,11 @@ export class User {
     this.first_name = data.first_name;
     this.last_name = data.last_name;
     this.email = data.email;
+    this.setting = data.setting
+      ? new UserSetting(data.setting)
+      : new UserSetting({ nickname: '', start_currency: 0, start_amount: 0 });
     this.is_staff = data.is_staff;
     this.is_active = data.is_active;
     this.is_superuser = data.is_superuser;
-    this.setting = !!data.setting ? new UserSetting(data.setting) : undefined;
   }
 }

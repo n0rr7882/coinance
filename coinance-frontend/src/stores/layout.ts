@@ -5,6 +5,7 @@ import { boundClass } from "autobind-decorator";
 export default class LayoutStore {
   @observable public loginDialogOpen: boolean = false;
   @observable public registerDialogOpen: boolean = false;
+  @observable public userSettingDialogOpen: boolean = true;
 
   @action
   public toggleLoginDialog() {
@@ -14,5 +15,10 @@ export default class LayoutStore {
   @action
   public toggleRegisterDialog() {
     this.registerDialogOpen = !this.registerDialogOpen;
+  }
+
+  @action
+  public toggleUserSettingDialog() {
+    this.userSettingDialogOpen = !this.userSettingDialogOpen;
   }
 }

@@ -141,13 +141,13 @@ const MarketList: React.FC<MarketListProps> = props => {
     .sort(sort);
 
   return (
-    <Paper>
+    <Paper elevation={0}>
       <MarketListToolbar
         selected={props.selectedCurrencyFrom}
         onSelect={props.setSelectedCurrencyFrom}
         currenciesFrom={currenciesFromUnique}
       />
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table className={classes.table} aria-label="market list">
           <TableHead>
             <TableRow>

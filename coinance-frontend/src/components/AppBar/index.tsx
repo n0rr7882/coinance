@@ -5,12 +5,14 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart } from '@material-ui/icons';
+import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart, BrightnessMedium } from '@material-ui/icons';
 import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
 import { GOOGLE_OAUTH2_CLIENT_ID } from '../../constants';
 import UserSettingDialogContainer from '../../containers/UserSettingDialogContainer';
+import { switchPaletteType, getPaletteType } from '../../utils/theme';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,6 +47,7 @@ interface IProps {
 
 const AppBar: React.FC<IProps> = props => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const [userMenuanchorEl, setUserMenuAnchorEl] = React.useState<null | HTMLElement>(null);
   const login = (data: any) => props.login(data.code);
   const logout = () => {
@@ -58,7 +61,7 @@ const AppBar: React.FC<IProps> = props => {
         size="small" color="inherit" variant="outlined" startIcon={<AccountCircle />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
-        {props.me?.first_name}{props.me?.last_name}
+        {props.me?.first_name} {props.me?.last_name}
       </Button>
       <Menu
         id="simple-menu"
@@ -72,7 +75,7 @@ const AppBar: React.FC<IProps> = props => {
         </Link>
         <MenuItem onClick={logout} className={classes.logoutButton}>로그아웃</MenuItem>
       </Menu>
-      {!!props.me?.setting ? <UserSettingDialogContainer /> : undefined}
+      <UserSettingDialogContainer />
     </>
   );
 
@@ -98,6 +101,11 @@ const AppBar: React.FC<IProps> = props => {
 
   const AppBarButton = props.logined ? UserButton : LoginButton;
 
+  const switchTheme = () => {
+    switchPaletteType();
+    enqueueSnackbar(`테마가 ${getPaletteType()} 모드로 변경되었습니다. refresh 시 반영됩니다.`, { variant: 'info' });
+  }
+
   return (
     <div className={classes.root}>
       <MuiAppBar position="fixed">
@@ -108,14 +116,23 @@ const AppBar: React.FC<IProps> = props => {
           <span className={classes.spacer} />
           <Link to='/'>
             <Tooltip title="거래소 홈">
-              <IconButton color="inherit" size="small" className={classes.menuButton}><MultilineChart /></IconButton>
+              <IconButton color="inherit" size="small" className={classes.menuButton}>
+                <MultilineChart />
+              </IconButton>
             </Tooltip>
           </Link>
           <Link to='/ranking'>
             <Tooltip title="랭킹">
-              <IconButton color="inherit" size="small" className={classes.menuButton}><FormatListNumbered /></IconButton>
+              <IconButton color="inherit" size="small" className={classes.menuButton}>
+                <FormatListNumbered />
+              </IconButton>
             </Tooltip>
           </Link>
+          <Tooltip title="테마 변경">
+            <IconButton color="inherit" size="small" className={classes.menuButton} onClick={switchTheme}>
+              <BrightnessMedium />
+            </IconButton>
+          </Tooltip>
           {props.status === Status.pending
             ? <CircularProgress color="inherit" size={24} />
             : AppBarButton}

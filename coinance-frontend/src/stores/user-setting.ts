@@ -12,30 +12,38 @@ export default class UserSettingStore {
   @observable public errors?: AxiosError<IErrorData>;
 
   @action
-  public async create(userSetting: UserSetting) {
+  public async create(userSetting: UserSetting): Promise<boolean> {
     this.status = Status.pending;
 
     try {
       await userSettingRepository.create(getAuthToken(), userSetting);
       this.errors = undefined;
       this.status = Status.done;
+
+      return true;
     } catch (e) {
       this.errors = e;
       this.status = Status.error;
+
+      return false;
     }
   }
 
   @action
-  public async delete(userSetting: UserSetting) {
+  public async delete(userSetting: UserSetting): Promise<boolean> {
     this.status = Status.pending;
 
     try {
       await userSettingRepository.delete(getAuthToken(), userSetting);
       this.errors = undefined;
       this.status = Status.done;
+
+      return true;
     } catch (e) {
       this.errors = e;
       this.status = Status.error;
+
+      return false;
     }
   }
 }

@@ -1,5 +1,4 @@
 import { observable, action } from "mobx";
-import { toast } from 'react-toastify';
 import { CurrencyPair } from "../models/currency-pair";
 import { ChartType, CandleStick } from "../models/candle-chart";
 import { candleChartRepository } from "../repositories/candle-chart";
@@ -25,7 +24,6 @@ export default class CandleChartStore {
       }
     } catch (e) {
       console.error(e);
-      toast.error(`차트 데이터 로드중 오류가 발생했습니다.`);
     }
   }
 

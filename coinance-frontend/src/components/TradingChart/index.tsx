@@ -385,7 +385,7 @@ interface TradingChartProps {
 
 const TradingChart: React.FC<TradingChartProps> = props => {
   return (
-    <Card>
+    <Card elevation={0}>
       <CardContent>
         {!!props.currencyPair ? <ChartHeader currencyPair={props.currencyPair} /> : <ChartHeaderSkeleton />}
       </CardContent>
