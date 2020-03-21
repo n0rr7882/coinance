@@ -1,8 +1,12 @@
 import { observable, action } from "mobx";
 import { CurrencyPair } from "../models/currency-pair";
 import { currencyPairRepository } from "../repositories/currency-pair";
+import { Status, IErrorData } from "../models/common";
+import { AxiosError } from "axios";
 
 export default class CurrencyPairStore {
+  @observable public status: Status = Status.done;
+  @observable public errors?: AxiosError<IErrorData>;
   @observable public currencyPairs: CurrencyPair[] = [];
 
   constructor() {
@@ -20,7 +24,16 @@ export default class CurrencyPairStore {
 
   @action
   public async fetchAll() {
-    this.currencyPairs = await currencyPairRepository.list({});
+    this.status = Status.pending;
+
+    try {
+      this.currencyPairs = await currencyPairRepository.list({});
+      this.status = Status.done;
+      this.errors = undefined;
+    } catch (e) {
+      this.status = Status.error;
+      this.errors = e;
+    }
   }
 
   @action

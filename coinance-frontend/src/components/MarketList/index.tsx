@@ -10,8 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import { CurrencyPair, Currency } from '../../models/currency-pair';
 import MarketItem from '../MarketItem';
 import { observer } from 'mobx-react';
-import { TableSortLabel, Toolbar, Typography, Button, Theme, createStyles, Tooltip, ButtonGroup } from '@material-ui/core';
-import { Order } from '../../models/common';
+import { TableSortLabel, Toolbar, Typography, Button, Theme, createStyles, Tooltip, ButtonGroup, LinearProgress } from '@material-ui/core';
+import { Order, Status } from '../../models/common';
 
 export enum MarketListTableColumn {
   symbol = 'symbol',
@@ -73,6 +73,7 @@ const useMarketListStyles = makeStyles({
 });
 
 interface MarketListProps {
+  status: Status;
   currencyPairs: CurrencyPair[];
   selectedCurrencyFrom?: Currency;
   order: Order;
@@ -147,6 +148,7 @@ const MarketList: React.FC<MarketListProps> = props => {
         onSelect={props.setSelectedCurrencyFrom}
         currenciesFrom={currenciesFromUnique}
       />
+      {props.status === Status.pending ? <LinearProgress /> : <></>}
       <TableContainer>
         <Table className={classes.table} aria-label="market list">
           <TableHead>

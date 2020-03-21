@@ -55,6 +55,7 @@ export default class MarketListContainer extends React.Component<IProps, IState>
   render() {
     const currencyPairStore = this.props.currencyPairStore!;
     return <MarketList
+      status={currencyPairStore.status}
       currencyPairs={currencyPairStore.currencyPairs}
       selectedCurrencyFrom={this.state.selectedCurrencyFrom}
       order={this.state.order}

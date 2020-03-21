@@ -58,7 +58,7 @@ const AppBar: React.FC<IProps> = props => {
   const UserButton = (
     <>
       <Button
-        size="small" color="inherit" variant="outlined" startIcon={<AccountCircle />}
+        size="small" color="inherit" startIcon={<AccountCircle />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
         {props.me?.first_name} {props.me?.last_name}
@@ -85,7 +85,7 @@ const AppBar: React.FC<IProps> = props => {
         <Tooltip title="Google 계정으로 로그인하기">
           <span>
             <Button
-              size="small" color="inherit" variant="outlined" startIcon={<VpnKey />}
+              size="small" color="inherit" startIcon={<VpnKey />}
               onClick={props.onClick} disabled={props.disabled}
             >로그인</Button>
           </span>

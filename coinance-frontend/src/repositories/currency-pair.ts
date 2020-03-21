@@ -13,7 +13,7 @@ class CurrencyPairRepository {
   public async list(params: ICommonParams) {
     const res = await this.api.get<CurrencyPair[]>('/', { params });
 
-    return res.data;
+    return res.data.map(c => new CurrencyPair(c));
   }
 
   public subscribeWS(currencyPair: CurrencyPair) {

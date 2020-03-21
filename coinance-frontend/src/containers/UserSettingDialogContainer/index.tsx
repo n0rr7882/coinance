@@ -37,8 +37,7 @@ export default class UserSettingDialogContainer extends React.Component<Props> {
 
     const succeed = await userSettingStore.create(authStore.me!.setting);
     if (succeed) {
-      authStore.verify();
-      layoutStore.toggleUserSettingDialog();
+      await authStore.verify();
     }
   }
 
@@ -46,7 +45,11 @@ export default class UserSettingDialogContainer extends React.Component<Props> {
     const userSettingStore = this.props.userSettingStore as UserSettingStore;
     const authStore = this.props.authStore as AuthStore;
 
-    await userSettingStore.delete(authStore.me!.setting);
+    const succeed = await userSettingStore.delete(authStore.me!.setting);
+
+    if (succeed) {
+      await authStore.verify();
+    }
   }
 
   render() {

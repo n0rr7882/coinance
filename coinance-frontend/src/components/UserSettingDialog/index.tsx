@@ -6,13 +6,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, LinearProgress } from '@material-ui/core';
 import { Status, IErrorData } from '../../models/common';
 import { AxiosError } from 'axios';
 import { UserSetting } from '../../models/user';
 import ErrorAlert from '../common/ErrorAlert';
-import LoadingBackdrop from '../common/LoadingBackdrop';
 import { observer } from 'mobx-react';
+import StartCurrencyField from '../StartCurrencyField';
+import { Currency } from '../../models/currency-pair';
+import { currencyRepository } from '../../repositories/currency';
+import ConfirmButton from '../common/ConfirmButton';
 
 interface UserSettingShowDialogProps {
   userSetting: UserSetting;
@@ -20,47 +24,72 @@ interface UserSettingShowDialogProps {
   onDelete: () => void;
 }
 
-const UserSettingShowDialog: React.FC<UserSettingShowDialogProps> = props => (
-  <>
-    <DialogContent>
-      <DialogContentText>
-        설정하신 정보입니다.
-      </DialogContentText>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>닉네임</TableCell>
-              <TableCell>화폐</TableCell>
-              <TableCell>금액</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{props.userSetting.nickname}</TableCell>
-              <TableCell>{props.userSetting.start_currency}</TableCell>
-              <TableCell>{props.userSetting.start_amount}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </DialogContent>
-    <DialogTitle>설정 초기화</DialogTitle>
-    <DialogContent>
-      <DialogContentText>
-        설정을 초기화하여 모의 투자를 새로 진행할 수 있습니다.
-      </DialogContentText>
-      <Button onClick={props.onDelete} color="secondary" variant="outlined">
-        설정 초기화하여 새로 시작하기
-      </Button>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={props.onClose}>
-        닫기
-      </Button>
-    </DialogActions>
-  </>
-);
+interface UserSettingShowDialogState {
+  startCurrency?: Currency;
+}
+
+class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, UserSettingShowDialogState> {
+  state: UserSettingShowDialogState = {
+    startCurrency: undefined,
+  };
+
+  async componentDidMount() {
+    const startCurrency = await currencyRepository.one(this.props.userSetting.start_currency);
+    this.setState({ startCurrency });
+  }
+
+  render() {
+    return (
+      <>
+        <DialogContent>
+          <DialogContentText>
+            설정하신 정보입니다.
+          </DialogContentText>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>닉네임</TableCell>
+                  <TableCell>화폐</TableCell>
+                  <TableCell>금액</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>{this.props.userSetting.nickname}</TableCell>
+                  <TableCell>
+                    {this.state.startCurrency
+                      ? `${this.state.startCurrency.name}(${this.state.startCurrency.symbol})`
+                      : <Skeleton />}
+                  </TableCell>
+                  <TableCell>{this.props.userSetting.start_amount}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+        <DialogTitle>설정 초기화</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            설정을 초기화하여 모의 투자를 새로 진행할 수 있습니다.
+          </DialogContentText>
+          <ConfirmButton
+            onClick={this.props.onDelete} color="secondary" variant="outlined"
+            dialogTitle="정말로 초기화하시겠습니까?"
+            dialogContent="지금까지의 모든 투자 및 수익에 대한 기록이 삭제됩니다."
+          >
+            설정 초기화하여 새로 시작하기
+          </ConfirmButton>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.props.onClose}>
+            닫기
+          </Button>
+        </DialogActions>
+      </>
+    );
+  }
+}
 
 interface UserSettingCreateDialogProps {
   errors?: AxiosError<IErrorData>;
@@ -89,26 +118,19 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
         모의 투자 시 사용 할 초기자금을 설정해주세요.<br />
         설정 후 언제든지 초기화 할 수 있습니다.
       </DialogContentText>
-      <FormControl component="fieldset">
-        <FormLabel component="legend">화폐</FormLabel>
-        <RadioGroup area-label="currency" name="start-currency" value={40}>
-          <FormControlLabel
-            value={40}
-            control={<Radio color="primary" />}
-            label="Bitcoin(BTC)"
-            labelPlacement="end"
-          />
-          <FormControlLabel
-            value={30}
-            control={<Radio color="default" />}
-            label="USD Coin(USDC)"
-            labelPlacement="end"
-          />
-        </RadioGroup>
-      </FormControl>
+      <StartCurrencyField
+        value={props.userSetting.start_currency}
+        onChange={v => props.userSetting.start_currency = v}
+        error={!!props.errors?.response?.data.start_currency}
+        helperText={props.errors?.response?.data.start_currency}
+      />
       <TextField
         autoFocus margin="dense" variant="outlined" fullWidth
         id="start-amount" label="금액" type="number"
+        value={props.userSetting.start_amount}
+        onChange={e => props.userSetting.start_amount = Number(e.target.value)}
+        error={!!props.errors?.response?.data.start_amount}
+        helperText={props.errors?.response?.data.start_amount}
       />
     </DialogContent>
     <DialogActions>
@@ -135,6 +157,7 @@ const UserSettingDialog: React.FC<UserSettingDialogProps> = props => {
     <>
       <Dialog open={props.open} aria-labelledby="user-setting-title">
         <DialogTitle id="user-setting-title">사용자 설정</DialogTitle>
+        {props.status === Status.pending ? <LinearProgress /> : <></>}
         <ErrorAlert open={props.status === Status.error} errors={props.errors} />
         {!!props.userSetting.id
           ? <UserSettingShowDialog
@@ -148,7 +171,6 @@ const UserSettingDialog: React.FC<UserSettingDialogProps> = props => {
             onCreate={props.onCreate}
           />}
       </Dialog>
-      <LoadingBackdrop open={props.status === Status.pending} />
     </>
   );
 }
