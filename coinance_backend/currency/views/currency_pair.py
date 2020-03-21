@@ -5,5 +5,5 @@ from currency.serializers.currency_pair import CurrencyPairSerializer
 
 
 class CurrencyPairViewSet(ReadOnlyModelViewSet):
-    queryset = CurrencyPair.objects.all()
+    queryset = CurrencyPair.objects.filter(exchange_rate__isnull=False)
     serializer_class = CurrencyPairSerializer

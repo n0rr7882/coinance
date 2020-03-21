@@ -42,4 +42,4 @@ def update_exchange_rate_task(ticker_data_serialized: str):
     exchange_rate = update_exchange_rate_from_ticker_data(ticker_data)
     broadcast_ws_update_exchange_rate(exchange_rate)
 
-    return
+    return exchange_rate.pk

@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models, transaction
+from django.db.models import Q
 from model_utils import Choices
 
-from currency.models import CurrencyPair
+from currency.models import CurrencyPair, ExchangeRate
 
 
 class Order(models.Model):
@@ -54,6 +55,26 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.currency_pair} {self.status} {self.amount}/{self.price} -> {self.user}'
 
+    @classmethod
+    def get_process_able_orders(cls, exchange_rate: ExchangeRate):
+        multiplier_for_sell = 1.02
+        multiplier_for_buy = 0.98
+
+        q_buy_able = Q(
+            order_type=cls.ORDER_TYPES.buy,
+            price__gte=exchange_rate.last_trade_price * multiplier_for_buy,
+        )
+        q_sell_able = Q(
+            order_type=cls.ORDER_TYPES.sell,
+            price__lte=exchange_rate.last_trade_price * multiplier_for_sell,
+        )
+
+        return (
+            cls.objects
+            .filter(status=cls.STATUSES.ordered, currency_pair=exchange_rate.currency_pair)
+            .filter(q_buy_able | q_sell_able)
+        )
+
     @transaction.atomic
     def process(self) -> None:
         wallet_from = self.user.wallets.get(currency=self.currency_pair.currency_from)
@@ -70,8 +91,11 @@ class Order(models.Model):
         else:
             raise NotImplementedError
 
-        wallet_from.asve()
+        wallet_from.save()
         wallet_to.save()
+
+        self.status = self.STATUSES.traded
+        self.save()
 
         return
 
