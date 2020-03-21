@@ -31,6 +31,7 @@ builtin_urls = [
 local_app_urls = [
     path('user/', include('user.urls')),
     path('currency/', include('currency.urls')),
+    path('trading/', include('trading.urls')),
 ]
 
 urlpatterns = builtin_urls + local_app_urls
