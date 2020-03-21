@@ -5,29 +5,35 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.layers import get_channel_layer
 from channels_redis.core import RedisChannelLayer
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from currency.models import CurrencyPair, ExchangeRate
-from currency.serializers.currency_pair import CurrencyPairSerializer
+from trading.models import Order
+from trading.serializers.order import OrderSerializer
 
 logger = logging.getLogger(__name__)
 
 
-def broadcast_ws_update_exchange_rate(exchange_rate: ExchangeRate):
-    message_type = 'update_exchange_rate'
-    serialized = CurrencyPairSerializer(instance=exchange_rate.currency_pair)
+def to_ws_group_name(user_id: int) -> str:
+    return f'order-processed.{user_id}'
+
+
+def broadcast_ws_order_precessed(order: Order):
+    message_type = 'order_processed'
+    serialized = OrderSerializer(instance=order)
     message = {
         'type': message_type,
         'data': serialized.data,
     }
 
     channel_layer: RedisChannelLayer = get_channel_layer()
-    group_name = exchange_rate.currency_pair.to_ws_group_name()
+    group_name = to_ws_group_name(order.user.pk)
     async_to_sync(channel_layer.group_send)(group_name, message)
 
     return
 
 
-class CurrencyPairConsumer(AsyncJsonWebsocketConsumer):
+class OrderConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         await self.accept()
 
@@ -42,36 +48,38 @@ class CurrencyPairConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content, **kwargs):
         # 'subscription' / 'unsubscription'
         message_type = content['type']
-        currency_pair_id = content['currency_pair_id']
 
         if message_type == 'subscription':
-            await self.subscribe_currency_pair(currency_pair_id)
+            access_token = content['access']
+            await self.subscribe_order(access_token)
 
         elif message_type == 'unsubscription':
-            await self.unsubscribe_currency_pair(currency_pair_id)
+            user_id = int(content['user_id'])
+            await self.unsubscribe_order(user_id)
 
         else:
             raise NotImplementedError
 
         return
 
-    async def subscribe_currency_pair(self, currency_pair_id: int):
-        currency_pair: CurrencyPair = await database_sync_to_async(CurrencyPair.objects.get)(pk=currency_pair_id)
-        group_name = currency_pair.to_ws_group_name()
+    async def subscribe_order(self, access_token: str):
+        jwt_authentication = JWTAuthentication()
+        validated_token = jwt_authentication.get_validated_token(access_token)
+        user: User = await database_sync_to_async(jwt_authentication.get_user)(validated_token)
+        group_name = to_ws_group_name(user.pk)
 
         await self.channel_layer.group_add(group_name, self.channel_name)
 
         return
 
-    async def unsubscribe_currency_pair(self, currency_pair_id: int):
-        currency_pair: CurrencyPair = await database_sync_to_async(CurrencyPair.objects.get)(pk=currency_pair_id)
-        group_name = currency_pair.to_ws_group_name()
+    async def unsubscribe_order(self, user_id: int):
+        group_name = str(user_id)
 
         await self.channel_layer.group_discard(group_name, self.channel_name)
 
         return
 
-    async def update_exchange_rate(self, event):
-        await self.send_json(event)
+    async def order_processed(self, event):
+        await self.send(event)
 
         return

@@ -8,3 +8,11 @@ class ModelWithoutListViewSet(mixins.CreateModelMixin,
                               mixins.DestroyModelMixin,
                               GenericViewSet):
     pass
+
+
+class ModelWithoutUpdateViewSet(mixins.CreateModelMixin,
+                                mixins.RetrieveModelMixin,
+                                mixins.DestroyModelMixin,
+                                mixins.ListModelMixin,
+                                GenericViewSet):
+    pass

@@ -2,6 +2,7 @@ from celery import shared_task
 
 from currency.models import ExchangeRate
 from trading.models import Order
+from trading.websocket.order import broadcast_ws_order_precessed
 
 
 def process_able_orders(exchange_rate: ExchangeRate):
@@ -9,6 +10,7 @@ def process_able_orders(exchange_rate: ExchangeRate):
 
     for order in orders:
         order.process()
+        broadcast_ws_order_precessed(order)
 
     return
 

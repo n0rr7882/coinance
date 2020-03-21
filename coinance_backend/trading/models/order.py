@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models import Q
 from model_utils import Choices
+from model_utils.models import TimeStampedModel
 
 from currency.models import CurrencyPair, ExchangeRate
 
 
-class Order(models.Model):
+class Order(TimeStampedModel):
     class Meta:
         db_table = 'orders'
         verbose_name = '주문'

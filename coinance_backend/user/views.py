@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from trading.process import initialize_user_wallets
+from trading.processes.wallet import initialize_user_wallets
 from user.models import UserSetting
 from user.serializers import UserSerializer, UserSettingSerializer
 from utils.permissions import IsAdminUserOrOwner

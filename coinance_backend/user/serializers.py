@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from currency.models import Currency
 from user.models import UserSetting
@@ -22,7 +22,7 @@ class UserSettingSerializer(serializers.ModelSerializer):
 
     def validate_start_currency(self, value: Currency):
         if not value.available_for_start:
-            raise ValidationError('초기자금 화폐로 선택할 수 없습니다.')
+            raise ValidationError(detail='초기자금 화폐로 선택할 수 없습니다.')
 
         return value
 
