@@ -9,10 +9,10 @@ const IndexPage = () => {
 
   return (
     <Container maxWidth="md">
-      <Paper className={paper}>
+      <Paper className={paper} variant="outlined">
         <Jumbotron />
       </Paper>
-      <Paper className={paper}>
+      <Paper className={paper} variant="outlined">
         <MarketListContainer />
       </Paper>
     </Container>

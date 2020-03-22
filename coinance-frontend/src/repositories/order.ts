@@ -6,16 +6,29 @@ import { getAuthToken } from '../utils/token';
 import { User } from '../models/user';
 
 const ORDER_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/trading/orders`;
-const ORDER_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/orders`;
+const ORDER_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/orders/`;
 
 class OrderRepository {
   private api = axios.create({ baseURL: ORDER_API_ENTRY_POINT });
   private ws = new WebSocket(ORDER_WS_ENTRY_POINT);
 
   public async list(params: ICommonParams) {
-    const res = await this.api.get<Order[]>('/', { params });
+    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
+    const res = await this.api.get<Order[]>('/', { params, headers });
 
     return res.data.map(o => new Order(o));
+  }
+
+  public async create(order: Order) {
+    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
+    const res = await this.api.post<Order>('/', order, { headers });
+
+    return new Order(res.data);
+  }
+
+  public async cancel(order: Order) {
+    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
+    await this.api.delete(`/${order.id}`, { headers });
   }
 
   public subscribeWS() {
@@ -38,7 +51,7 @@ class OrderRepository {
     this.ws.onmessage = event => {
       const raw: { type: string, data: Order } = JSON.parse(event.data.toString());
 
-      if (raw.type === 'order_processed') {
+      if (['order_created', 'order_processed', 'order_cancelled'].includes(raw.type)) {
         const order = new Order(raw.data);
         handler(order);
       }

@@ -1,8 +1,11 @@
+import logging
 from celery import shared_task
 
 from currency.models import ExchangeRate
 from trading.models import Order
 from trading.websocket.order import broadcast_ws_order_precessed
+
+logger = logging.getLogger(__name__)
 
 
 def process_able_orders(exchange_rate: ExchangeRate):

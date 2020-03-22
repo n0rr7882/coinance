@@ -22,6 +22,13 @@ class UserSettingViewSet(ModelWithoutListViewSet):
 
         return
 
+    def perform_destroy(self, instance: UserSetting):
+        instance.user.wallets.all().delete()
+        instance.user.orders.all().delete()
+        instance.delete()
+
+        return
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

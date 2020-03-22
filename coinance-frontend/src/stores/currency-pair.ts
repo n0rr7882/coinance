@@ -37,7 +37,7 @@ export default class CurrencyPairStore {
   }
 
   @action
-  public async subscribe(currencyPair: CurrencyPair) {
+  public subscribe(currencyPair: CurrencyPair) {
     currencyPairRepository.subscribeWS(currencyPair);
   }
 

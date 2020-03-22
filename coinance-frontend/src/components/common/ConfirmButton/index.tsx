@@ -13,6 +13,8 @@ interface ConfirmButtonProps extends ButtonProps {
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = (props: ConfirmButtonProps) => {
+  const { children, dialogTitle, dialogContent, ...buttonProps } = props;
+
   const [open, setOpen] = React.useState(false);
 
   const confirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -22,14 +24,14 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = (props: ConfirmButtonProps) 
 
   return (
     <>
-      <Button {...props} onClick={(): void => setOpen(true)}>
-        {props.children}
+      <Button {...buttonProps} onClick={(): void => setOpen(true)}>
+        {children}
       </Button>
       <Dialog open={open} onClose={(): void => setOpen(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{props.dialogTitle || '정말로 진행하시겠습니까?'}</DialogTitle>
-        {props.dialogContent ? (
+        <DialogTitle id="alert-dialog-title">{dialogTitle || '정말로 진행하시겠습니까?'}</DialogTitle>
+        {dialogContent ? (
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">{props.dialogContent}</DialogContentText>
+            <DialogContentText id="alert-dialog-description">{dialogContent}</DialogContentText>
           </DialogContent>
         ) : <></>}
         <DialogActions>

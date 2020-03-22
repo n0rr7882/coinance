@@ -33,7 +33,6 @@ export default class UserSettingDialogContainer extends React.Component<Props> {
   private async create() {
     const userSettingStore = this.props.userSettingStore as UserSettingStore;
     const authStore = this.props.authStore as AuthStore;
-    const layoutStore = this.props.layoutStore as LayoutStore;
 
     const succeed = await userSettingStore.create(authStore.me!.setting);
     if (succeed) {

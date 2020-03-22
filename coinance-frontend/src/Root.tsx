@@ -12,6 +12,7 @@ import AuthStore from './stores/auth';
 import { Router } from 'react-router';
 import UserSettingStore from './stores/user-setting';
 import { getPaletteType } from './utils/theme';
+import OrderStore from './stores/order';
 
 const browserHistory = createBrowserHistory();
 const routerStore = new RouterStore();
@@ -23,6 +24,7 @@ const stores = {
   userSettingStore: new UserSettingStore(),
   currencyPairStore: new CurrencyPairStore(),
   candleChartStore: new CandleChartStore(),
+  orderStore: new OrderStore(),
 }
 
 const theme = createMuiTheme({
@@ -41,6 +43,9 @@ const theme = createMuiTheme({
       contrastText: '#ffffff',
     },
   },
+  shape: {
+    borderRadius: 0,
+  }
 });
 
 const history = syncHistoryWithStore(browserHistory, routerStore);

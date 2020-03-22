@@ -3,7 +3,6 @@ import { makeStyles, Theme } from "@material-ui/core";
 export const usePaperStyles = makeStyles((theme: Theme) => ({
   paper: {
     margin: theme.spacing(2),
-    border: 'none',
   },
 }));
 

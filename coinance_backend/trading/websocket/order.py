@@ -15,11 +15,41 @@ logger = logging.getLogger(__name__)
 
 
 def to_ws_group_name(user_id: int) -> str:
-    return f'order-processed.{user_id}'
+    return f'order.{user_id}'
+
+
+def broadcast_ws_order_created(order: Order):
+    message_type = 'order_created'
+    serialized = OrderSerializer(instance=order)
+    message = {
+        'type': message_type,
+        'data': serialized.data,
+    }
+
+    channel_layer: RedisChannelLayer = get_channel_layer()
+    group_name = to_ws_group_name(order.user.pk)
+    async_to_sync(channel_layer.group_send)(group_name, message)
+
+    return
 
 
 def broadcast_ws_order_precessed(order: Order):
     message_type = 'order_processed'
+    serialized = OrderSerializer(instance=order)
+    message = {
+        'type': message_type,
+        'data': serialized.data,
+    }
+
+    channel_layer: RedisChannelLayer = get_channel_layer()
+    group_name = to_ws_group_name(order.user.pk)
+    async_to_sync(channel_layer.group_send)(group_name, message)
+
+    return
+
+
+def broadcast_ws_order_cancelled(order: Order):
+    message_type = 'order_cancelled'
     serialized = OrderSerializer(instance=order)
     message = {
         'type': message_type,
@@ -79,7 +109,17 @@ class OrderConsumer(AsyncJsonWebsocketConsumer):
 
         return
 
+    async def order_created(self, event):
+        await self.send_json(event)
+
+        return
+
     async def order_processed(self, event):
-        await self.send(event)
+        await self.send_json(event)
+
+        return
+
+    async def order_cancelled(self, event):
+        await self.send_json(event)
 
         return
