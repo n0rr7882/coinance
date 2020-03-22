@@ -36,7 +36,7 @@ class OrderRepository {
       type: 'subscription',
       access: getAuthToken().access,
     });
-    this.ws.send(payload);
+    this.sendWS(payload);
   }
 
   public unsubscribeWS(user: User) {
@@ -44,7 +44,15 @@ class OrderRepository {
       type: 'unsubscription',
       user_id: user.id,
     });
-    this.ws.send(payload);
+    this.sendWS(payload);
+  }
+
+  private sendWS(payload: any) {
+    if (this.ws.readyState !== this.ws.OPEN) {
+      this.ws.onopen = () => this.ws.send(payload);
+    } else {
+      this.ws.send(payload);
+    }
   }
 
   public addHandlerWS(handler: (order: Order) => void) {

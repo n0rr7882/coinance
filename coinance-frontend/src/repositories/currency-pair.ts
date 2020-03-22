@@ -27,7 +27,7 @@ class CurrencyPairRepository {
       type: 'subscription',
       currency_pair_id: currencyPair.id,
     });
-    this.ws.send(payload);
+    this.sendWS(payload);
   }
 
   public unsubscribeWS(currencyPair: CurrencyPair) {
@@ -35,7 +35,15 @@ class CurrencyPairRepository {
       type: 'unsubscription',
       currency_pair_id: currencyPair.id,
     });
-    this.ws.send(payload);
+    this.sendWS(payload);
+  }
+
+  private sendWS(payload: any) {
+    if (this.ws.readyState !== this.ws.OPEN) {
+      this.ws.onopen = () => this.ws.send(payload);
+    } else {
+      this.ws.send(payload);
+    }
   }
 
   public addHandlerWS(handler: (currencyPair: CurrencyPair) => void) {

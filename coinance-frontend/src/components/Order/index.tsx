@@ -15,6 +15,8 @@ interface OrderProps {
   orderType: OrderType;
   currencyPair?: CurrencyPair;
   control: OrderControl;
+  useMarketPrice: boolean;
+  setUseMarketPrice: (checked: boolean) => void;
   setMaxAmount: () => void;
   create: () => void;
 }
@@ -35,11 +37,17 @@ const Order: React.FC<OrderProps> = props => {
         <CardContent>
           <FormControl>
             <FormControlLabel
-              control={<Switch name="useLastTradePrice" color="secondary" />}
+              control={(
+                <Switch
+                  name="useLastTradePrice" color="secondary"
+                  checked={props.useMarketPrice}
+                  onChange={e => props.setUseMarketPrice(e.target.checked)}
+                />
+              )}
               label={`시장가 ${props.orderType === OrderType.buy ? '매수' : '매도'}`}
             />
             <FormHelperText>
-              현재 시장가로 {props.orderType === OrderType.buy ? '매수' : '매도'}합니다.
+              시장 {props.orderType === OrderType.buy ? '최저 매도가로 매수' : '최고 매수가로 매도'} 합니다.
             </FormHelperText>
           </FormControl>
           <TextField
