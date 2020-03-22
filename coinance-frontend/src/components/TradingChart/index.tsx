@@ -23,6 +23,8 @@ import { AxiosError } from "axios";
 import ErrorAlert from "../common/ErrorAlert";
 
 const CHART_HEIGHT = 380;
+const CHART_TRENDING_UP_COLOR = '#ff1744';
+const CHART_TRENDING_DOWN_COLOR = '#304ffe';
 
 interface CandleChartProps {
   readonly data: CandleStick[];
@@ -141,7 +143,11 @@ class CandleChart extends React.Component<CandleChartProps> {
           <YAxis
             showGridLines
             tickFormat={this.pricesDisplayFormat} />
-          <CandlestickSeries />
+          <CandlestickSeries
+            wickStroke={this.openCloseColor}
+            fill={this.openCloseColor}
+            stroke={this.openCloseColor}
+          />
           <LineSeries yAccessor={ema5.accessor()} stroke={ema5.stroke()} />
           <LineSeries yAccessor={ema20.accessor()} stroke={ema20.stroke()} />
           <LineSeries yAccessor={ema60.accessor()} stroke={ema60.stroke()} />
@@ -211,7 +217,11 @@ class CandleChart extends React.Component<CandleChartProps> {
           <MouseCoordinateX displayFormat={timeDisplayFormat} />
           <MouseCoordinateY rectWidth={margin.right} displayFormat={this.pricesDisplayFormat} />
 
-          <ElderRaySeries yAccessor={elder.accessor()} />
+          <ElderRaySeries
+            yAccessor={elder.accessor()}
+            bearPowerFill={CHART_TRENDING_DOWN_COLOR}
+            bullPowerFill={CHART_TRENDING_UP_COLOR}
+          />
 
           <SingleValueTooltip
             yAccessor={elder.accessor()}
@@ -242,7 +252,7 @@ class CandleChart extends React.Component<CandleChartProps> {
   }
 
   private readonly openCloseColor = (data: CandleStick) => {
-    return data.close > data.open ? "#26a69a" : "#ef5350";
+    return data.close > data.open ? CHART_TRENDING_UP_COLOR : CHART_TRENDING_DOWN_COLOR;
   }
 }
 
