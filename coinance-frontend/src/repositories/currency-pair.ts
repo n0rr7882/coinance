@@ -10,6 +10,12 @@ class CurrencyPairRepository {
   private api = axios.create({ baseURL: CURRENCY_PAIR_API_ENTRY_POINT });
   private ws = new WebSocket(CURRENCY_PAIR_WS_ENTRY_POINT);
 
+  public async get(id: number) {
+    const res = await this.api.get<CurrencyPair>(`/${id}/`);
+
+    return new CurrencyPair(res.data);
+  }
+
   public async list(params: ICommonParams) {
     const res = await this.api.get<CurrencyPair[]>('/', { params });
 

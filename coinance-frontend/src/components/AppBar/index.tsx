@@ -36,10 +36,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  toggleLoginDialog: () => void;
-  toggleRegisterDialog: () => void;
   login: (code: string) => void;
   logout: () => void;
+  toggleUserSettingDialog: () => void;
   logined: boolean;
   status: Status;
   me?: User;
@@ -54,6 +53,10 @@ const AppBar: React.FC<IProps> = props => {
     setUserMenuAnchorEl(null);
     props.logout()
   };
+  const toggleUserSettingDialog = () => {
+    setUserMenuAnchorEl(null);
+    props.toggleUserSettingDialog();
+  }
 
   const UserButton = (
     <>
@@ -73,6 +76,7 @@ const AppBar: React.FC<IProps> = props => {
         <Link to='/mypage'>
           <MenuItem onClick={() => setUserMenuAnchorEl(null)}>마이페이지</MenuItem>
         </Link>
+        <MenuItem onClick={toggleUserSettingDialog}>사용자 설정</MenuItem>
         <MenuItem onClick={logout} className={classes.logoutButton}>로그아웃</MenuItem>
       </Menu>
       <UserSettingDialogContainer />

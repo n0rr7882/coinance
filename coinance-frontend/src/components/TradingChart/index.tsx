@@ -18,8 +18,11 @@ import { CurrencyPair } from "../../models/currency-pair";
 import { Skeleton } from "@material-ui/lab";
 import { useTitleStyles } from "../../utils/styles";
 import TrendingChip from "../common/TrendingChip";
+import { Status, IErrorData } from "../../models/common";
+import { AxiosError } from "axios";
+import ErrorAlert from "../common/ErrorAlert";
 
-const CHART_HEIGHT = 480;
+const CHART_HEIGHT = 380;
 
 interface CandleChartProps {
   readonly data: CandleStick[];
@@ -301,7 +304,7 @@ const ChartTypeButtons: React.FC<{ chartType: ChartType, setChartType: (chartTyp
   </ButtonGroup>
 );
 
-const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = ({ currencyPair }) => {
+const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = observer(({ currencyPair }) => {
   const lastTradePrice = currencyPair.exchange_rate.last_trade_price;
   const changeRate24h = Math.round(currencyPair.exchange_rate.change_rate_24h * 10000) / 100;
   const highestTradePrice24h = currencyPair.exchange_rate.highest_trade_price_24h;
@@ -349,7 +352,7 @@ const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = ({ currencyPa
       </Table>
     </TableContainer>
   );
-};
+});
 
 const CurrencyPairInfoSkeleton: React.FC = () => (
   <Table>
@@ -377,28 +380,36 @@ const CurrencyPairInfoSkeleton: React.FC = () => (
 )
 
 interface TradingChartProps {
+  status: Status;
+  errors?: AxiosError<IErrorData>;
   chartType: ChartType;
   chartData: CandleStick[];
   currencyPair?: CurrencyPair;
   setChartType: (chartType: ChartType) => void;
 }
 
-const TradingChart: React.FC<TradingChartProps> = props => {
+const TradingChart: React.FC<TradingChartProps> = observer(props => {
   return (
     <Card elevation={0}>
+      <ErrorAlert open={props.status === Status.error} errors={props.errors} />
       <CardContent>
-        {!!props.currencyPair ? <ChartHeader currencyPair={props.currencyPair} /> : <ChartHeaderSkeleton />}
+        {!props.currencyPair || props.status === Status.pending
+          ? <ChartHeaderSkeleton />
+          : <ChartHeader currencyPair={props.currencyPair} />}
       </CardContent>
       <Divider />
-      {!!props.currencyPair ? <CurrencyPairInfo currencyPair={props.currencyPair} /> : <CurrencyPairInfoSkeleton />}
       <CardActions>
         <ChartTypeButtons chartType={props.chartType} setChartType={props.setChartType} />
       </CardActions>
       <CardContent>
         {props.chartData.length !== 0 ? <SizedCandleChart data={props.chartData} /> : <SizedCandleChartSkeleton />}
       </CardContent>
+      <Divider />
+      {!props.currencyPair || props.status === Status.pending
+        ? <CurrencyPairInfoSkeleton />
+        : <CurrencyPairInfo currencyPair={props.currencyPair} />}
     </Card>
   );
-}
+});
 
 export default TradingChart;

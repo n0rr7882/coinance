@@ -8,14 +8,34 @@ export default class CurrencyPairStore {
   @observable public status: Status = Status.done;
   @observable public errors?: AxiosError<IErrorData>;
   @observable public currencyPairs: CurrencyPair[] = [];
+  @observable public currencyPair?: CurrencyPair;
 
   constructor() {
     this.updateCurrencyPair = this.updateCurrencyPair.bind(this);
     currencyPairRepository.addHandlerWS(this.updateCurrencyPair);
   }
 
+  public async fetchOne(id: number) {
+    this.status = Status.pending;
+
+    try {
+      this.currencyPair = await currencyPairRepository.get(id);
+      this.status = Status.done;
+      this.errors = undefined;
+    } catch (e) {
+      this.currencyPair = undefined;
+      this.status = Status.error;
+      this.errors = e;
+    }
+  }
+
   @action
   public async updateCurrencyPair(currencyPair: CurrencyPair) {
+    // first, update single observable currencyPair
+    if (currencyPair.id === this.currencyPair?.id) {
+      this.currencyPair = currencyPair;
+    }
+
     const index = this.currencyPairs.findIndex(c => c.id === currencyPair.id);
     if (index === -1) return;
 

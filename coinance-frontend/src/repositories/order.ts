@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
 import { ICommonParams } from '../models/common';
-import { Order } from '../models/order';
+import { Order, OrderForm } from '../models/order';
 import { getAuthToken } from '../utils/token';
 import { User } from '../models/user';
 
@@ -19,7 +19,7 @@ class OrderRepository {
     return res.data.map(o => new Order(o));
   }
 
-  public async create(order: Order) {
+  public async create(order: OrderForm) {
     const headers = { Authorization: `Bearer ${getAuthToken().access}` };
     const res = await this.api.post<Order>('/', order, { headers });
 

@@ -19,6 +19,7 @@ export class Order {
   @observable public status?: OrderStatus;
   @observable public price: number;
   @observable public amount: number;
+  public readonly traded?: Date;
   public readonly created?: Date;
   public readonly modified?: Date;
 
@@ -29,7 +30,15 @@ export class Order {
     this.status = data.status;
     this.price = data.price;
     this.amount = data.amount;
+    this.traded = data.traded ? new Date(data.traded) : undefined;
     this.created = data.created ? new Date(data.created) : undefined;
     this.modified = data.modified ? new Date(data.modified) : undefined;
   }
+}
+
+export interface OrderForm {
+  currency_pair?: number;
+  order_type: OrderType;
+  price: number;
+  amount: number;
 }

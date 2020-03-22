@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q, Sum
+from django.db.models.functions import Coalesce
 from model_utils.models import TimeStampedModel
 
 from currency.models import Currency
@@ -42,7 +43,7 @@ class Wallet(TimeStampedModel):
             self.user.orders
             .filter(status=Order.STATUSES.ordered)
             .filter(q_buy | q_sell)
-            .aggregate(Sum('amount'))['amount__sum']
+            .aggregate(sum=Coalesce(Sum('amount'), 0))['sum']
         )
 
         return self.amount - amount_in_transaction

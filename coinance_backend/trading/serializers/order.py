@@ -8,8 +8,6 @@ from trading.models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    currency_pair = CurrencyPairSerializer()
-
     class Meta:
         model = Order
         fields = [
@@ -19,14 +17,32 @@ class OrderSerializer(serializers.ModelSerializer):
             'status',
             'price',
             'amount',
+            'traded',
             'created',
             'modified',
         ]
         read_only_fields = [
             'status',
+            'traded',
             'created',
             'modified',
         ]
+
+    def to_representation(self, instance):
+        self.fields['currency_pair'] = CurrencyPairSerializer(read_only=True)
+        return super().to_representation(instance)
+
+    def validate_price(self, value: float):
+        if value <= 0:
+            raise ValidationError(detail='0 이상의 수량을 입력해주세요.')
+
+        return value
+
+    def validate_amount(self, value: float):
+        if value <= 0:
+            raise ValidationError(detail='0 이상의 금액을 입력해주세요.')
+
+        return value
 
     def validate(self, attrs):
         user: User = self.context['request'].user
@@ -37,12 +53,12 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if order_type == Order.ORDER_TYPES.buy:
             wallet_from = user.wallets.get(currency=currency_pair.currency_from)
-            if wallet_from.amount < price * amount:
+            if wallet_from.available_amount < price * amount:
                 raise ValidationError(detail='매수에 필요한 금액이 부족합니다.')
 
         elif order_type == Order.ORDER_TYPES.sell:
             wallet_to = user.wallets.get(currency=currency_pair.currency_to)
-            if wallet_to.amount < amount:
+            if wallet_to.available_amount < amount:
                 raise ValidationError(detail='매도할 수량이 부족합니다.')
 
         else:

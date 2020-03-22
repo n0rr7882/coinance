@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models import Q
@@ -52,14 +54,18 @@ class Order(TimeStampedModel):
     amount = models.FloatField(
         verbose_name='수량',
     )
+    traded = models.DateTimeField(
+        verbose_name='체결일시',
+        null=True,
+    )
 
     def __str__(self):
         return f'{self.currency_pair} {self.status} {self.amount}/{self.price} -> {self.user}'
 
     @classmethod
     def get_process_able_orders(cls, exchange_rate: ExchangeRate):
-        multiplier_for_sell = 1.02
-        multiplier_for_buy = 0.98
+        multiplier_for_sell = 1.01
+        multiplier_for_buy = 0.99
 
         q_buy_able = Q(
             order_type=cls.ORDER_TYPES.buy,
@@ -96,6 +102,7 @@ class Order(TimeStampedModel):
         wallet_to.save()
 
         self.status = self.STATUSES.traded
+        self.traded = datetime.now()
         self.save()
 
         return

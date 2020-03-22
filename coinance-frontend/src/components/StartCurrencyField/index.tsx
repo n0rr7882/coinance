@@ -37,6 +37,7 @@ export default class StartCurrencyField extends React.Component<StartCurrencyFie
         <RadioGroup area-label="currency" name="start-currency" value={this.props.value} onChange={this.onChange}>
           {this.state.currencies.map(c => (
             <FormControlLabel
+              key={c.id}
               value={c.id}
               control={<Radio color={this.props.value === c.id ? 'primary' : 'default'} />}
               label={`${c.name}(${c.symbol})`}
