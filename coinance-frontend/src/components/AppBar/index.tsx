@@ -64,7 +64,7 @@ const AppBar: React.FC<IProps> = props => {
         size="small" color="inherit" startIcon={<AccountCircle />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
-        {props.me?.first_name} {props.me?.last_name}
+        {props.me?.setting.nickname || '환영합니다!'}
       </Button>
       <Menu
         id="simple-menu"

@@ -4,31 +4,34 @@ import { ICommonParams } from '../models/common';
 import { Order, OrderForm } from '../models/order';
 import { getAuthToken } from '../utils/token';
 import { User } from '../models/user';
+import { AuthenticatedRepository } from './common';
 
 const ORDER_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/trading/orders`;
 const ORDER_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/orders/`;
 
-class OrderRepository {
-  private api = axios.create({ baseURL: ORDER_API_ENTRY_POINT });
-  private ws = new WebSocket(ORDER_WS_ENTRY_POINT);
+class OrderRepository extends AuthenticatedRepository {
+  protected api = axios.create({ baseURL: ORDER_API_ENTRY_POINT });
+  protected ws = new WebSocket(ORDER_WS_ENTRY_POINT);
+
+  public constructor() {
+    super();
+    this.initializeApiAuthInterceptor();
+  }
 
   public async list(params: ICommonParams) {
-    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
-    const res = await this.api.get<Order[]>('/', { params, headers });
+    const res = await this.api.get<Order[]>('/', { params });
 
     return res.data.map(o => new Order(o));
   }
 
   public async create(order: OrderForm) {
-    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
-    const res = await this.api.post<Order>('/', order, { headers });
+    const res = await this.api.post<Order>('/', order);
 
     return new Order(res.data);
   }
 
   public async cancel(order: Order) {
-    const headers = { Authorization: `Bearer ${getAuthToken().access}` };
-    await this.api.delete(`/${order.id}`, { headers });
+    await this.api.delete(`/${order.id}`);
   }
 
   public subscribeWS() {
