@@ -344,6 +344,17 @@ version = "1.2.0"
 celery = ">=4.4,<5.0"
 
 [[package]]
+category = "main"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+name = "django-cors-headers"
+optional = false
+python-versions = ">=3.5"
+version = "3.2.1"
+
+[package.dependencies]
+Django = ">=1.11"
+
+[[package]]
 category = "dev"
 description = "A configurable set of panels that display various debug information about the current request/response."
 name = "django-debug-toolbar"
@@ -964,7 +975,7 @@ test = ["zope.event"]
 testing = ["coverage", "nose", "zope.event"]
 
 [metadata]
-content-hash = "5ea87f701789e9f4ce37869ab618b7766025bd49e6bb8b3917330a6636df5f74"
+content-hash = "c2e7fdc87e85ebd4c9daf3b4b32072313cf44684d7a4008667329b175e8a0736"
 python-versions = "3.8"
 
 [metadata.files]
@@ -1107,6 +1118,10 @@ django-celery-beat = [
 django-celery-results = [
     {file = "django_celery_results-1.2.0-py2.py3-none-any.whl", hash = "sha256:8ac23ed67350155dec8f31bc53c4aca5bb3aec9d781910c65714465df9ef9457"},
     {file = "django_celery_results-1.2.0.tar.gz", hash = "sha256:e4a4f67ebe40034a1d89554a14a8155c810342c2c8baaf194df24ebf3d5b2efb"},
+]
+django-cors-headers = [
+    {file = "django-cors-headers-3.2.1.tar.gz", hash = "sha256:a5960addecc04527ab26617e51b8ed42f0adab4594b24bb0f3c33e2bd3857c3f"},
+    {file = "django_cors_headers-3.2.1-py3-none-any.whl", hash = "sha256:a785b5f446f6635810776d9f5f5d23e6a2a2f728ea982648370afaf0dfdf2627"},
 ]
 django-debug-toolbar = [
     {file = "django-debug-toolbar-2.2.tar.gz", hash = "sha256:eabbefe89881bbe4ca7c980ff102e3c35c8e8ad6eb725041f538988f2f39a943"},

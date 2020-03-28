@@ -5,7 +5,11 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: 'development' | 'production';
-    readonly PUBLIC_URL: string;
+    readonly REACT_APP_COINANCE_API_ENTRY_POINT: string;
+    readonly REACT_APP_COINANCE_WS_ENTRY_POINT: string;
+    readonly REACT_APP_POLONIEX_API_ENTRY_POINT: string;
+    readonly REACT_APP_GOOGLE_OAUTH2_CLIENT_ID: string;
+    readonly REACT_APP_GOOGLE_OAUTH2_REDIRECT_URI: string;
   }
 }
 

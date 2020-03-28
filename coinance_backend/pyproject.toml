@@ -23,6 +23,7 @@ websocket-client = "^0.57.0"
 channels-redis = "^2.4.2"
 django-redis = "^4.11.0"
 rest-social-auth = "^4.1.0"
+django-cors-headers = "^3.2.1"
 
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^2.2"
