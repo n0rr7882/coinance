@@ -6,6 +6,7 @@ from trading.models import Wallet
 
 class WalletSerializer(serializers.ModelSerializer):
     currency = CurrencySerializer()
+    available_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Wallet
@@ -13,6 +14,10 @@ class WalletSerializer(serializers.ModelSerializer):
             'id',
             'currency',
             'amount',
+            'available_amount',
             'created',
             'modified',
         ]
+
+    def get_available_amount(self, obj: Wallet) -> float:
+        return obj.available_amount

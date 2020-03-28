@@ -8,12 +8,15 @@ import ErrorAlert from '../common/ErrorAlert';
 import { Status, IErrorData } from '../../models/common';
 import { AxiosError } from 'axios';
 import { observer } from 'mobx-react';
+import { Wallet } from '../../models/wallet';
+import { Skeleton } from '@material-ui/lab';
 
 interface OrderProps {
   status: Status;
   errors?: AxiosError<IErrorData>;
   orderType: OrderType;
   currencyPair?: CurrencyPair;
+  wallet?: Wallet;
   control: OrderControl;
   useMarketPrice: boolean;
   setUseMarketPrice: (checked: boolean) => void;
@@ -30,6 +33,14 @@ const Order: React.FC<OrderProps> = props => {
           <Typography variant="h5" component="h3">
             {props.currencyPair.currency_to.symbol} {props.orderType === OrderType.buy ? '매수' : '매도'}
           </Typography>
+          {props.wallet
+            ? (
+              <Typography variant="body2">
+                {props.orderType === OrderType.buy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{props.wallet?.available_amount}</b>
+              </Typography>
+            ) : (
+              <Skeleton variant="text" animation="wave" />
+            )}
         </CardContent>
         <Divider />
         {props.control.status === Status.pending ? <LinearProgress color="secondary" /> : <></>}
@@ -47,7 +58,7 @@ const Order: React.FC<OrderProps> = props => {
               label={`시장가 ${props.orderType === OrderType.buy ? '매수' : '매도'}`}
             />
             <FormHelperText>
-              시장 {props.orderType === OrderType.buy ? '최저 매도가로 매수' : '최고 매수가로 매도'} 합니다.
+              시장 {props.orderType === OrderType.buy ? '최저 매도가로 매수' : '최고 매수가로 매도'}합니다.
             </FormHelperText>
           </FormControl>
           <TextField

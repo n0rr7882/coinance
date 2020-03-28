@@ -2,14 +2,16 @@ import React from 'react';
 import Order from '../../components/Order';
 import { inject, observer } from 'mobx-react';
 import OrderStore from '../../stores/order';
-import { RouterStore } from 'mobx-react-router';
+import WalletStore from '../../stores/wallet';
 import CurrencyPairStore from '../../stores/currency-pair';
+import { RouterStore } from 'mobx-react-router';
 import { OrderType } from '../../models/order';
 import { autorun, IReactionDisposer } from 'mobx';
 
 interface Props {
   routerStore?: RouterStore;
   orderStore?: OrderStore;
+  walletStore?: WalletStore;
   currencyPairStore?: CurrencyPairStore;
 }
 
@@ -17,7 +19,7 @@ interface State {
   useMarketPrice: boolean;
 }
 
-@inject('routerStore', 'orderStore', 'currencyPairStore')
+@inject('routerStore', 'orderStore', 'walletStore', 'currencyPairStore')
 @observer
 export default class OrderBuyContainer extends React.Component<Props, State> {
   useMarketPriceDisposer?: IReactionDisposer;
@@ -48,6 +50,13 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
     }
   }
 
+  private get wallet() {
+    const walletStore = this.props.walletStore!;
+    const currencyPairStore = this.props.currencyPairStore;
+    return walletStore.wallets
+      .find(w => w.currency.id === currencyPairStore?.currencyPair?.currency_from.id);
+  }
+
   private async create() {
     const orderStore = this.props.orderStore!;
     const currencyPairStore = this.props.currencyPairStore!;
@@ -67,7 +76,12 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
   }
 
   private setMaxAmount() {
-    alert('최대 매수량을 누르셨습니당ㅇㅇㅇㅇ');
+    const orderStore = this.props.orderStore!;
+
+    const price = orderStore.buy.form.price;
+    const maxAmount = (this.wallet?.available_amount || 0) / price;
+
+    orderStore.buy.form.amount = maxAmount || 0;
   }
 
   render() {
@@ -80,6 +94,7 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
         errors={orderStore.buy.errors}
         orderType={OrderType.buy}
         currencyPair={currencyPairStore.currencyPair}
+        wallet={this.wallet}
         control={orderStore.buy}
         useMarketPrice={this.state.useMarketPrice}
         setUseMarketPrice={this.setUseMarketPrice}
