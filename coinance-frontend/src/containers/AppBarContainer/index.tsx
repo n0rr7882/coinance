@@ -6,14 +6,16 @@ import { hasAuthToken } from '../../utils/token';
 import LayoutStore from '../../stores/layout';
 import OrderStore from '../../stores/order';
 import { Status } from '../../models/common';
+import WalletStore from '../../stores/wallet';
 
 interface Props {
   authStore?: AuthStore;
   orderStore?: OrderStore;
+  walletStore?: WalletStore,
   layoutStore?: LayoutStore;
 }
 
-@inject('authStore', 'orderStore', 'layoutStore')
+@inject('authStore', 'orderStore', 'walletStore', 'layoutStore')
 @observer
 export default class AppBarContainer extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -29,7 +31,9 @@ export default class AppBarContainer extends React.Component<Props, {}> {
 
       if (authStore.status === Status.done) {
         const orderStore = this.props.orderStore!;
+        const walletStore = this.props.walletStore!;
         orderStore.subscribe();
+        walletStore.subscribe();
       }
     }
   }
@@ -39,23 +43,29 @@ export default class AppBarContainer extends React.Component<Props, {}> {
 
     if (authStore.me) {
       const orderStore = this.props.orderStore!;
+      const walletStore = this.props.walletStore!;
       orderStore.unsubscribe(authStore.me);
+      walletStore.unsubscribe(authStore.me);
     }
   }
 
   private async login(code: string) {
     const authStore = this.props.authStore!;
     const orderStore = this.props.orderStore!;
+    const walletStore = this.props.walletStore!;
 
     await authStore.googleOauth2Login(code);
     orderStore.subscribe();
+    walletStore.subscribe();
   }
 
   private async logout() {
     const authStore = this.props.authStore!;
     const orderStore = this.props.orderStore!;
+    const walletStore = this.props.walletStore!;
 
     orderStore.unsubscribe(authStore.me!);
+    walletStore.unsubscribe(authStore.me!);
     authStore.logout();
   }
 

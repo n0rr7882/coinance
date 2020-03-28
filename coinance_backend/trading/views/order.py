@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from trading.models import Order
 from trading.serializers.order import OrderSerializer
 from trading.websocket.order import broadcast_ws_order_created, broadcast_ws_order_cancelled
+from trading.websocket.wallet import broadcast_ws_wallet_updated
 from utils.viewsets import ModelWithoutUpdateViewSet
 
 
@@ -17,8 +18,11 @@ class OrderViewSet(ModelWithoutUpdateViewSet):
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer: OrderSerializer):
-        order = serializer.save(user=self.request.user)
+        order: Order = serializer.save(user=self.request.user)
         broadcast_ws_order_created(order)
+
+        from_wallet = order.currency_pair.currency_from.wallets.get(user=order.user)
+        broadcast_ws_wallet_updated(from_wallet)
 
         return
 
@@ -31,5 +35,8 @@ class OrderViewSet(ModelWithoutUpdateViewSet):
 
         instance.cancel()
         broadcast_ws_order_cancelled(instance)
+
+        from_wallet = instance.currency_pair.currency_from.wallets.get(user=instance.user)
+        broadcast_ws_wallet_updated(from_wallet)
 
         return

@@ -13,6 +13,7 @@ import { Router } from 'react-router';
 import UserSettingStore from './stores/user-setting';
 import { getPaletteType } from './utils/theme';
 import OrderStore from './stores/order';
+import WalletStore from './stores/wallet';
 
 const browserHistory = createBrowserHistory();
 const routerStore = new RouterStore();
@@ -25,6 +26,7 @@ const stores = {
   currencyPairStore: new CurrencyPairStore(),
   candleChartStore: new CandleChartStore(),
   orderStore: new OrderStore(),
+  walletStore: new WalletStore(),
 }
 
 const theme = createMuiTheme({

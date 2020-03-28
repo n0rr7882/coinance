@@ -8,7 +8,7 @@ from trading.serializers.wallet import WalletSerializer
 class WalletViewSet(ReadOnlyModelViewSet):
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
-    authentication_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)

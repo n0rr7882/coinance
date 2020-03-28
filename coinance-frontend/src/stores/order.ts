@@ -38,7 +38,6 @@ export default class OrderStore {
   };
 
   constructor() {
-    this.updateOrder = this.updateOrder.bind(this);
     orderRepository.addHandlerWS(this.updateOrder);
   }
 
