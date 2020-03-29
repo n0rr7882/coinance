@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import { observer } from 'mobx-react';
 import { Wallet } from '../../models/wallet';
 import { Skeleton } from '@material-ui/lab';
+import { f } from '../../utils/number';
 
 interface OrderProps {
   status: Status;
@@ -36,7 +37,7 @@ const Order: React.FC<OrderProps> = props => {
           {props.wallet
             ? (
               <Typography variant="body2">
-                {props.orderType === OrderType.buy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{props.wallet?.available_amount}</b>
+                {props.orderType === OrderType.buy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{f(props.wallet?.available_amount)}</b>
               </Typography>
             ) : (
               <Skeleton variant="text" animation="wave" />
@@ -67,7 +68,7 @@ const Order: React.FC<OrderProps> = props => {
               endAdornment: <InputAdornment position="end">{props.currencyPair.currency_from.symbol}</InputAdornment>,
             }}
             value={props.control.form.price}
-            onChange={e => props.control.form.price = Number(e.target.value)}
+            onChange={e => props.control.form.price = f(Number(e.target.value))}
             error={!!props.control.errors?.response?.data.price}
             helperText={props.control.errors?.response?.data.price}
           />
@@ -77,7 +78,7 @@ const Order: React.FC<OrderProps> = props => {
               endAdornment: <InputAdornment position="end">{props.currencyPair.currency_to.symbol}</InputAdornment>,
             }}
             value={props.control.form.amount}
-            onChange={e => props.control.form.amount = Number(e.target.value)}
+            onChange={e => props.control.form.amount = f(Number(e.target.value))}
             error={!!props.control.errors?.response?.data.amount}
             helperText={props.control.errors?.response?.data.amount}
           />

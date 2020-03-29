@@ -1,3 +1,7 @@
+import logging
+
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -5,6 +9,8 @@ from rest_framework.exceptions import ValidationError
 from currency.models import CurrencyPair
 from currency.serializers.currency_pair import CurrencyPairSerializer
 from trading.models import Order
+
+logger = logging.getLogger(__name__)
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -32,14 +38,14 @@ class OrderSerializer(serializers.ModelSerializer):
         self.fields['currency_pair'] = CurrencyPairSerializer(read_only=True)
         return super().to_representation(instance)
 
-    def validate_price(self, value: float):
-        if value <= 0:
+    def validate_price(self, value: Decimal):
+        if value <= Decimal('0'):
             raise ValidationError(detail='0 이상의 수량을 입력해주세요.')
 
         return value
 
-    def validate_amount(self, value: float):
-        if value <= 0:
+    def validate_amount(self, value: Decimal):
+        if value <= Decimal('0'):
             raise ValidationError(detail='0 이상의 금액을 입력해주세요.')
 
         return value
@@ -48,8 +54,8 @@ class OrderSerializer(serializers.ModelSerializer):
         user: User = self.context['request'].user
         currency_pair: CurrencyPair = attrs['currency_pair']
         order_type: str = attrs['order_type']
-        amount: float = attrs['amount']
-        price: float = attrs['price']
+        amount: Decimal = attrs['amount']
+        price: Decimal = attrs['price']
 
         if order_type == Order.ORDER_TYPES.buy:
             wallet_from = user.wallets.get(currency=currency_pair.currency_from)

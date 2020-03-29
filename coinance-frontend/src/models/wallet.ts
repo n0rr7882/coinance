@@ -11,8 +11,8 @@ export class Wallet {
   constructor(data: Wallet) {
     this.id = data.id;
     this.currency = new Currency(data.currency);
-    this.amount = data.amount;
-    this.available_amount = data.available_amount;
+    this.amount = Number(data.amount);
+    this.available_amount = Number(data.available_amount);
     this.created = new Date(data.created);
     this.modified = new Date(data.modified);
   }

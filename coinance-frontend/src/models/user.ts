@@ -10,7 +10,7 @@ export class UserSetting {
     this.id = data.id;
     this.nickname = data.nickname;
     this.start_currency = data.start_currency;
-    this.start_amount = data.start_amount;
+    this.start_amount = Number(data.start_amount);
   }
 }
 

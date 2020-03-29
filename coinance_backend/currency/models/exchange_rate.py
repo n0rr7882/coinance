@@ -16,32 +16,46 @@ class ExchangeRate(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='exchange_rate',
     )
-    last_trade_price = models.FloatField(
+    last_trade_price = models.DecimalField(
         verbose_name='최근 체결가',
+        max_digits=20,
+        decimal_places=8,
     )
-    lowest_ask = models.FloatField(
+    lowest_ask = models.DecimalField(
         verbose_name='최저 매수가',
+        max_digits=20,
+        decimal_places=8,
     )
-    highest_bid = models.FloatField(
+    highest_bid = models.DecimalField(
         verbose_name='최고 매도가',
+        max_digits=20,
+        decimal_places=8,
     )
     change_rate_24h = models.FloatField(
         verbose_name='24시간 변동율',
     )
-    base_volume_24h = models.FloatField(
+    base_volume_24h = models.DecimalField(
         verbose_name='24시간 기본 볼륨',
+        max_digits=20,
+        decimal_places=8,
     )
-    quote_volume_24h = models.FloatField(
+    quote_volume_24h = models.DecimalField(
         verbose_name='24시간 시세 볼륨',
+        max_digits=20,
+        decimal_places=8,
     )
     market_active = models.BooleanField(
         verbose_name='시장 활성화 여부',
     )
-    highest_trade_price_24h = models.FloatField(
+    highest_trade_price_24h = models.DecimalField(
         verbose_name='24시간 최고 체결가',
+        max_digits=20,
+        decimal_places=8,
     )
-    lowest_trade_price_24h = models.FloatField(
+    lowest_trade_price_24h = models.DecimalField(
         verbose_name='24시간 최저 체결가',
+        max_digits=20,
+        decimal_places=8,
     )
 
     def __str__(self):

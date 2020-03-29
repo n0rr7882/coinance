@@ -20,4 +20,4 @@ class WalletSerializer(serializers.ModelSerializer):
         ]
 
     def get_available_amount(self, obj: Wallet) -> float:
-        return obj.available_amount
+        return float(obj.available_amount)

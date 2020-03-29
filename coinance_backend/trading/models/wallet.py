@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q, Sum
+from django.db.models import Sum, F
 from django.db.models.functions import Coalesce
 from model_utils.models import TimeStampedModel
 
@@ -26,8 +28,10 @@ class Wallet(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='wallets',
     )
-    amount = models.FloatField(
+    amount = models.DecimalField(
         verbose_name='잔액',
+        max_digits=20,
+        decimal_places=8,
         default=0,
     )
 
@@ -35,15 +39,22 @@ class Wallet(TimeStampedModel):
         return f'{self.user} {self.amount}({self.currency})'
 
     @property
-    def available_amount(self) -> float:
-        q_buy = Q(currency_pair__currency_from=self.currency, order_type=Order.ORDER_TYPES.buy)
-        q_sell = Q(currency_pair__currency_to=self.currency, order_type=Order.ORDER_TYPES.sell)
-
-        amount_in_transaction = (
+    def available_amount(self) -> Decimal:
+        amount_in_buying_transaction = (
             self.user.orders
-            .filter(status=Order.STATUSES.ordered)
-            .filter(q_buy | q_sell)
+            .filter(status=Order.STATUSES.ordered, order_type=Order.ORDER_TYPES.buy)
+            .filter(currency_pair__currency_from=self.currency)
+            .aggregate(sum=Coalesce(Sum(F('amount') * F('price')), 0))['sum']
+        )
+        amount_in_selling_transaction = (
+            self.user.orders
+            .filter(status=Order.STATUSES.ordered, order_type=Order.ORDER_TYPES.sell)
+            .filter(currency_pair__currency_to=self.currency)
             .aggregate(sum=Coalesce(Sum('amount'), 0))['sum']
         )
 
-        return self.amount - amount_in_transaction
+        return (
+            self.amount
+            - Decimal(str(amount_in_buying_transaction))
+            - Decimal(str(amount_in_selling_transaction))
+        )

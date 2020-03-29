@@ -28,8 +28,8 @@ export class Order {
     this.currency_pair = new CurrencyPair(data.currency_pair);
     this.order_type = data.order_type;
     this.status = data.status;
-    this.price = data.price;
-    this.amount = data.amount;
+    this.price = Number(data.price);
+    this.amount = Number(data.amount);
     this.traded = data.traded ? new Date(data.traded) : undefined;
     this.created = data.created ? new Date(data.created) : undefined;
     this.modified = data.modified ? new Date(data.modified) : undefined;

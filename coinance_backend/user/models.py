@@ -25,8 +25,10 @@ class UserSetting(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='user_settings_started_with',
     )
-    start_amount = models.FloatField(
+    start_amount = models.DecimalField(
         verbose_name='초기자금 금액',
+        max_digits=20,
+        decimal_places=8,
     )
 
     def __str__(self):

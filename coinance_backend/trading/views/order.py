@@ -8,6 +8,18 @@ from trading.websocket.wallet import broadcast_ws_wallet_updated
 from utils.viewsets import ModelWithoutUpdateViewSet
 
 
+def broadcast_ws_wallet_updated_from_order(order: Order):
+    if order.order_type == order.ORDER_TYPES.buy:
+        from_wallet = order.currency_pair.currency_from.wallets.get(user=order.user)
+        broadcast_ws_wallet_updated(from_wallet)
+
+    elif order.order_type == order.ORDER_TYPES.sell:
+        to_wallet = order.currency_pair.currency_to.wallets.get(user=order.user)
+        broadcast_ws_wallet_updated(to_wallet)
+
+    return
+
+
 class OrderViewSet(ModelWithoutUpdateViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -18,11 +30,9 @@ class OrderViewSet(ModelWithoutUpdateViewSet):
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer: OrderSerializer):
-        order: Order = serializer.save(user=self.request.user)
-        broadcast_ws_order_created(order)
-
-        from_wallet = order.currency_pair.currency_from.wallets.get(user=order.user)
-        broadcast_ws_wallet_updated(from_wallet)
+        instance: Order = serializer.save(user=self.request.user)
+        broadcast_ws_order_created(instance)
+        broadcast_ws_wallet_updated_from_order(instance)
 
         return
 
@@ -35,8 +45,6 @@ class OrderViewSet(ModelWithoutUpdateViewSet):
 
         instance.cancel()
         broadcast_ws_order_cancelled(instance)
-
-        from_wallet = instance.currency_pair.currency_from.wallets.get(user=instance.user)
-        broadcast_ws_wallet_updated(from_wallet)
+        broadcast_ws_wallet_updated_from_order(instance)
 
         return

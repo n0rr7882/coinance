@@ -7,6 +7,7 @@ import CurrencyPairStore from '../../stores/currency-pair';
 import { RouterStore } from 'mobx-react-router';
 import { OrderType } from '../../models/order';
 import { autorun, IReactionDisposer } from 'mobx';
+import { f } from '../../utils/number';
 
 interface Props {
   routerStore?: RouterStore;
@@ -81,7 +82,7 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
     const price = orderStore.buy.form.price;
     const maxAmount = (this.wallet?.available_amount || 0) / price;
 
-    orderStore.buy.form.amount = maxAmount || 0;
+    orderStore.buy.form.amount = f(maxAmount || 0);
   }
 
   render() {

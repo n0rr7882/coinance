@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.db import models, transaction
@@ -48,11 +49,15 @@ class Order(TimeStampedModel):
         choices=STATUSES,
         default=STATUSES.ordered,
     )
-    price = models.FloatField(
+    price = models.DecimalField(
         verbose_name='가격',
+        max_digits=20,
+        decimal_places=8,
     )
-    amount = models.FloatField(
+    amount = models.DecimalField(
         verbose_name='수량',
+        max_digits=20,
+        decimal_places=8,
     )
     traded = models.DateTimeField(
         verbose_name='체결일시',
@@ -64,8 +69,8 @@ class Order(TimeStampedModel):
 
     @classmethod
     def get_process_able_orders(cls, exchange_rate: ExchangeRate):
-        multiplier_for_sell = 1.01
-        multiplier_for_buy = 0.99
+        multiplier_for_sell = Decimal('1.001')
+        multiplier_for_buy = Decimal('0.999')
 
         q_buy_able = Q(
             order_type=cls.ORDER_TYPES.buy,

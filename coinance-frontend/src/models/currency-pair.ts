@@ -30,15 +30,15 @@ export class ExchangeRate {
   constructor(data: ExchangeRate) {
     this.id = data.id;
     this.currency_pair = data.currency_pair;
-    this.last_trade_price = data.last_trade_price;
-    this.lowest_ask = data.lowest_ask;
-    this.highest_bid = data.highest_bid;
+    this.last_trade_price = Number(data.last_trade_price);
+    this.lowest_ask = Number(data.lowest_ask);
+    this.highest_bid = Number(data.highest_bid);
     this.change_rate_24h = data.change_rate_24h;
-    this.base_volume_24h = data.base_volume_24h;
-    this.quote_volume_24h = data.quote_volume_24h;
+    this.base_volume_24h = Number(data.base_volume_24h);
+    this.quote_volume_24h = Number(data.quote_volume_24h);
     this.market_active = data.market_active;
-    this.highest_trade_price_24h = data.highest_trade_price_24h;
-    this.lowest_trade_price_24h = data.lowest_trade_price_24h;
+    this.highest_trade_price_24h = Number(data.highest_trade_price_24h);
+    this.lowest_trade_price_24h = Number(data.lowest_trade_price_24h);
   }
 }
 
