@@ -21,7 +21,7 @@ export default class MarketListContainer extends React.Component<IProps, IState>
   state: IState = {
     order: 'desc',
     orderBy: MarketListTableColumn.volume,
-  }
+  };
 
   public setOrder(order: Order) {
     this.setState({ ...this.state, order });

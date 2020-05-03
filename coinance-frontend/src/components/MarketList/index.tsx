@@ -6,25 +6,24 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { CurrencyPair, Currency } from '../../models/currency-pair';
 import MarketItem from '../MarketItem';
 import { observer } from 'mobx-react';
-import { TableSortLabel, Toolbar, Typography, Button, Theme, createStyles, Tooltip, ButtonGroup, LinearProgress } from '@material-ui/core';
+import { TableSortLabel, Typography, Button, Tooltip, ButtonGroup, LinearProgress, CardContent, Card, Grid } from '@material-ui/core';
 import { Order, Status } from '../../models/common';
 
 export enum MarketListTableColumn {
-  symbol = 'symbol',
+  symbol = 'Symbol',
   price = '현재가',
   changeRate = '전일대비(%)',
   volume = '거래량(24H)',
 }
 
-const useMarketListToolbarStyles = makeStyles((theme: Theme) => createStyles({
+const useMarketListToolbarStyles = makeStyles({
   spacer: {
     flexGrow: 1,
   },
-}));
+});
 
 interface MarketListToolbarProps {
   currenciesFrom: Currency[];
@@ -36,33 +35,37 @@ const MarketListToolbar: React.FC<MarketListToolbarProps> = props => {
   const classes = useMarketListToolbarStyles();
 
   return (
-    <Toolbar>
-      <Typography color="inherit" variant="subtitle1">
-        마켓 목록
-      </Typography>
+    <CardContent>
+      <Grid container justify="space-between">
+        <Grid item>
+          <Typography variant="h5" component="h3">
+            마켓 목록
+          </Typography>
+        </Grid>
+        <Grid item>
+          <span className={classes.spacer}></span>
+          <ButtonGroup variant="text">
 
-      <span className={classes.spacer}></span>
+            <Tooltip key={0} title="모두">
+              <Button
+                color={!props.selected ? 'primary' : 'default'}
+                onClick={() => props.onSelect(undefined)}
+              >ALL</Button>
+            </Tooltip>
 
-      <ButtonGroup variant="text">
+            {props.currenciesFrom.map(currency => (
+              <Tooltip key={currency.id} title={currency.name}>
+                <Button
+                  color={props.selected?.id === currency.id ? 'primary' : 'default'}
+                  onClick={() => props.onSelect(currency)}
+                >{currency.symbol}</Button>
+              </Tooltip>
+            ))}
 
-        <Tooltip key={0} title="모두">
-          <Button
-            color={!props.selected ? 'primary' : 'default'}
-            onClick={() => props.onSelect(undefined)}
-          >ALL</Button>
-        </Tooltip>
-
-        {props.currenciesFrom.map(currency => (
-          <Tooltip key={currency.id} title={currency.name}>
-            <Button
-              color={props.selected?.id === currency.id ? 'primary' : 'default'}
-              onClick={() => props.onSelect(currency)}
-            >{currency.symbol}</Button>
-          </Tooltip>
-        ))}
-
-      </ButtonGroup>
-    </Toolbar >
+          </ButtonGroup>
+        </Grid>
+      </Grid>
+    </CardContent>
   );
 }
 
@@ -142,7 +145,7 @@ const MarketList: React.FC<MarketListProps> = props => {
     .sort(sort);
 
   return (
-    <Paper elevation={0}>
+    <Card elevation={0}>
       <MarketListToolbar
         selected={props.selectedCurrencyFrom}
         onSelect={props.setSelectedCurrencyFrom}
@@ -199,7 +202,7 @@ const MarketList: React.FC<MarketListProps> = props => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </Card>
   );
 }
 

@@ -4,7 +4,7 @@ import { Container, Paper, Grid } from '@material-ui/core';
 import { usePaperStyles } from '../../utils/styles';
 import OrderBuyContainer from '../../containers/OrderBuyContainer';
 import OrderSellContainer from '../../containers/OrderSellContainer';
-import OrderListContainer from '../../containers/OrderListContainer';
+import OrderListCurrencyContainer from '../../containers/OrderListCurrencyContainer';
 
 
 
@@ -27,7 +27,7 @@ const TradingPage = () => {
         </Grid>
       </Paper>
       <Paper className={paper} variant="outlined">
-        <OrderListContainer />
+        <OrderListCurrencyContainer />
       </Paper>
     </Container>
   );
