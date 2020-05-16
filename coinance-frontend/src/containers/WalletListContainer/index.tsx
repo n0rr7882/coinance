@@ -17,8 +17,8 @@ interface IState {
 @observer
 export default class WalletListContainer extends React.Component<IProps, IState> {
   state: IState = {
-    order: 'desc',
-    orderBy: WalletListTableColumn.amount,
+    order: 'asc',
+    orderBy: WalletListTableColumn.symbol,
   };
 
   public setOrder(order: Order) {

@@ -17,5 +17,6 @@ class CurrencyPairSerializer(serializers.ModelSerializer):
             'poloniex_id',
             'currency_from',
             'currency_to',
+            'commission_rate',
             'exchange_rate',
         ]

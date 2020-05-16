@@ -92,12 +92,15 @@ class Order(TimeStampedModel):
         wallet_from = self.user.wallets.get(currency=self.currency_pair.currency_from)
         wallet_to = self.user.wallets.get(currency=self.currency_pair.currency_to)
 
+        commission_rate = self.currency_pair.commission_rate
+
         if self.order_type == self.ORDER_TYPES.buy:
             wallet_from.amount -= self.price * self.amount
-            wallet_to.amount += self.amount
+            wallet_to.amount += self.amount - (self.amount * commission_rate)
 
         elif self.order_type == self.ORDER_TYPES.sell:
-            wallet_from.amount += self.price * self.amount
+            sell_price = self.price * self.amount
+            wallet_from.amount += sell_price - (sell_price * commission_rate)
             wallet_to.amount -= self.amount
 
         else:

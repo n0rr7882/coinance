@@ -47,6 +47,7 @@ export class CurrencyPair {
   public readonly poloniex_id: number;
   public readonly currency_from: Currency;
   public readonly currency_to: Currency;
+  public readonly commission_rate: number;
   @observable public exchange_rate: ExchangeRate;
 
   constructor(data: CurrencyPair) {
@@ -54,6 +55,7 @@ export class CurrencyPair {
     this.poloniex_id = data.poloniex_id;
     this.currency_from = new Currency(data.currency_from);
     this.currency_to = new Currency(data.currency_to);
+    this.commission_rate = Number(data.commission_rate);
     this.exchange_rate = new ExchangeRate(data.exchange_rate);
   }
 }

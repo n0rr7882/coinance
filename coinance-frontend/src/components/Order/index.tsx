@@ -26,18 +26,25 @@ interface OrderProps {
 }
 
 const Order: React.FC<OrderProps> = props => {
+  const isBuy = props.orderType === OrderType.buy;
+  const currencyFromSymbol = props.currencyPair?.currency_from.symbol;
+  const currencyToSymbol = props.currencyPair?.currency_to.symbol;
+  const total = props.control.form.amount * props.control.form.price;
+  const commission = isBuy ? 0 : total * (props.currencyPair?.commission_rate || 0);
+  const totalWithCommission = total - commission;
+
   return !props.currencyPair
     ? <OrderSkeleton orderType={OrderType.buy} />
     : (
       <Card elevation={0}>
         <CardContent>
           <Typography variant="h5" component="h3">
-            {props.currencyPair.currency_to.symbol} {props.orderType === OrderType.buy ? '매수' : '매도'}
+            {currencyToSymbol} {isBuy ? '매수' : '매도'}
           </Typography>
           {props.wallet
             ? (
               <Typography variant="body2">
-                {props.orderType === OrderType.buy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{f(props.wallet?.available_amount)}</b>
+                {isBuy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{f(props.wallet?.available_amount)}</b>
               </Typography>
             ) : (
               <Skeleton variant="text" animation="wave" />
@@ -56,16 +63,16 @@ const Order: React.FC<OrderProps> = props => {
                   onChange={e => props.setUseMarketPrice(e.target.checked)}
                 />
               )}
-              label={`시장가 ${props.orderType === OrderType.buy ? '매수' : '매도'}`}
+              label={`시장가 ${isBuy ? '매수' : '매도'}`}
             />
             <FormHelperText>
-              시장 {props.orderType === OrderType.buy ? '최저 매도가로 매수' : '최고 매수가로 매도'}합니다.
+              시장 {isBuy ? '최저 매도가로 매수' : '최고 매수가로 매도'}합니다.
             </FormHelperText>
           </FormControl>
           <TextField
             fullWidth variant="outlined" margin="dense" label="가격" type="number"
             InputProps={{
-              endAdornment: <InputAdornment position="end">{props.currencyPair.currency_from.symbol}</InputAdornment>,
+              endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
             value={props.control.form.price}
             onChange={e => props.control.form.price = f(Number(e.target.value))}
@@ -75,12 +82,20 @@ const Order: React.FC<OrderProps> = props => {
           <TextField
             fullWidth variant="outlined" margin="dense" label="수량" type="number"
             InputProps={{
-              endAdornment: <InputAdornment position="end">{props.currencyPair.currency_to.symbol}</InputAdornment>,
+              endAdornment: <InputAdornment position="end">{currencyToSymbol}</InputAdornment>,
             }}
             value={props.control.form.amount}
             onChange={e => props.control.form.amount = f(Number(e.target.value))}
             error={!!props.control.errors?.response?.data.amount}
             helperText={props.control.errors?.response?.data.amount}
+          />
+          <TextField
+            fullWidth disabled variant="filled" margin="dense" label="총액" type="number"
+            InputProps={{
+              endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
+            }}
+            value={f(totalWithCommission)}
+            helperText={`수수료: ${props.currencyPair.commission_rate * 100}%`}
           />
         </CardContent>
         <CardActions>
@@ -88,13 +103,13 @@ const Order: React.FC<OrderProps> = props => {
             fullWidth variant="outlined" disableElevation
             onClick={props.setMaxAmount}
           >
-            {props.orderType === OrderType.buy ? '최대매수량' : '최대매도량'}
+            {isBuy ? '최대매수량' : '최대매도량'}
           </Button>
           <Button
-            fullWidth color={props.orderType === OrderType.buy ? 'secondary' : 'primary'} variant="contained" disableElevation
+            fullWidth color={isBuy ? 'secondary' : 'primary'} variant="contained" disableElevation
             onClick={props.create}
           >
-            {props.orderType === OrderType.buy ? '매수' : '매도'}
+            {isBuy ? '매수' : '매도'}
           </Button>
         </CardActions>
       </Card>

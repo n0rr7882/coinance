@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from model_utils.models import TimeStampedModel, SoftDeletableModel
 
@@ -24,6 +26,12 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
         to='currency.Currency',
         on_delete=models.CASCADE,
         related_name='currency_pairs_as_to',
+    )
+    commission_rate = models.DecimalField(
+        verbose_name='수수료율',
+        max_digits=8,
+        decimal_places=8,
+        default=Decimal('0.0005'),
     )
 
     def __str__(self):

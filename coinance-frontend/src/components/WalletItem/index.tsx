@@ -1,7 +1,7 @@
 import React from 'react';
 import { Wallet } from "../../models/wallet";
 import { observer } from "mobx-react";
-import { TableRow, TableCell, Tooltip } from '@material-ui/core';
+import { TableRow, TableCell, Tooltip, Chip } from '@material-ui/core';
 
 interface IProps {
   wallet: Wallet;
@@ -23,7 +23,7 @@ class WalletItem extends React.Component<IProps> {
           </Tooltip>
         </TableCell>
         <TableCell align="right">
-          {amount}
+          {amount} <Chip label={symbol} variant="outlined" size="small" />
         </TableCell>
       </TableRow>
     );
