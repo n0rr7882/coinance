@@ -7,7 +7,7 @@ import { boundClass } from "autobind-decorator";
 
 @boundClass
 export default class CandleChartStore {
-  private FETCH_INTERVAL = 15;
+  private FETCH_INTERVAL = 5;
 
   @observable public chartType: ChartType = ChartType.daily;
   @observable public candleSticks: CandleStick[] = [];
