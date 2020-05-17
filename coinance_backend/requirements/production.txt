@@ -18,6 +18,7 @@ chardet==3.0.4
 constantly==15.1.0
 cryptography==2.8
 daphne==2.4.1
+dataclasses==0.6
 defusedxml==0.6.0
 Django==2.2.10
 django-braces==1.14.0
