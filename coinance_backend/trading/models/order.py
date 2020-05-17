@@ -69,8 +69,8 @@ class Order(TimeStampedModel):
 
     @classmethod
     def get_process_able_orders(cls, exchange_rate: ExchangeRate):
-        multiplier_for_sell = Decimal('1.001')
-        multiplier_for_buy = Decimal('0.999')
+        multiplier_for_sell = Decimal('1.01')
+        multiplier_for_buy = Decimal('0.99')
 
         q_buy_able = Q(
             order_type=cls.ORDER_TYPES.buy,
