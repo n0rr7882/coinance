@@ -30,3 +30,11 @@ def process_able_orders_task(exchange_rate_id: int):
     process_able_orders(exchange_rate)
 
     return
+
+
+@shared_task
+def process_able_orders_of_all_currency_pairs_task():
+    for exchange_rate_id in ExchangeRate.objects.all().values_list('pk', flat=True):
+        process_able_orders_task.delay(exchange_rate_id)
+
+    return

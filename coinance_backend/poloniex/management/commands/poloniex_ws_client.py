@@ -9,7 +9,6 @@ from django.core.management import BaseCommand
 from poloniex.dataclasses.ticker_data import TickerData
 from currency.models import CurrencyPair
 from currency.tasks import update_exchange_rate_task
-from trading.tasks import process_able_orders_task
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +36,7 @@ def on_message(ws: websocket.WebSocket, message: str):
     ticker_data = TickerData.from_raw(raw_data)
 
     if CurrencyPair.objects.filter(poloniex_id=ticker_data.currency_pair_id).exists():
-        serialized = ticker_data.serialize()
-        # celery task chaining: update rates -> process orders
-        (update_exchange_rate_task.s(serialized) | process_able_orders_task.s())()
+        update_exchange_rate_task.delay(ticker_data.serialize())
 
     return
 
