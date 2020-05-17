@@ -1,6 +1,6 @@
 {
-  "short_name": "Coinance",
-  "name": "Cryptocurrency trading simulator",
+  "short_name": "coinance",
+  "name": "coinance :: 암호화폐 모의 거래소",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#3741fe",
+  "theme_color": "#304ffe",
   "background_color": "#ffffff"
 }
