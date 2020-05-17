@@ -35,7 +35,7 @@ def on_message(ws: websocket.WebSocket, message: str):
     raw_data = payload[2]
     ticker_data = TickerData.from_raw(raw_data)
 
-    if CurrencyPair.objects.filter(poloniex_id=ticker_data.currency_pair_id).exists():
+    if CurrencyPair.is_exchange_rate_update_able(ticker_data.currency_pair_id):
         update_exchange_rate_task.delay(ticker_data.serialize())
 
     return

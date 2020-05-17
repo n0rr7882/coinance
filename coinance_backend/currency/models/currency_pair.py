@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 from django.db import models
@@ -42,3 +43,14 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
 
     def to_ws_group_name(self) -> str:
         return f'currency-pair.{self.pk}'
+
+    @classmethod
+    def is_exchange_rate_update_able(cls, poloniex_id: int) -> bool:
+        three_seconds_ago = datetime.now() - timedelta(seconds=3)
+
+        return (
+            cls.objects
+            .filter(poloniex_id=poloniex_id)
+            .exclude(exchange_rate__modified__gt=three_seconds_ago)
+            .exists()
+        )
