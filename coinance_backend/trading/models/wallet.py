@@ -40,6 +40,9 @@ class Wallet(TimeStampedModel):
 
     @property
     def available_amount(self) -> Decimal:
+        if self.amount == 0:
+            return Decimal('0')
+
         amount_in_buying_transaction = (
             self.user.orders
             .filter(status=Order.STATUSES.ordered, order_type=Order.ORDER_TYPES.buy)
