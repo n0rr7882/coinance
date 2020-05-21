@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -6,7 +8,7 @@ from trading.serializers.wallet import WalletSerializer
 
 
 class WalletViewSet(ReadOnlyModelViewSet):
-    queryset = Wallet.objects.all()
+    queryset = Wallet.objects.exclude(amount=Decimal('0'))
     serializer_class = WalletSerializer
     permission_classes = [IsAuthenticated]
 

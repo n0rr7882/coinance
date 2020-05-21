@@ -9,7 +9,6 @@ import { Status, IErrorData } from '../../models/common';
 import { AxiosError } from 'axios';
 import { observer } from 'mobx-react';
 import { Wallet } from '../../models/wallet';
-import { Skeleton } from '@material-ui/lab';
 import { f } from '../../utils/number';
 
 interface OrderProps {
@@ -41,14 +40,9 @@ const Order: React.FC<OrderProps> = props => {
           <Typography variant="h5" component="h3">
             {currencyToSymbol} {isBuy ? '매수' : '매도'}
           </Typography>
-          {props.wallet
-            ? (
-              <Typography variant="body2">
-                {isBuy ? '매수' : '매도'}가능 {props.wallet?.currency.symbol}: <b>{f(props.wallet?.available_amount)}</b>
-              </Typography>
-            ) : (
-              <Skeleton variant="text" animation="wave" />
-            )}
+          <Typography variant="body2">
+            {isBuy ? `매수가능 ${currencyFromSymbol}` : `매도가능 ${currencyToSymbol}`}: <b>{f(props.wallet?.available_amount || 0)}</b>
+          </Typography>
         </CardContent>
         <Divider />
         {props.control.status === Status.pending ? <LinearProgress color="secondary" /> : <></>}
