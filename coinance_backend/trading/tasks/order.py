@@ -25,16 +25,24 @@ def process_able_orders(exchange_rate: ExchangeRate):
 
 
 @shared_task
-def process_able_orders_task(exchange_rate_id: int):
+def process_able_orders_task(exchange_rate_id: int) -> bool:
+    if not Order.objects.filter(
+            status=Order.STATUSES.ordered,
+            currency_pair__exchange_rate__pk=exchange_rate_id).exists():
+        return False
+
     exchange_rate = ExchangeRate.objects.get(pk=exchange_rate_id)
     process_able_orders(exchange_rate)
 
-    return
+    return True
 
 
 @shared_task
-def process_able_orders_of_all_currency_pairs_task():
+def process_able_orders_of_all_currency_pairs_task() -> bool:
+    if not Order.objects.filter(status=Order.STATUSES.ordered).exists():
+        return False
+
     for exchange_rate_id in ExchangeRate.objects.all().values_list('pk', flat=True):
         process_able_orders_task.delay(exchange_rate_id)
 
-    return
+    return True
