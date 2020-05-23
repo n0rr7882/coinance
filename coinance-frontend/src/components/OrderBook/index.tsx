@@ -90,7 +90,7 @@ const OrderBook: React.FC<Props> = props => (
       <OrderBookList
         isBuy={true}
         currencyPair={props.currencyPair}
-        orderBookList={props.orderBook?.bids || []}
+        orderBookList={props.orderBook?.asks || []}
         onPriceClick={props.onBuyPriceClick}
       />
     </Grid>
@@ -98,7 +98,7 @@ const OrderBook: React.FC<Props> = props => (
       <OrderBookList
         isBuy={false}
         currencyPair={props.currencyPair}
-        orderBookList={props.orderBook?.asks || []}
+        orderBookList={props.orderBook?.bids || []}
         onPriceClick={props.onSellPriceClick}
       />
     </Grid>
