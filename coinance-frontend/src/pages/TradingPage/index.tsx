@@ -5,6 +5,7 @@ import { usePaperStyles } from '../../utils/styles';
 import OrderBuyContainer from '../../containers/OrderBuyContainer';
 import OrderSellContainer from '../../containers/OrderSellContainer';
 import OrderListCurrencyContainer from '../../containers/OrderListCurrencyContainer';
+import OrderBookContainer from '../../containers/OrderBookContainer';
 
 
 
@@ -25,6 +26,9 @@ const TradingPage = () => {
             <OrderSellContainer />
           </Grid>
         </Grid>
+      </Paper>
+      <Paper className={paper} variant="outlined">
+        <OrderBookContainer />
       </Paper>
       <Paper className={paper} variant="outlined">
         <OrderListCurrencyContainer />

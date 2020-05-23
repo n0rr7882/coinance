@@ -30,13 +30,13 @@ class MarketItem extends React.Component<IProps> {
           </Tooltip>
         </TableCell>
         <TableCell align="right">
-          {lastTradePrice} <Chip variant="outlined" size="small" label={symbolFrom} />
+          {lastTradePrice.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
         </TableCell>
         <TableCell align="right">
           <TrendingChip value={changeRate24h} />
         </TableCell>
         <TableCell align="right">
-          {baseVolume24h} <Chip variant="outlined" size="small" label={symbolFrom} />
+          {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
         </TableCell>
       </TableRow>
     );

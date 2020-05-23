@@ -14,6 +14,7 @@ import UserSettingStore from './stores/user-setting';
 import { getPaletteType } from './utils/theme';
 import OrderStore from './stores/order';
 import WalletStore from './stores/wallet';
+import OrderBookStore from './stores/order-book';
 
 const browserHistory = createBrowserHistory();
 const routerStore = new RouterStore();
@@ -27,6 +28,7 @@ const stores = {
   candleChartStore: new CandleChartStore(),
   orderStore: new OrderStore(),
   walletStore: new WalletStore(),
+  orderBookStore: new OrderBookStore(),
 }
 
 const theme = createMuiTheme({

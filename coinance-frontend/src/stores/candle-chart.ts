@@ -50,8 +50,6 @@ export default class CandleChartStore {
       const base = Math.floor(current / this.FETCH_INTERVAL) * this.FETCH_INTERVAL
       const next = base + this.FETCH_INTERVAL;
 
-      console.log({ base, current, next });
-
       this.timer = setTimeout(() => this.candleSticksTimer(currencyPair), (next - current) * 1000);
     }
   }

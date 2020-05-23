@@ -4,13 +4,11 @@ import { inject, observer } from 'mobx-react';
 import OrderStore from '../../stores/order';
 import WalletStore from '../../stores/wallet';
 import CurrencyPairStore from '../../stores/currency-pair';
-import { RouterStore } from 'mobx-react-router';
 import { OrderType } from '../../models/order';
 import { autorun, IReactionDisposer } from 'mobx';
 import { f } from '../../utils/number';
 
 interface Props {
-  routerStore?: RouterStore;
   orderStore?: OrderStore;
   walletStore?: WalletStore;
   currencyPairStore?: CurrencyPairStore;
@@ -20,7 +18,7 @@ interface State {
   useMarketPrice: boolean;
 }
 
-@inject('routerStore', 'orderStore', 'walletStore', 'currencyPairStore')
+@inject('orderStore', 'walletStore', 'currencyPairStore')
 @observer
 export default class OrderBuyContainer extends React.Component<Props, State> {
   useMarketPriceDisposer?: IReactionDisposer;

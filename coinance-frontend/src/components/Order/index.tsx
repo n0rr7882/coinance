@@ -64,7 +64,7 @@ const Order: React.FC<OrderProps> = props => {
             </FormHelperText>
           </FormControl>
           <TextField
-            fullWidth variant="outlined" margin="dense" label="가격" type="number"
+            fullWidth variant="outlined" margin="dense" label="가격" type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
@@ -74,7 +74,7 @@ const Order: React.FC<OrderProps> = props => {
             helperText={props.control.errors?.response?.data.price}
           />
           <TextField
-            fullWidth variant="outlined" margin="dense" label="수량" type="number"
+            fullWidth variant="outlined" margin="dense" label="수량" type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyToSymbol}</InputAdornment>,
             }}
@@ -84,11 +84,11 @@ const Order: React.FC<OrderProps> = props => {
             helperText={props.control.errors?.response?.data.amount}
           />
           <TextField
-            fullWidth disabled variant="filled" margin="dense" label="총액" type="number"
+            fullWidth disabled variant="filled" margin="dense" label="총액" type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
-            value={f(totalWithCommission)}
+            value={f(totalWithCommission).toFixed(8)}
             helperText={`수수료: ${props.currencyPair.commission_rate * 100}%`}
           />
         </CardContent>

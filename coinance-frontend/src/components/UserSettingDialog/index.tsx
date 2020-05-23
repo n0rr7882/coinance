@@ -126,7 +126,7 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
       />
       <TextField
         autoFocus margin="dense" variant="outlined" fullWidth
-        id="start-amount" label="금액" type="number"
+        id="start-amount" label="금액" type="tel"
         value={props.userSetting.start_amount}
         onChange={e => props.userSetting.start_amount = Number(e.target.value)}
         error={!!props.errors?.response?.data.start_amount}

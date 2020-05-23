@@ -1,6 +1,6 @@
 
 export class OrderBookOption {
-  static command = 'returnOrderBook';
+  public command = 'returnOrderBook';
   public currencyPair?: string;
   public depth: number
 

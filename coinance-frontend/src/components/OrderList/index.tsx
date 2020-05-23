@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableContainer, Table, Card, CardContent, Typography, TableHead, TableRow, TableCell, TableBody, makeStyles, Chip, LinearProgress, Divider } from "@material-ui/core";
+import { TableContainer, Table, Card, CardContent, Typography, TableHead, TableRow, TableCell, TableBody, makeStyles, Chip, Divider } from "@material-ui/core";
 import { OrderType, OrderStatus, Order } from '../../models/order';
 import { CallMade, CallReceived, Check } from '@material-ui/icons';
 import { AxiosError } from 'axios';
@@ -53,10 +53,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ showCurrency, order, onCancel }) 
         <OrderTypeChip value={order.order_type} />
       </TableCell>
       <TableCell>
-        {order.price} <Chip label={order.currency_pair.currency_from.symbol} variant="outlined" size="small" />
+        {order.price.toFixed(8)} <Chip label={order.currency_pair.currency_from.symbol} variant="outlined" size="small" />
       </TableCell>
       <TableCell>
-        {order.amount} <Chip label={order.currency_pair.currency_to.symbol} variant="outlined" size="small" />
+        {order.amount.toFixed(8)} <Chip label={order.currency_pair.currency_to.symbol} variant="outlined" size="small" />
       </TableCell>
       <TableCell>
         <OrderStatusChip value={order.status as OrderStatus} onCancel={() => onCancel(order)} />
@@ -81,7 +81,7 @@ interface OrderListProps {
 
 const useOrderListStyles = makeStyles({
   container: {
-    maxHeight: 360,
+    height: 360,
   },
   table: {
     minWidth: 1160,
@@ -99,7 +99,6 @@ const OrderList: React.FC<OrderListProps> = ({ status, errors, showCurrency, ord
         </Typography>
       </CardContent>
       <Divider />
-      {status === Status.pending ? <LinearProgress /> : <></>}
       <ErrorAlert open={status === Status.error} errors={errors} />
       <TableContainer className={classes.container}>
         <Table className={classes.table} size="small" stickyHeader>

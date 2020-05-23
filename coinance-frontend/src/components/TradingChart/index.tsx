@@ -13,7 +13,7 @@ import { lastVisibleItemBasedZoomAnchor } from "react-financial-charts/lib/utils
 import { CandleStick, ChartType } from "../../models/candle-chart";
 import withSize from "../../utils/hoc/with-size";
 import { observer } from "mobx-react";
-import { Card, Button, CardActions, Typography, CardContent, ButtonGroup, Divider, Table, TableRow, TableBody, TableHead, TableCell, Chip, TableContainer } from "@material-ui/core";
+import { Card, Button, CardActions, Typography, CardContent, ButtonGroup, Divider, Table, TableRow, TableBody, TableHead, TableCell, Chip, TableContainer, makeStyles, Theme } from "@material-ui/core";
 import { CurrencyPair } from "../../models/currency-pair";
 import { Skeleton } from "@material-ui/lab";
 import { useTitleStyles } from "../../utils/styles";
@@ -108,8 +108,6 @@ class CandleChart extends React.Component<CandleChartProps> {
     const chartHeight = gridHeight - elderRayHeight;
 
     const timeDisplayFormat = timeFormat(dateTimeFormat);
-
-    setTimeout(() => console.log(initialData), 1000);
 
     return (
       <ChartCanvas
@@ -329,33 +327,33 @@ const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = observer(({ c
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>현재가</TableCell>
+            <TableCell align="right">현재가</TableCell>
             <TableCell>전일대비(%)</TableCell>
-            <TableCell>고가(24H)</TableCell>
-            <TableCell>저가(24H)</TableCell>
-            <TableCell>거래량(24H)</TableCell>
-            <TableCell>거래대금(24H)</TableCell>
+            <TableCell align="right">고가(24H)</TableCell>
+            <TableCell align="right">저가(24H)</TableCell>
+            <TableCell align="right">거래량(24H)</TableCell>
+            <TableCell align="right">거래대금(24H)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>
-              <b>{lastTradePrice}</b> <Chip variant="outlined" size="small" label={symbolFrom} />
+            <TableCell align="right">
+              <b>{lastTradePrice.toFixed(8)}</b> <Chip variant="outlined" size="small" label={symbolFrom} />
             </TableCell>
             <TableCell>
               <TrendingChip value={changeRate24h} />
             </TableCell>
-            <TableCell>
-              {highestTradePrice24h} <Chip variant="outlined" size="small" label={symbolFrom} />
+            <TableCell align="right">
+              {highestTradePrice24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
             </TableCell>
-            <TableCell>
-              {lowestTradePrice24h} <Chip variant="outlined" size="small" label={symbolFrom} />
+            <TableCell align="right">
+              {lowestTradePrice24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
             </TableCell>
-            <TableCell>
-              {baseVolume24h} <Chip variant="outlined" size="small" label={symbolFrom} />
+            <TableCell align="right">
+              {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
             </TableCell>
-            <TableCell>
-              {quoteVolume24h} <Chip variant="outlined" size="small" label={symbolTo} />
+            <TableCell align="right">
+              {quoteVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolTo} />
             </TableCell>
           </TableRow>
         </TableBody>
@@ -398,7 +396,15 @@ interface TradingChartProps {
   setChartType: (chartType: ChartType) => void;
 }
 
+const useTradingChartStyles = makeStyles((theme: Theme) => ({
+  chart: {
+    backgroundColor: theme.palette.common.white,
+  },
+}));
+
 const TradingChart: React.FC<TradingChartProps> = observer(props => {
+  const classes = useTradingChartStyles();
+
   return (
     <Card elevation={0}>
       <ErrorAlert open={props.status === Status.error} errors={props.errors} />
@@ -411,7 +417,7 @@ const TradingChart: React.FC<TradingChartProps> = observer(props => {
       <CardActions>
         <ChartTypeButtons chartType={props.chartType} setChartType={props.setChartType} />
       </CardActions>
-      <CardContent>
+      <CardContent className={classes.chart}>
         {props.chartData.length !== 0 ? <SizedCandleChart data={props.chartData} /> : <SizedCandleChartSkeleton />}
       </CardContent>
       <Divider />

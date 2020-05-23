@@ -15,7 +15,7 @@ class OrderBookRepository {
 
   public async getOrderBook(currencyPair: CurrencyPair) {
     const orderBookOption = getOrderBookOpton(currencyPair);
-    const res = await this.api.get<OrderBook>(`/`, { params: orderBookOption });
+    const res = await this.api.get<OrderBook>('', { params: orderBookOption });
 
     return res.data;
   };
