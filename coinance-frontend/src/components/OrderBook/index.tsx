@@ -1,33 +1,89 @@
 import React from 'react';
 import { OrderBook as OrderBookModel } from '../../models/order-book';
-import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, Grid, TableRow, TableHead, TableCell, TableBody } from '@material-ui/core';
+import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, Grid, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { f } from '../../utils/number';
+import { highlightedRowStyles } from '../../utils/styles';
 
-interface OrderBookItemProps {
+interface OrderBookItemProps extends WithStyles<typeof highlightedRowStyles> {
+  isBuy: boolean;
   orderBookItem: Array<string | number>;
   onRowClick: () => void;
 }
 
-const OrderBookItem: React.FC<OrderBookItemProps> = ({ orderBookItem, onRowClick }) => {
-  const price = Number(orderBookItem[0]);
-  const amountCurrencyTo = Number(orderBookItem[1]);
-  const amountCurrencyFrom = f(price * amountCurrencyTo);
+interface State {
+  highlighted: boolean;
+}
 
-  return (
-    <TableRow onClick={onRowClick}>
-      <TableCell align="right">
-        {price.toFixed(8)}
-      </TableCell>
-      <TableCell align="right">
-        {amountCurrencyTo.toFixed(8)}
-      </TableCell>
-      <TableCell align="right">
-        {amountCurrencyFrom.toFixed(8)}
-      </TableCell>
-    </TableRow>
-  );
-};
+const OrderBookItem = withStyles(highlightedRowStyles)(
+  class extends React.Component<OrderBookItemProps> {
+    private timer?: number;
+
+    state: State = {
+      highlighted: false,
+    };
+
+    componentDidMount() {
+      this.toggleHighlighted();
+    }
+
+    componentDidUpdate(prevProps: Readonly<OrderBookItemProps>) {
+      const prevAmount = prevProps.orderBookItem[1];
+      const nextAmount = this.props.orderBookItem[1];
+
+      if (prevAmount !== nextAmount) {
+        this.toggleHighlighted();
+      }
+    }
+
+    componentWillUnmount() {
+      this.clearHighlight();
+    }
+
+    private clearHighlight() {
+      this.setState({ highlighted: false });
+
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = undefined;
+      }
+    }
+
+    private toggleHighlighted() {
+      this.clearHighlight();
+      this.setState({ highlighted: true });
+      this.timer = setTimeout(() => {
+        this.setState({ highlighted: false });
+      }, 250);
+    }
+
+    render() {
+      const { classes, isBuy, orderBookItem } = this.props;
+
+      const price = Number(orderBookItem[0]);
+      const amountCurrencyTo = Number(orderBookItem[1]);
+      const amountCurrencyFrom = f(price * amountCurrencyTo);
+
+      const rowClass = isBuy
+        ? this.state.highlighted ? classes.highlightedUp : classes.highlightedDefault
+        : this.state.highlighted ? classes.highlightedDown : classes.highlightedDefault;
+
+      return (
+        <TableRow onClick={this.props.onRowClick} className={rowClass}>
+          <TableCell align="right">
+            {price.toFixed(8)}
+          </TableCell>
+          <TableCell align="right">
+            {amountCurrencyTo.toFixed(8)}
+          </TableCell>
+          <TableCell align="right">
+            {amountCurrencyFrom.toFixed(8)}
+          </TableCell>
+        </TableRow>
+      );
+    }
+  }
+);
 
 interface OrderBookListProps {
   isBuy: boolean;
@@ -39,6 +95,9 @@ interface OrderBookListProps {
 const useOrderBookListStyles = makeStyles({
   container: {
     height: 360,
+  },
+  table: {
+    borderCollapse: 'collapse',
   },
 });
 
@@ -54,7 +113,7 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
       </CardContent>
       <Divider />
       <TableContainer className={classes.container}>
-        <Table size="small" stickyHeader>
+        <Table size="small" stickyHeader className={classes.table}>
           <TableHead>
             <TableRow>
               <TableCell align="right">가격</TableCell>
@@ -66,6 +125,7 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
             {orderBookList.map(orderBookItem => (
               <OrderBookItem
                 key={orderBookItem[0]}
+                isBuy={isBuy}
                 orderBookItem={orderBookItem}
                 onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
               />

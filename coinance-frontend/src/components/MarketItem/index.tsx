@@ -1,24 +1,12 @@
 import React from 'react';
-import { TableRow, TableCell, Chip, Tooltip, Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { observer } from 'mobx-react';
 import ButtonLink from '../common/ButtonLink';
 import TrendingChip from '../common/TrendingChip';
+import { highlightedRowStyles } from '../../utils/styles';
 
-const styles = (theme: Theme) => createStyles({
-  highlightedDefault: {
-    transition: 'border-left 1s',
-    borderLeft: `5px solid ${theme.palette.background.paper}`,
-  },
-  highlightedUp: {
-    borderLeft: `5px solid ${theme.palette.secondary.main}`,
-  },
-  highlightedDown: {
-    borderLeft: `5px solid ${theme.palette.primary.main}`,
-  },
-});
-
-interface Props extends WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof highlightedRowStyles> {
   currencyPair: CurrencyPair;
 }
 
@@ -73,7 +61,7 @@ class MarketItem extends React.Component<Props, State> {
     this.setState(state => ({ ...state, highlightedDown: true }));
     this.timer = setTimeout(() => {
       this.setState(state => ({ ...state, highlightedDown: false }))
-    }, 1000)
+    }, 1000);
   }
 
   render() {
@@ -113,4 +101,4 @@ class MarketItem extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(MarketItem);
+export default withStyles(highlightedRowStyles)(MarketItem);

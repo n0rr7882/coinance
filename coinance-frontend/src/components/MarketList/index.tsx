@@ -72,6 +72,7 @@ const MarketListToolbar: React.FC<MarketListToolbarProps> = props => {
 const useMarketListStyles = makeStyles({
   table: {
     minWidth: 650,
+    borderCollapse: 'collapse',
   },
 });
 
@@ -153,7 +154,7 @@ const MarketList: React.FC<MarketListProps> = props => {
       />
       {props.status === Status.pending ? <LinearProgress /> : <></>}
       <TableContainer>
-        <Table className={classes.table} aria-label="market list">
+        <Table className={classes.table} aria-label="market list" stickyHeader>
           <TableHead>
             <TableRow>
 

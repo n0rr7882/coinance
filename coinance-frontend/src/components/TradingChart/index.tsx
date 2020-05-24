@@ -266,7 +266,7 @@ const ChartHeader: React.FC<{ currencyPair: CurrencyPair }> = props => {
   return (
     <>
       <Typography className={title} variant="h3" component="h2">
-        {props.currencyPair.currency_to.symbol}
+        {props.currencyPair.currency_to.symbol}/{props.currencyPair.currency_from.symbol}
       </Typography>
       <Typography variant="body2" color="textSecondary" component="h3">
         <b>{props.currencyPair.currency_to.name}</b> / {props.currencyPair.currency_from.name}
