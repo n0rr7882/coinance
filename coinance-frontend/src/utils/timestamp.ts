@@ -5,3 +5,11 @@ export function toTimestamp(date: Date) {
 export function fromTimestamp(timestamp: number) {
   return new Date(timestamp * 1000);
 }
+
+export function toMsTimestamp(date: Date) {
+  return date.valueOf();
+}
+
+export function fromMsTimestamp(timestamp: number) {
+  return new Date(timestamp);
+}

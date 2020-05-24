@@ -1,13 +1,13 @@
 import { observable, action } from "mobx";
 import { CurrencyPair } from "../models/currency-pair";
-import { toTimestamp } from "../utils/timestamp";
+import { toMsTimestamp } from "../utils/timestamp";
 import { boundClass } from "autobind-decorator";
 import { OrderBook } from "../models/order-book";
 import { orderBookRepository } from "../repositories/order-book";
 
 @boundClass
 export default class OrderBookStore {
-  private FETCH_INTERVAL = 1;
+  private FETCH_INTERVAL_MS = 250;
 
   @observable public orderBook?: OrderBook;
   @observable private subscribed: boolean = false;
@@ -26,11 +26,11 @@ export default class OrderBookStore {
     if (this.subscribed) {
       this.loadOrderBook(currencyPair);
 
-      const current = toTimestamp(new Date());
-      const base = Math.floor(current / this.FETCH_INTERVAL) * this.FETCH_INTERVAL
-      const next = base + this.FETCH_INTERVAL;
+      const current = toMsTimestamp(new Date());
+      const base = Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS
+      const next = base + this.FETCH_INTERVAL_MS;
 
-      this.timer = setTimeout(() => this.orderBookTimer(currencyPair), (next - current) * 1000);
+      this.timer = setTimeout(() => this.orderBookTimer(currencyPair), (next - current));
     }
   }
 
