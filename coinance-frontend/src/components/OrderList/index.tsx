@@ -52,10 +52,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ showCurrency, order, onCancel }) 
       <TableCell>
         <OrderTypeChip value={order.order_type} />
       </TableCell>
-      <TableCell>
+      <TableCell align="right">
         {order.price.toFixed(8)} <Chip label={order.currency_pair.currency_from.symbol} variant="outlined" size="small" />
       </TableCell>
-      <TableCell>
+      <TableCell align="right">
         {order.amount.toFixed(8)} <Chip label={order.currency_pair.currency_to.symbol} variant="outlined" size="small" />
       </TableCell>
       <TableCell>
@@ -106,8 +106,8 @@ const OrderList: React.FC<OrderListProps> = ({ status, errors, showCurrency, ord
             <TableRow>
               {showCurrency ? <TableCell>마켓</TableCell> : <></>}
               <TableCell>거래유형</TableCell>
-              <TableCell>가격</TableCell>
-              <TableCell>수량</TableCell>
+              <TableCell align="right">가격</TableCell>
+              <TableCell align="right">수량</TableCell>
               <TableCell>상태</TableCell>
               <TableCell>주문일시</TableCell>
               <TableCell>체결일시</TableCell>
