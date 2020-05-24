@@ -4,8 +4,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart, BrightnessMedium } from '@material-ui/icons';
+import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
+import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart, BrightnessMedium, Home, Tune, ExitToApp } from '@material-ui/icons';
 import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
@@ -74,10 +74,25 @@ const AppBar: React.FC<IProps> = props => {
         onClose={() => setUserMenuAnchorEl(null)}
       >
         <Link to='/mypage'>
-          <MenuItem onClick={() => setUserMenuAnchorEl(null)}>마이페이지</MenuItem>
+          <MenuItem onClick={() => setUserMenuAnchorEl(null)}>
+            <ListItemIcon>
+              <Home fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">마이페이지</Typography>
+          </MenuItem>
         </Link>
-        <MenuItem onClick={toggleUserSettingDialog}>사용자 설정</MenuItem>
-        <MenuItem onClick={logout} className={classes.logoutButton}>로그아웃</MenuItem>
+        <MenuItem onClick={toggleUserSettingDialog}>
+          <ListItemIcon>
+            <Tune fontSize="small" />
+          </ListItemIcon>
+          <Typography variant="inherit">사용자 설정</Typography>
+        </MenuItem>
+        <MenuItem onClick={logout} className={classes.logoutButton}>
+          <ListItemIcon>
+            <ExitToApp fontSize="small" className={classes.logoutButton} />
+          </ListItemIcon>
+          <Typography variant="inherit">로그아웃</Typography>
+        </MenuItem>
       </Menu>
       <UserSettingDialogContainer />
     </>
