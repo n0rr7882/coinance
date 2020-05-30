@@ -1,10 +1,11 @@
 import React from 'react';
-import { TableContainer, Table, Card, CardContent, Typography, TableHead, TableRow, TableCell, TableBody, makeStyles, Chip, Divider } from "@material-ui/core";
+import { TableContainer, Table, Card, CardContent, Typography, TableHead, TableRow, TableCell, TableBody, makeStyles, Chip, Divider, Button } from "@material-ui/core";
 import { OrderType, OrderStatus, Order } from '../../models/order';
 import { CallMade, CallReceived, Check } from '@material-ui/icons';
 import { AxiosError } from 'axios';
 import { IErrorData, Status } from '../../models/common';
 import ErrorAlert from '../common/ErrorAlert';
+import { Link } from 'react-router-dom';
 
 interface OrderTypeChipProps {
   value: OrderType;
@@ -47,7 +48,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ showCurrency, order, onCancel }) 
   return (
     <TableRow>
       {showCurrency ? (
-        <TableCell>{order.currency_pair.currency_to.symbol} / {order.currency_pair.currency_from.symbol}</TableCell>
+        <TableCell>
+          <Link to={`/trading/${order.currency_pair.id}`}>
+            <Button size="small">
+              {order.currency_pair.currency_to.symbol}/{order.currency_pair.currency_from.symbol}
+            </Button>
+          </Link>
+        </TableCell>
       ) : <></>}
       <TableCell>
         <OrderTypeChip value={order.order_type} />
