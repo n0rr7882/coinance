@@ -137,26 +137,25 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
 interface Props {
   orderBook?: OrderBookModel;
   currencyPair?: CurrencyPair;
-  onBuyPriceClick: (price: number) => void;
-  onSellPriceClick: (price: number) => void;
+  onPriceClick: (price: number) => void;
 }
 
 const OrderBook: React.FC<Props> = props => (
   <Grid container>
-    <Grid item xs={12} md={6}>
+    <Grid item xs={6}>
       <OrderBookList
         isBuy={false}
         currencyPair={props.currencyPair}
         orderBookList={props.orderBook?.asks || []}
-        onPriceClick={props.onBuyPriceClick}
+        onPriceClick={props.onPriceClick}
       />
     </Grid>
-    <Grid item xs={12} md={6}>
+    <Grid item xs={6}>
       <OrderBookList
         isBuy={true}
         currencyPair={props.currencyPair}
         orderBookList={props.orderBook?.bids || []}
-        onPriceClick={props.onSellPriceClick}
+        onPriceClick={props.onPriceClick}
       />
     </Grid>
   </Grid>

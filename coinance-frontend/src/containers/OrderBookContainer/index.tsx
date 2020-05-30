@@ -18,8 +18,7 @@ interface Props {
 export default class OrderBookContainer extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.setOrderBuyPrice = this.setOrderBuyPrice.bind(this);
-    this.setOrderSellPrice = this.setOrderSellPrice.bind(this);
+    this.setOrderPrice = this.setOrderPrice.bind(this);
   }
 
   async componentDidMount() {
@@ -41,13 +40,9 @@ export default class OrderBookContainer extends React.Component<Props> {
     orderBookStore.unsubscribe();
   }
 
-  private setOrderBuyPrice(price: number) {
+  private setOrderPrice(price: number) {
     const orderStore = this.props.orderStore as OrderStore;
     orderStore.buy.form.price = price;
-  }
-
-  private setOrderSellPrice(price: number) {
-    const orderStore = this.props.orderStore as OrderStore;
     orderStore.sell.form.price = price;
   }
 
@@ -58,8 +53,7 @@ export default class OrderBookContainer extends React.Component<Props> {
       <OrderBook
         orderBook={orderBookStore.orderBook}
         currencyPair={currencyPairStore.currencyPair}
-        onBuyPriceClick={this.setOrderBuyPrice}
-        onSellPriceClick={this.setOrderSellPrice}
+        onPriceClick={this.setOrderPrice}
       />
     );
   }

@@ -19,10 +19,10 @@ const TradingPage = () => {
       </Paper>
       <Paper className={paper} variant="outlined">
         <Grid container>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={6}>
             <OrderBuyContainer />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={6}>
             <OrderSellContainer />
           </Grid>
         </Grid>
