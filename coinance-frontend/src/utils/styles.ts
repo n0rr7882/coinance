@@ -19,15 +19,19 @@ export const useSpacerStyles = makeStyles({
   },
 });
 
-export const highlightedRowStyles = (theme: Theme) => createStyles({
+export const useHighlightedRowStyles = (theme: Theme) => createStyles({
   highlightedDefault: {
-    transition: 'border-left 1s',
-    borderLeft: `5px solid ${theme.palette.background.paper}`,
+    transition: 'background 0.75s',
+    background: theme.palette.background.paper,
   },
   highlightedUp: {
-    borderLeft: `5px solid ${theme.palette.secondary.main}`,
+    background: theme.palette.type === 'light'
+      ? theme.palette.secondary.light
+      : theme.palette.secondary.dark,
   },
   highlightedDown: {
-    borderLeft: `5px solid ${theme.palette.primary.main}`,
+    background: theme.palette.type === 'light'
+      ? theme.palette.primary.light
+      : theme.palette.primary.dark,
   },
 });

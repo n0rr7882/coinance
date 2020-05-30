@@ -1,12 +1,12 @@
 import React from 'react';
-import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles } from '@material-ui/core';
+import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles, Button } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { observer } from 'mobx-react';
-import ButtonLink from '../common/ButtonLink';
 import TrendingChip from '../common/TrendingChip';
-import { highlightedRowStyles } from '../../utils/styles';
+import { useHighlightedRowStyles } from '../../utils/styles';
+import { Link } from 'react-router-dom';
 
-interface Props extends WithStyles<typeof highlightedRowStyles> {
+interface Props extends WithStyles<typeof useHighlightedRowStyles> {
   currencyPair: CurrencyPair;
 }
 
@@ -53,7 +53,7 @@ class MarketItem extends React.Component<Props, State> {
     this.setState(state => ({ ...state, highlightedUp: true }));
     this.timer = setTimeout(() => {
       this.setState(state => ({ ...state, highlightedUp: false }));
-    }, 1000);
+    }, 50);
   }
 
   private toggleHighlightedDown() {
@@ -61,7 +61,7 @@ class MarketItem extends React.Component<Props, State> {
     this.setState(state => ({ ...state, highlightedDown: true }));
     this.timer = setTimeout(() => {
       this.setState(state => ({ ...state, highlightedDown: false }))
-    }, 1000);
+    }, 50);
   }
 
   render() {
@@ -82,9 +82,11 @@ class MarketItem extends React.Component<Props, State> {
       <TableRow key={currencyPair.id} className={rowClass}>
         <TableCell component="th" scope="row">
           <Tooltip title={`${nameTo} / ${nameFrom}`}>
-            <ButtonLink to={`/trading/${currencyPair.id}`} variant="outlined">
-              <b>{symbolTo}/{symbolFrom}</b>
-            </ButtonLink>
+            <Link to={`/trading/${currencyPair.id}`}>
+              <Button variant="outlined">
+                <b>{symbolTo}/{symbolFrom}</b>
+              </Button>
+            </Link>
           </Tooltip>
         </TableCell>
         <TableCell align="right">
@@ -101,4 +103,4 @@ class MarketItem extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(highlightedRowStyles)(MarketItem);
+export default withStyles(useHighlightedRowStyles)(MarketItem);

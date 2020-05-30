@@ -5,7 +5,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
-import { AccountCircle, VpnKey, FormatListNumbered, MultilineChart, BrightnessMedium, Home, Tune, ExitToApp } from '@material-ui/icons';
+import { Home, Tune, ExitToApp, VpnKeyTwoTone, SettingsBrightnessTwoTone, AssessmentTwoTone, ListAltTwoTone, AccountBoxTwoTone } from '@material-ui/icons';
 import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
@@ -58,10 +58,13 @@ const AppBar: React.FC<IProps> = props => {
     props.toggleUserSettingDialog();
   }
 
-  const UserButton = (
+  const userButton = (
     <>
       <Button
-        size="small" color="inherit" startIcon={<AccountCircle />}
+        variant="outlined"
+        size="small"
+        color="inherit"
+        startIcon={<AccountBoxTwoTone />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
         {props.me?.setting.nickname || '환영합니다!'}
@@ -98,15 +101,19 @@ const AppBar: React.FC<IProps> = props => {
     </>
   );
 
-  const LoginButton = (
+  const loginButton = (
     <GoogleLogin
       render={props => (
         <Tooltip title="Google 계정으로 로그인하기">
           <span>
             <Button
-              size="small" color="inherit" startIcon={<VpnKey />}
-              onClick={props.onClick} disabled={props.disabled}
-            >로그인</Button>
+              variant="outlined"
+              size="small"
+              color="inherit"
+              startIcon={<VpnKeyTwoTone />}
+              onClick={props.onClick}
+              disabled={props.disabled}
+            >Google 계정으로 로그인</Button>
           </span>
         </Tooltip>
       )}
@@ -118,7 +125,7 @@ const AppBar: React.FC<IProps> = props => {
     />
   );
 
-  const AppBarButton = props.logined ? UserButton : LoginButton;
+  const appBarButton = props.logined ? userButton : loginButton;
 
   const switchTheme = () => {
     switchPaletteType();
@@ -129,32 +136,34 @@ const AppBar: React.FC<IProps> = props => {
     <div className={classes.root}>
       <MuiAppBar position="fixed">
         <Toolbar variant="dense">
-          <Typography variant="h6" className={classes.title}>
-            coinance
-          </Typography>
+          <Link to='/'>
+            <Typography variant="h6" className={classes.title}>
+              coinance
+            </Typography>
+          </Link>
           <span className={classes.spacer} />
           <Link to='/'>
             <Tooltip title="거래소 홈">
               <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <MultilineChart />
+                <AssessmentTwoTone />
               </IconButton>
             </Tooltip>
           </Link>
           <Link to='/ranking'>
             <Tooltip title="랭킹">
               <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <FormatListNumbered />
+                <ListAltTwoTone />
               </IconButton>
             </Tooltip>
           </Link>
           <Tooltip title="테마 변경">
             <IconButton color="inherit" size="small" className={classes.menuButton} onClick={switchTheme}>
-              <BrightnessMedium />
+              <SettingsBrightnessTwoTone />
             </IconButton>
           </Tooltip>
           {props.status === Status.pending
             ? <CircularProgress color="inherit" size={24} />
-            : AppBarButton}
+            : appBarButton}
         </Toolbar>
       </MuiAppBar>
     </div >

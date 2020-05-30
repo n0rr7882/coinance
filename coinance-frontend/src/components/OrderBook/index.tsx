@@ -3,9 +3,9 @@ import { OrderBook as OrderBookModel } from '../../models/order-book';
 import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, Grid, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { f } from '../../utils/number';
-import { highlightedRowStyles } from '../../utils/styles';
+import { useHighlightedRowStyles } from '../../utils/styles';
 
-interface OrderBookItemProps extends WithStyles<typeof highlightedRowStyles> {
+interface OrderBookItemProps extends WithStyles<typeof useHighlightedRowStyles> {
   isBuy: boolean;
   orderBookItem: Array<string | number>;
   onRowClick: () => void;
@@ -15,7 +15,7 @@ interface State {
   highlighted: boolean;
 }
 
-const OrderBookItem = withStyles(highlightedRowStyles)(
+const OrderBookItem = withStyles(useHighlightedRowStyles)(
   class extends React.Component<OrderBookItemProps> {
     private timer?: number;
 
@@ -54,7 +54,7 @@ const OrderBookItem = withStyles(highlightedRowStyles)(
       this.setState({ highlighted: true });
       this.timer = setTimeout(() => {
         this.setState({ highlighted: false });
-      }, 250);
+      }, 100);
     }
 
     render() {
@@ -96,9 +96,6 @@ const useOrderBookListStyles = makeStyles({
   container: {
     height: 360,
   },
-  table: {
-    borderCollapse: 'collapse',
-  },
 });
 
 const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orderBookList, onPriceClick }) => {
@@ -113,7 +110,7 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
       </CardContent>
       <Divider />
       <TableContainer className={classes.container}>
-        <Table size="small" stickyHeader className={classes.table}>
+        <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell align="right">가격</TableCell>

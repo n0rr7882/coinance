@@ -9,8 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import { CurrencyPair, Currency } from '../../models/currency-pair';
 import MarketItem from '../MarketItem';
 import { observer } from 'mobx-react';
-import { TableSortLabel, Typography, Button, Tooltip, ButtonGroup, LinearProgress, CardContent, Card, Grid } from '@material-ui/core';
+import { TableSortLabel, Typography, Button, Tooltip, ButtonGroup, CardContent, Card, Grid } from '@material-ui/core';
 import { Order, Status } from '../../models/common';
+import LoadingBackdrop from '../common/LoadingBackdrop';
 
 export enum MarketListTableColumn {
   symbol = 'Symbol',
@@ -152,7 +153,7 @@ const MarketList: React.FC<MarketListProps> = props => {
         onSelect={props.setSelectedCurrencyFrom}
         currenciesFrom={currenciesFromUnique}
       />
-      {props.status === Status.pending ? <LinearProgress /> : <></>}
+      <LoadingBackdrop open={props.status === Status.pending} />
       <TableContainer>
         <Table className={classes.table} aria-label="market list" stickyHeader>
           <TableHead>
