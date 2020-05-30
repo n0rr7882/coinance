@@ -105,7 +105,7 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
     <Card elevation={0}>
       <CardContent>
         <Typography variant="h5" component="h3">
-          {isBuy ? '매수' : '매도'} 호가
+          {isBuy ? '매수' : '매도'} 주문
         </Typography>
       </CardContent>
       <Divider />
@@ -145,7 +145,7 @@ const OrderBook: React.FC<Props> = props => (
   <Grid container>
     <Grid item xs={12} md={6}>
       <OrderBookList
-        isBuy={true}
+        isBuy={false}
         currencyPair={props.currencyPair}
         orderBookList={props.orderBook?.asks || []}
         onPriceClick={props.onBuyPriceClick}
@@ -153,7 +153,7 @@ const OrderBook: React.FC<Props> = props => (
     </Grid>
     <Grid item xs={12} md={6}>
       <OrderBookList
-        isBuy={false}
+        isBuy={true}
         currencyPair={props.currencyPair}
         orderBookList={props.orderBook?.bids || []}
         onPriceClick={props.onSellPriceClick}
