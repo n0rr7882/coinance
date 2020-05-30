@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
 import { ICommonParams } from '../models/common';
 import { Order, OrderForm } from '../models/order';
@@ -11,7 +12,7 @@ const ORDER_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/orders/`;
 
 class OrderRepository extends AuthenticatedRepository {
   protected api = axios.create({ baseURL: ORDER_API_ENTRY_POINT });
-  protected ws = new WebSocket(ORDER_WS_ENTRY_POINT);
+  protected ws = new ReconnectingWebSocket(ORDER_WS_ENTRY_POINT);
 
   public constructor() {
     super();

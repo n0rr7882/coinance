@@ -41,7 +41,7 @@ const Order: React.FC<OrderProps> = props => {
             {currencyToSymbol} {isBuy ? '매수' : '매도'}
           </Typography>
           <Typography variant="body2">
-            {isBuy ? `매수가능 ${currencyFromSymbol}` : `매도가능 ${currencyToSymbol}`}: <b>{f(props.wallet?.available_amount || 0)}</b>
+            {isBuy ? `매수가능 ${currencyFromSymbol}` : `매도가능 ${currencyToSymbol}`}: <b>{f(props.wallet?.available_amount || 0).toFixed(8)}</b>
           </Typography>
         </CardContent>
         <Divider />

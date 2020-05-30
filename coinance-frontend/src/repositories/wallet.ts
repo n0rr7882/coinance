@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { AuthenticatedRepository } from "./common";
 import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
 import { ICommonParams } from '../models/common';
@@ -11,7 +12,7 @@ const WALLET_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/wallets/`;
 
 class WalletRepository extends AuthenticatedRepository {
   protected api = axios.create({ baseURL: WALLET_API_ENTRY_POINT });
-  protected ws = new WebSocket(WALLET_WS_ENTRY_POINT);
+  protected ws = new ReconnectingWebSocket(WALLET_WS_ENTRY_POINT);
 
   public constructor() {
     super();

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
 import { ICommonParams } from '../models/common';
 import { CurrencyPair } from '../models/currency-pair';
@@ -8,7 +9,7 @@ const CURRENCY_PAIR_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/currency-pairs/
 
 class CurrencyPairRepository {
   private api = axios.create({ baseURL: CURRENCY_PAIR_API_ENTRY_POINT });
-  private ws = new WebSocket(CURRENCY_PAIR_WS_ENTRY_POINT);
+  private ws = new ReconnectingWebSocket(CURRENCY_PAIR_WS_ENTRY_POINT);
 
   public async get(id: number) {
     const res = await this.api.get<CurrencyPair>(`/${id}/`);
