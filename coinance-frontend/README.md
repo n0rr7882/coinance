@@ -1,4 +1,10 @@
+# Coinance frontend
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Installation
+
+* `.env.example` 을 참조하여 `.env` 를 frontend 프로젝트 루트에 생성합니다.
 
 ## Available Scripts
 
