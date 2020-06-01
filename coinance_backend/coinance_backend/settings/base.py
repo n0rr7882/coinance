@@ -68,7 +68,6 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
-    'django_celery_results',
     'django_celery_beat',
 
     'social_django',
@@ -297,10 +296,6 @@ SIMPLE_JWT = {
 # Celery
 
 CELERY_BROKER_URL = f'redis://{get_env_variable("REDIS_HOST")}:{get_env_variable("REDIS_PORT")}'
-
-CELERY_RESULT_BACKEND = 'django-db'
-
-CELERY_CACHE_BACKEND = 'django-cache'
 
 
 # Poloniex API
