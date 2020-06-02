@@ -46,11 +46,11 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
 
     @classmethod
     def is_exchange_rate_update_able(cls, poloniex_id: int) -> bool:
-        three_seconds_ago = datetime.now() - timedelta(seconds=3)
+        seconds_ago_for_throttle = datetime.now() - timedelta(seconds=3)
 
         return (
             cls.objects
             .filter(poloniex_id=poloniex_id)
-            .exclude(exchange_rate__modified__gt=three_seconds_ago)
+            .exclude(exchange_rate__modified__gt=seconds_ago_for_throttle)
             .exists()
         )
