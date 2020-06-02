@@ -3,6 +3,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core";
 export const usePaperStyles = makeStyles((theme: Theme) => ({
   paper: {
     margin: theme.spacing(2),
+    border: `1px solid ${theme.palette.primary.main}`
   },
 }));
 
@@ -26,12 +27,12 @@ export const useHighlightedRowStyles = (theme: Theme) => createStyles({
   },
   highlightedUp: {
     background: theme.palette.type === 'light'
-      ? theme.palette.secondary.light
-      : theme.palette.secondary.dark,
+      ? theme.palette.primary.light
+      : theme.palette.primary.dark,
   },
   highlightedDown: {
     background: theme.palette.type === 'light'
-      ? theme.palette.primary.light
-      : theme.palette.primary.dark,
+      ? theme.palette.secondary.light
+      : theme.palette.secondary.dark,
   },
 });

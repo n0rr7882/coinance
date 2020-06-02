@@ -5,7 +5,7 @@ import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button, Tooltip, CircularProgress, IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
-import { Home, Tune, ExitToApp, VpnKeyTwoTone, SettingsBrightnessTwoTone, AssessmentTwoTone, ListAltTwoTone, AccountBoxTwoTone } from '@material-ui/icons';
+import { Home, Tune, ExitToApp, AssessmentOutlined, ListAltOutlined, SettingsBrightnessOutlined, VpnKeyOutlined, AccountBoxOutlined } from '@material-ui/icons';
 import GoogleLogin from 'react-google-login';
 import { User } from '../../models/user';
 import { Status } from '../../models/common';
@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+    },
+    appBar: {
+      borderBottom: `5px solid ${theme.palette.primary.main}`,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface IProps {
+interface Props {
   login: (code: string) => void;
   logout: () => void;
   toggleUserSettingDialog: () => void;
@@ -44,7 +47,7 @@ interface IProps {
   me?: User;
 }
 
-const AppBar: React.FC<IProps> = props => {
+const AppBar: React.FC<Props> = props => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [userMenuanchorEl, setUserMenuAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -64,7 +67,7 @@ const AppBar: React.FC<IProps> = props => {
         variant="outlined"
         size="small"
         color="inherit"
-        startIcon={<AccountBoxTwoTone />}
+        startIcon={<AccountBoxOutlined />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
         {props.me?.setting.nickname || '환영합니다!'}
@@ -110,7 +113,7 @@ const AppBar: React.FC<IProps> = props => {
               variant="outlined"
               size="small"
               color="inherit"
-              startIcon={<VpnKeyTwoTone />}
+              startIcon={<VpnKeyOutlined />}
               onClick={props.onClick}
               disabled={props.disabled}
             >Google 계정으로 로그인</Button>
@@ -129,12 +132,17 @@ const AppBar: React.FC<IProps> = props => {
 
   const switchTheme = () => {
     switchPaletteType();
-    enqueueSnackbar(`테마가 ${getPaletteType()} 모드로 변경되었습니다. refresh 시 반영됩니다.`, { variant: 'info' });
+    enqueueSnackbar(`테마가 ${getPaletteType()} 모드로 변경되었습니다. refresh 시 반영됩니다.`);
   }
 
   return (
     <div className={classes.root}>
-      <MuiAppBar position="fixed">
+      <MuiAppBar
+        className={classes.appBar}
+        color="inherit"
+        position="fixed"
+        elevation={0}
+      >
         <Toolbar variant="dense">
           <Link to='/'>
             <Typography variant="h6" className={classes.title}>
@@ -145,20 +153,20 @@ const AppBar: React.FC<IProps> = props => {
           <Link to='/'>
             <Tooltip title="거래소 홈">
               <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <AssessmentTwoTone />
+                <AssessmentOutlined />
               </IconButton>
             </Tooltip>
           </Link>
           <Link to='/ranking'>
             <Tooltip title="랭킹">
               <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <ListAltTwoTone />
+                <ListAltOutlined />
               </IconButton>
             </Tooltip>
           </Link>
           <Tooltip title="테마 변경">
             <IconButton color="inherit" size="small" className={classes.menuButton} onClick={switchTheme}>
-              <SettingsBrightnessTwoTone />
+              <SettingsBrightnessOutlined />
             </IconButton>
           </Tooltip>
           {props.status === Status.pending

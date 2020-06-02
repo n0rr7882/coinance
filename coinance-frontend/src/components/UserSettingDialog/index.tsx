@@ -74,7 +74,9 @@ class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, 
             설정을 초기화하여 모의 투자를 새로 진행할 수 있습니다.
           </DialogContentText>
           <ConfirmButton
-            onClick={this.props.onDelete} color="secondary" variant="outlined"
+            onClick={this.props.onDelete}
+            color="secondary"
+            variant="outlined"
             dialogTitle="정말로 초기화하시겠습니까?"
             dialogContent="지금까지의 모든 투자 및 수익에 대한 기록이 삭제됩니다."
           >
@@ -104,8 +106,11 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
         본격적인 암호화폐 모의 투자를 위해 필요한 몇가지 정보를 입력해주세요.
       </DialogContentText>
       <TextField
-        autoFocus margin="dense" variant="outlined"
-        id="nickname" label="닉네임"
+        autoFocus
+        id="nickname"
+        margin="dense"
+        variant="outlined"
+        label="닉네임"
         value={props.userSetting.nickname}
         onChange={e => props.userSetting.nickname = e.target.value}
         error={!!props.errors?.response?.data.nickname}
@@ -125,8 +130,13 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
         helperText={props.errors?.response?.data.start_currency}
       />
       <TextField
-        autoFocus margin="dense" variant="outlined" fullWidth
-        id="start-amount" label="금액" type="tel"
+        fullWidth
+        autoFocus
+        id="start-amount"
+        margin="dense"
+        variant="outlined"
+        label="금액"
+        type="tel"
         value={props.userSetting.start_amount}
         onChange={e => props.userSetting.start_amount = Number(e.target.value)}
         error={!!props.errors?.response?.data.start_amount}
@@ -134,9 +144,14 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
       />
     </DialogContent>
     <DialogActions>
-      <Button onClick={props.onCreate} color="primary" variant="contained">
+      <Button
+        disableElevation
+        onClick={props.onCreate}
+        color="primary"
+        variant="contained"
+      >
         모의 투자 시작하기!
-        </Button>
+      </Button>
     </DialogActions>
   </>
 ));

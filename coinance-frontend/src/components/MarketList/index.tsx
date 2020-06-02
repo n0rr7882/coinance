@@ -72,8 +72,7 @@ const MarketListToolbar: React.FC<MarketListToolbarProps> = props => {
 
 const useMarketListStyles = makeStyles({
   table: {
-    minWidth: 650,
-    borderCollapse: 'collapse',
+    minWidth: 720,
   },
 });
 

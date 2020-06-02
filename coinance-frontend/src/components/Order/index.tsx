@@ -45,14 +45,15 @@ const Order: React.FC<OrderProps> = props => {
           </Typography>
         </CardContent>
         <Divider />
-        {props.control.status === Status.pending ? <LinearProgress color="secondary" /> : <></>}
+        {props.control.status === Status.pending ? <LinearProgress /> : <></>}
         <ErrorAlert open={props.status === Status.error} errors={props.errors} />
         <CardContent>
           <FormControl>
             <FormControlLabel
               control={(
                 <Switch
-                  name="useLastTradePrice" color="secondary"
+                  color={isBuy ? 'primary' : 'secondary'}
+                  name="useLastTradePrice"
                   checked={props.useMarketPrice}
                   onChange={e => props.setUseMarketPrice(e.target.checked)}
                 />
@@ -64,7 +65,11 @@ const Order: React.FC<OrderProps> = props => {
             </FormHelperText>
           </FormControl>
           <TextField
-            fullWidth variant="outlined" margin="dense" label="가격" type="tel"
+            fullWidth
+            variant="outlined"
+            margin="dense"
+            label="가격"
+            type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
@@ -74,7 +79,11 @@ const Order: React.FC<OrderProps> = props => {
             helperText={props.control.errors?.response?.data.price}
           />
           <TextField
-            fullWidth variant="outlined" margin="dense" label="수량" type="tel"
+            fullWidth
+            variant="outlined"
+            margin="dense"
+            label="수량"
+            type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyToSymbol}</InputAdornment>,
             }}
@@ -84,7 +93,12 @@ const Order: React.FC<OrderProps> = props => {
             helperText={props.control.errors?.response?.data.amount}
           />
           <TextField
-            fullWidth disabled variant="filled" margin="dense" label="총액" type="tel"
+            disabled
+            fullWidth
+            variant="filled"
+            margin="dense"
+            label="총액"
+            type="tel"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
@@ -94,13 +108,18 @@ const Order: React.FC<OrderProps> = props => {
         </CardContent>
         <CardActions>
           <Button
-            fullWidth variant="outlined" disableElevation
+            fullWidth
+            disableElevation
+            variant="outlined"
             onClick={props.setMaxAmount}
           >
             {isBuy ? '최대매수량' : '최대매도량'}
           </Button>
           <Button
-            fullWidth color={isBuy ? 'secondary' : 'primary'} variant="contained" disableElevation
+            fullWidth
+            disableElevation
+            variant="contained"
+            color={isBuy ? 'primary' : 'secondary'}
             onClick={props.create}
           >
             {isBuy ? '매수' : '매도'}

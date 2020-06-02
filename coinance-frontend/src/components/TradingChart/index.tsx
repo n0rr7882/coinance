@@ -23,8 +23,8 @@ import { AxiosError } from "axios";
 import ErrorAlert from "../common/ErrorAlert";
 
 const CHART_HEIGHT = 380;
-const CHART_TRENDING_UP_COLOR = '#ff1744';
-const CHART_TRENDING_DOWN_COLOR = '#304ffe';
+const CHART_TRENDING_UP_COLOR = '#26a69a';
+const CHART_TRENDING_DOWN_COLOR = '#ff5252';
 
 interface CandleChartProps {
   readonly data: CandleStick[];

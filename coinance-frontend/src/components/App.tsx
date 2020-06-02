@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   main: {
-    marginTop: 48,
+    marginTop: 53,
     paddingTop: 0.1,
   },
 });

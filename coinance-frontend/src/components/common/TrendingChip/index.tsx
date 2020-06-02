@@ -7,7 +7,7 @@ interface TrendingChipProps {
 }
 
 const TrendingChip: React.FC<TrendingChipProps> = ({ value }) => {
-  const color = value === 0 ? 'default' : value > 0 ? 'secondary' : 'primary';
+  const color = value === 0 ? 'default' : value > 0 ? 'primary' : 'secondary';
   const icon = value === 0 ? <TrendingFlat /> : value >= 0 ? <TrendingUp /> : <TrendingDown />;
   return <Chip label={`${value}%`} color={color} icon={icon} />;
 }

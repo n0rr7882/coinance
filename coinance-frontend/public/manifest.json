@@ -1,6 +1,6 @@
 {
   "short_name": "coinance",
-  "name": "coinance :: 암호화폐 모의 거래소",
+  "name": "COINANCE :: 암호화폐 모의 거래소",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#304ffe",
+  "theme_color": "#26a69a",
   "background_color": "#ffffff"
 }
