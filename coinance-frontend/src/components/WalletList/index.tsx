@@ -67,6 +67,7 @@ const WalletList: React.FC<WalletListProps> = props => {
 
   const composedWallets = props.wallets
     .filter(filterAmountExists)
+    .slice()
     .sort(sort);
 
   return (

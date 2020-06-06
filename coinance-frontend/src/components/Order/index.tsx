@@ -69,7 +69,7 @@ const Order: React.FC<OrderProps> = props => {
             variant="outlined"
             margin="dense"
             label="가격"
-            type="tel"
+            type="number"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}
@@ -83,7 +83,7 @@ const Order: React.FC<OrderProps> = props => {
             variant="outlined"
             margin="dense"
             label="수량"
-            type="tel"
+            type="number"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyToSymbol}</InputAdornment>,
             }}
@@ -98,7 +98,7 @@ const Order: React.FC<OrderProps> = props => {
             variant="filled"
             margin="dense"
             label="총액"
-            type="tel"
+            type="number"
             InputProps={{
               endAdornment: <InputAdornment position="end">{currencyFromSymbol}</InputAdornment>,
             }}

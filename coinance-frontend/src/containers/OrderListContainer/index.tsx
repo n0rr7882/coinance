@@ -25,6 +25,7 @@ export default class OrderListContainer extends React.Component<Props> {
     const orderStore = this.props.orderStore!;
 
     const composedOrders = orderStore.orders
+      .slice()
       .sort((a, b) => Number(b.created) - Number(a.created));
 
     return (

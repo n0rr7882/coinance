@@ -143,6 +143,7 @@ const MarketList: React.FC<MarketListProps> = props => {
   const composedCurrencyPairs = props.currencyPairs
     .filter(filterExchangeRateExists)
     .filter(filterSelectedCurrencyFrom)
+    .slice()
     .sort(sort);
 
   return (

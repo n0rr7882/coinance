@@ -16,7 +16,7 @@ export class Order {
   public readonly id?: number;
   @observable public currency_pair: CurrencyPair;
   @observable public order_type: OrderType;
-  @observable public status?: OrderStatus;
+  @observable public status: OrderStatus;
   @observable public price: number;
   @observable public amount: number;
   public readonly traded?: Date;

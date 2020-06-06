@@ -5,11 +5,11 @@ import MarketList, { MarketListTableColumn } from '../../components/MarketList';
 import { Order } from '../../models/common';
 import { Currency } from '../../models/currency-pair';
 
-interface IProps {
+interface Props {
   currencyPairStore?: CurrencyPairStore;
 }
 
-interface IState {
+interface State {
   order: Order;
   orderBy: string;
   selectedCurrencyFrom?: Currency;
@@ -17,25 +17,25 @@ interface IState {
 
 @inject('currencyPairStore')
 @observer
-export default class MarketListContainer extends React.Component<IProps, IState> {
-  state: IState = {
+export default class MarketListContainer extends React.Component<Props, State> {
+  state: State = {
     order: 'desc',
     orderBy: MarketListTableColumn.volume,
   };
 
-  public setOrder(order: Order) {
+  private setOrder(order: Order) {
     this.setState({ ...this.state, order });
   }
 
-  public setOrderBy(orderBy: string) {
+  private setOrderBy(orderBy: string) {
     this.setState({ ...this.state, orderBy });
   }
 
-  public setSelectedCurrencyFrom(currency?: Currency) {
+  private setSelectedCurrencyFrom(currency?: Currency) {
     this.setState({ ...this.state, selectedCurrencyFrom: currency });
   }
 
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super(props);
     this.setOrder = this.setOrder.bind(this);
     this.setOrderBy = this.setOrderBy.bind(this);

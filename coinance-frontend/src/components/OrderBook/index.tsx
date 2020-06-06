@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrderBook as OrderBookModel } from '../../models/order-book';
-import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, Grid, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { f } from '../../utils/number';
 import { useHighlightedRowStyles } from '../../utils/styles';
@@ -60,24 +60,24 @@ const OrderBookItem = withStyles(useHighlightedRowStyles)(
     render() {
       const { classes, isBuy, orderBookItem } = this.props;
 
+      const color = isBuy ? 'primary' : 'secondary';
       const price = Number(orderBookItem[0]);
       const amountCurrencyTo = Number(orderBookItem[1]);
       const amountCurrencyFrom = f(price * amountCurrencyTo);
 
-      const rowClass = isBuy
-        ? this.state.highlighted ? classes.highlightedUp : classes.highlightedDefault
-        : this.state.highlighted ? classes.highlightedDown : classes.highlightedDefault;
+      const rowClass = this.state.highlighted ? classes.highlightedNormal : classes.highlightedDefault;
 
       return (
         <TableRow onClick={this.props.onRowClick} className={rowClass}>
-          <TableCell align="right">
-            {price.toFixed(8)}
+          <TableCell align="left">
+            <Typography color={color}>
+              {price.toFixed(8)}
+            </Typography>
           </TableCell>
           <TableCell align="right">
-            {amountCurrencyTo.toFixed(8)}
-          </TableCell>
-          <TableCell align="right">
-            {amountCurrencyFrom.toFixed(8)}
+            <Typography color={color}>
+              {amountCurrencyFrom.toFixed(8)}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -86,9 +86,9 @@ const OrderBookItem = withStyles(useHighlightedRowStyles)(
 );
 
 interface OrderBookListProps {
-  isBuy: boolean;
   currencyPair?: CurrencyPair;
-  orderBookList: Array<Array<string | number>>;
+  asks: Array<Array<string | number>>;
+  bids: Array<Array<string | number>>;
   onPriceClick: (price: number) => void;
 }
 
@@ -98,14 +98,14 @@ const useOrderBookListStyles = makeStyles({
   },
 });
 
-const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orderBookList, onPriceClick }) => {
+const OrderBookList: React.FC<OrderBookListProps> = ({ currencyPair, asks, bids, onPriceClick }) => {
   const classes = useOrderBookListStyles();
 
   return (
     <Card elevation={0}>
       <CardContent>
         <Typography variant="h5" component="h3">
-          {isBuy ? '매수' : '매도'} 주문
+          주문 장부
         </Typography>
       </CardContent>
       <Divider />
@@ -113,16 +113,23 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ isBuy, currencyPair, orde
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell align="right">가격</TableCell>
-              <TableCell align="right">{currencyPair?.currency_to.symbol || '...'}</TableCell>
-              <TableCell align="right">{currencyPair?.currency_from.symbol || '...'}</TableCell>
+              <TableCell align="left">가격</TableCell>
+              <TableCell align="right">총액({currencyPair?.currency_from.symbol || '...'})</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orderBookList.map(orderBookItem => (
+            {bids.slice().reverse().map(orderBookItem => (
               <OrderBookItem
                 key={orderBookItem[0]}
-                isBuy={isBuy}
+                isBuy={true}
+                orderBookItem={orderBookItem}
+                onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
+              />
+            ))}
+            {asks.map(orderBookItem => (
+              <OrderBookItem
+                key={orderBookItem[0]}
+                isBuy={false}
                 orderBookItem={orderBookItem}
                 onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
               />
@@ -141,24 +148,12 @@ interface Props {
 }
 
 const OrderBook: React.FC<Props> = props => (
-  <Grid container>
-    <Grid item xs={6}>
-      <OrderBookList
-        isBuy={false}
-        currencyPair={props.currencyPair}
-        orderBookList={props.orderBook?.asks || []}
-        onPriceClick={props.onPriceClick}
-      />
-    </Grid>
-    <Grid item xs={6}>
-      <OrderBookList
-        isBuy={true}
-        currencyPair={props.currencyPair}
-        orderBookList={props.orderBook?.bids || []}
-        onPriceClick={props.onPriceClick}
-      />
-    </Grid>
-  </Grid>
-)
+  <OrderBookList
+    currencyPair={props.currencyPair}
+    asks={props.orderBook?.asks || []}
+    bids={props.orderBook?.bids || []}
+    onPriceClick={props.onPriceClick}
+  />
+);
 
 export default OrderBook;

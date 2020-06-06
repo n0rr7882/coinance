@@ -32,6 +32,7 @@ export default class OrderListCurrencyContainer extends React.Component<Props> {
     const currencyPairId = Number(routerStore.location.pathname.split('/').filter(i => i !== '').pop());
     const composedOrders = orderStore.orders
       .filter(o => o.currency_pair.id === currencyPairId)
+      .slice()
       .sort((a, b) => Number(b.created) - Number(a.created));
 
     return (

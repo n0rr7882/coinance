@@ -13,7 +13,7 @@ import { lastVisibleItemBasedZoomAnchor } from "react-financial-charts/lib/utils
 import { CandleStick, ChartType } from "../../models/candle-chart";
 import withSize from "../../utils/hoc/with-size";
 import { observer } from "mobx-react";
-import { Card, Button, CardActions, Typography, CardContent, ButtonGroup, Divider, Table, TableRow, TableBody, TableHead, TableCell, Chip, TableContainer, makeStyles, Theme } from "@material-ui/core";
+import { Card, Button, CardActions, Typography, CardContent, ButtonGroup, Divider, Table, TableRow, TableBody, TableHead, TableCell, TableContainer, makeStyles, Theme } from "@material-ui/core";
 import { CurrencyPair } from "../../models/currency-pair";
 import { Skeleton } from "@material-ui/lab";
 import { useTitleStyles } from "../../utils/styles";
@@ -319,8 +319,6 @@ const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = observer(({ c
   const lowestTradePrice24h = currencyPair.exchange_rate.lowest_trade_price_24h;
   const baseVolume24h = currencyPair.exchange_rate.base_volume_24h;
   const quoteVolume24h = currencyPair.exchange_rate.quote_volume_24h;
-  const symbolFrom = currencyPair.currency_from.symbol;
-  const symbolTo = currencyPair.currency_to.symbol;
 
   return (
     <TableContainer>
@@ -338,22 +336,22 @@ const CurrencyPairInfo: React.FC<{ currencyPair: CurrencyPair }> = observer(({ c
         <TableBody>
           <TableRow>
             <TableCell align="right">
-              <b>{lastTradePrice.toFixed(8)}</b> <Chip variant="outlined" size="small" label={symbolFrom} />
+              <b>{lastTradePrice.toFixed(8)}</b>
             </TableCell>
             <TableCell>
               <TrendingChip value={changeRate24h} />
             </TableCell>
             <TableCell align="right">
-              {highestTradePrice24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+              {highestTradePrice24h.toFixed(8)}
             </TableCell>
             <TableCell align="right">
-              {lowestTradePrice24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+              {lowestTradePrice24h.toFixed(8)}
             </TableCell>
             <TableCell align="right">
-              {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+              {baseVolume24h.toFixed(8)}
             </TableCell>
             <TableCell align="right">
-              {quoteVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolTo} />
+              {quoteVolume24h.toFixed(8)}
             </TableCell>
           </TableRow>
         </TableBody>

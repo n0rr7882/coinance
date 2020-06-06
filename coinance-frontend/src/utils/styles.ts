@@ -1,8 +1,14 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 
+export const useContainerStyles = makeStyles((theme: Theme) => ({
+  container: {
+    padding: theme.spacing(1),
+  },
+}));
+
 export const usePaperStyles = makeStyles((theme: Theme) => ({
   paper: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     border: `1px solid ${theme.palette.primary.main}`
   },
 }));
@@ -34,5 +40,8 @@ export const useHighlightedRowStyles = (theme: Theme) => createStyles({
     background: theme.palette.type === 'light'
       ? theme.palette.secondary.light
       : theme.palette.secondary.dark,
+  },
+  highlightedNormal: {
+    background: theme.palette.background.default,
   },
 });

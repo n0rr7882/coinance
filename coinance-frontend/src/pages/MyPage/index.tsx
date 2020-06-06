@@ -1,20 +1,27 @@
 import React from 'react';
 import WalletListContainer from '../../containers/WalletListContainer';
-import { Container, Paper } from '@material-ui/core';
-import { usePaperStyles } from '../../utils/styles';
+import { Container, Paper, Grid } from '@material-ui/core';
+import { usePaperStyles, useContainerStyles } from '../../utils/styles';
 import OrderListContainer from '../../containers/OrderListContainer';
 
 const MyPage = () => {
+  const { container } = useContainerStyles();
   const { paper } = usePaperStyles();
 
   return (
-    <Container maxWidth="lg">
-      <Paper className={paper} variant="outlined">
-        <WalletListContainer />
-      </Paper>
-      <Paper className={paper} variant="outlined">
-        <OrderListContainer />
-      </Paper>
+    <Container maxWidth="lg" className={container}>
+      <Grid container>
+        <Grid item md={6} xs={12}>
+          <Paper className={paper} variant="outlined">
+            <WalletListContainer />
+          </Paper>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <Paper className={paper} variant="outlined">
+            <OrderListContainer />
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
   );
 };

@@ -136,7 +136,7 @@ const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer
         margin="dense"
         variant="outlined"
         label="금액"
-        type="tel"
+        type="number"
         value={props.userSetting.start_amount}
         onChange={e => props.userSetting.start_amount = Number(e.target.value)}
         error={!!props.errors?.response?.data.start_amount}
