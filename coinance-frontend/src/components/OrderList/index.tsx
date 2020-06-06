@@ -104,7 +104,7 @@ const OrderList: React.FC<OrderListProps> = ({ status, errors, showCurrency, ord
           </TableHead>
           <TableBody>
             {orders.length === 0
-              ? <TableRow><TableCell align="center" colSpan={showCurrency ? 3 : 2}>거래내역이 없습니다.</TableCell></TableRow>
+              ? <TableRow><TableCell align="center" colSpan={showCurrency ? 3 : 2}><Typography>거래내역이 없습니다.</Typography></TableCell></TableRow>
               : orders.map(order => (
                 <OrderItem key={order.id} showCurrency={showCurrency} order={order} onCancel={onCancel} />
               ))}

@@ -11,4 +11,5 @@ class CurrencySerializer(serializers.ModelSerializer):
             'poloniex_id',
             'symbol',
             'name',
+            'maximum_amount_for_start',
         ]

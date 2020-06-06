@@ -11,10 +11,12 @@ class CurrencyAdmin(admin.ModelAdmin):
         'symbol',
         'name',
         'available_for_start',
+        'maximum_amount_for_start',
     ]
     list_editable = [
         'name',
         'available_for_start',
+        'maximum_amount_for_start',
     ]
     list_filter = [
         'available_for_start',

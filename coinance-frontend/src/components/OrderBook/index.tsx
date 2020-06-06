@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrderBook as OrderBookModel } from '../../models/order-book';
-import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles, Button, Tooltip } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { f } from '../../utils/number';
 import { useHighlightedRowStyles } from '../../utils/styles';
@@ -68,11 +68,19 @@ const OrderBookItem = withStyles(useHighlightedRowStyles)(
       const rowClass = this.state.highlighted ? classes.highlightedNormal : classes.highlightedDefault;
 
       return (
-        <TableRow onClick={this.props.onRowClick} className={rowClass}>
+        <TableRow className={rowClass}>
           <TableCell align="left">
-            <Typography color={color}>
-              {price.toFixed(8)}
-            </Typography>
+            <Tooltip title={`${price.toFixed(8)} 로 거래창 가격 채우기`} placement="right">
+              <Button
+                color={color}
+                onClick={this.props.onRowClick}
+                size="small"
+                variant="contained"
+                disableElevation
+              >
+                {price.toFixed(8)}
+              </Button>
+            </Tooltip>
           </TableCell>
           <TableCell align="right">
             <Typography color={color}>

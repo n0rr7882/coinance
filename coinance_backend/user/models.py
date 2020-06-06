@@ -18,6 +18,7 @@ class UserSetting(TimeStampedModel):
     nickname = models.CharField(
         verbose_name='닉네임',
         max_length=255,
+        unique=True,
     )
     start_currency = models.ForeignKey(
         verbose_name='초기자금 화폐',

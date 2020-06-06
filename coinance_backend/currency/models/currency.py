@@ -25,6 +25,13 @@ class Currency(TimeStampedModel, SoftDeletableModel):
         verbose_name='초기자금 선택 가능 여부',
         default=False,
     )
+    maximum_amount_for_start = models.DecimalField(
+        verbose_name='초기자금 최대 선택 가능 금액',
+        max_digits=20,
+        decimal_places=8,
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return f'{self.name}({self.symbol})'

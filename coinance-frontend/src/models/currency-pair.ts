@@ -5,12 +5,14 @@ export class Currency {
   public readonly poloniex_id: number;
   public readonly symbol: string;
   public readonly name: string;
+  public readonly maximum_amount_for_start?: number;
 
   constructor(data: Currency) {
     this.id = data.id;
     this.poloniex_id = data.poloniex_id;
     this.symbol = data.symbol;
     this.name = data.name;
+    this.maximum_amount_for_start = data.maximum_amount_for_start;
   }
 }
 
