@@ -88,7 +88,7 @@ const OrderList: React.FC<OrderListProps> = ({ status, errors, showCurrency, ord
     <Card elevation={0}>
       <CardContent>
         <Typography variant="h5" component="h3">
-          나의 거래내역
+          나의 주문내역
         </Typography>
       </CardContent>
       <Divider />

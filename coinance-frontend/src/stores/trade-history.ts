@@ -2,47 +2,47 @@ import { observable, action } from "mobx";
 import { CurrencyPair } from "../models/currency-pair";
 import { toMsTimestamp } from "../utils/timestamp";
 import { boundClass } from "autobind-decorator";
-import { OrderBook } from "../models/order-book";
-import { orderBookRepository } from "../repositories/order-book";
+import { TradeHistory } from "../models/trade-history";
+import { tradeHistoryRepository } from "../repositories/trade-history";
 
 @boundClass
-export default class OrderBookStore {
+export default class TradeHistoryStore {
   private FETCH_INTERVAL_MS = 500;
 
-  @observable public orderBook?: OrderBook;
+  @observable public tradeHistories: TradeHistory[] = [];
   @observable private subscribed: boolean = false;
   private timer: any;
 
   @action
-  private async loadOrderBook(currencyPair: CurrencyPair) {
+  private async loadTradeHistories(currencyPair: CurrencyPair) {
     try {
-      this.orderBook = await orderBookRepository.getOrderBook(currencyPair);
+      this.tradeHistories = await tradeHistoryRepository.getTradeHistories(currencyPair);
     } catch (e) {
       console.error(e);
     }
   }
 
-  private orderBookTimer(currencyPair: CurrencyPair) {
+  private tardeHistoriesTimer(currencyPair: CurrencyPair) {
     if (this.subscribed) {
-      this.loadOrderBook(currencyPair);
+      this.loadTradeHistories(currencyPair);
 
       const current = toMsTimestamp(new Date());
       const base = Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS
       const next = base + this.FETCH_INTERVAL_MS;
 
-      this.timer = setTimeout(() => this.orderBookTimer(currencyPair), (next - current));
+      this.timer = setTimeout(() => this.tardeHistoriesTimer(currencyPair), (next - current));
     }
   }
 
   private setDefaultState() {
-    this.orderBook = undefined;
+    this.tradeHistories = [];
   }
 
   @action
   public subscribe(currencyPair: CurrencyPair) {
     this.setDefaultState();
     this.subscribed = true;
-    this.orderBookTimer(currencyPair);
+    this.tardeHistoriesTimer(currencyPair);
   }
 
   @action

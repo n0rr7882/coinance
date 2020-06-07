@@ -70,7 +70,9 @@ const AppBar: React.FC<Props> = props => {
         startIcon={<AccountBoxOutlined />}
         onClick={e => setUserMenuAnchorEl(e.currentTarget)}
       >
-        {props.me?.setting.nickname || '환영합니다!'}
+        <Typography noWrap>
+         {props.me?.setting.nickname || '환영합니다!'}
+        </Typography>
       </Button>
       <Menu
         id="simple-menu"
@@ -116,7 +118,11 @@ const AppBar: React.FC<Props> = props => {
               startIcon={<VpnKeyOutlined />}
               onClick={props.onClick}
               disabled={props.disabled}
-            >Google 계정으로 로그인</Button>
+            >
+              <Typography noWrap>
+                Google 계정으로 로그인
+              </Typography>
+            </Button>
           </span>
         </Tooltip>
       )}

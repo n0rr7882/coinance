@@ -70,12 +70,6 @@ const MarketListToolbar: React.FC<MarketListToolbarProps> = props => {
   );
 }
 
-const useMarketListStyles = makeStyles({
-  table: {
-    minWidth: 720,
-  },
-});
-
 interface MarketListProps {
   status: Status;
   currencyPairs: CurrencyPair[];
@@ -88,8 +82,6 @@ interface MarketListProps {
 }
 
 const MarketList: React.FC<MarketListProps> = props => {
-  const classes = useMarketListStyles();
-
   const currenciesFrom = props.currencyPairs
     .map(currencyPair => currencyPair.currency_from);
 
@@ -155,7 +147,7 @@ const MarketList: React.FC<MarketListProps> = props => {
       />
       <LoadingBackdrop open={props.status === Status.pending} />
       <TableContainer>
-        <Table className={classes.table} aria-label="market list" stickyHeader>
+        <Table aria-label="market list" stickyHeader>
           <TableHead>
             <TableRow>
 
@@ -163,8 +155,11 @@ const MarketList: React.FC<MarketListProps> = props => {
                 <TableSortLabel
                   active={props.orderBy === MarketListTableColumn.symbol}
                   direction={props.order}
-                  onClick={() => setOrderBy(MarketListTableColumn.symbol)}>
-                  {MarketListTableColumn.symbol}
+                  onClick={() => setOrderBy(MarketListTableColumn.symbol)}
+                >
+                  <Typography noWrap>
+                    {MarketListTableColumn.symbol}
+                  </Typography>
                 </TableSortLabel>
               </TableCell>
 
@@ -172,8 +167,11 @@ const MarketList: React.FC<MarketListProps> = props => {
                 <TableSortLabel
                   active={props.orderBy === MarketListTableColumn.price}
                   direction={props.order}
-                  onClick={() => setOrderBy(MarketListTableColumn.price)}>
-                  {MarketListTableColumn.price}
+                  onClick={() => setOrderBy(MarketListTableColumn.price)}
+                >
+                  <Typography noWrap>
+                    {MarketListTableColumn.price}
+                  </Typography>
                 </TableSortLabel>
               </TableCell>
 
@@ -181,8 +179,11 @@ const MarketList: React.FC<MarketListProps> = props => {
                 <TableSortLabel
                   active={props.orderBy === MarketListTableColumn.changeRate}
                   direction={props.order}
-                  onClick={() => setOrderBy(MarketListTableColumn.changeRate)}>
-                  {MarketListTableColumn.changeRate}
+                  onClick={() => setOrderBy(MarketListTableColumn.changeRate)}
+                >
+                  <Typography noWrap>
+                    {MarketListTableColumn.changeRate}
+                  </Typography>
                 </TableSortLabel>
               </TableCell>
 
@@ -190,8 +191,11 @@ const MarketList: React.FC<MarketListProps> = props => {
                 <TableSortLabel
                   active={props.orderBy === MarketListTableColumn.volume}
                   direction={props.order}
-                  onClick={() => setOrderBy(MarketListTableColumn.volume)}>
-                  {MarketListTableColumn.volume}
+                  onClick={() => setOrderBy(MarketListTableColumn.volume)}
+                >
+                  <Typography noWrap>
+                    {MarketListTableColumn.volume}
+                  </Typography>
                 </TableSortLabel>
               </TableCell>
 

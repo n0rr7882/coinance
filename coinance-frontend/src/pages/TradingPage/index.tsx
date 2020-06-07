@@ -5,6 +5,7 @@ import { usePaperStyles, useContainerStyles } from '../../utils/styles';
 import OrderListCurrencyContainer from '../../containers/OrderListCurrencyContainer';
 import OrderBookContainer from '../../containers/OrderBookContainer';
 import OrderFormWrapper from '../../components/OrderFormWrapper';
+import TradeHistoryContainer from '../../containers/TradeHistoryContainer';
 
 
 
@@ -35,6 +36,13 @@ const TradingPage = () => {
         <Grid item md={6} xs={12}>
           <Paper className={paper} variant="outlined">
             <OrderListCurrencyContainer />
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper className={paper} variant="outlined">
+            <TradeHistoryContainer />
           </Paper>
         </Grid>
       </Grid>

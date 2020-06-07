@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles, Button } from '@material-ui/core';
+import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles, Button, Typography } from '@material-ui/core';
 import { CurrencyPair } from '../../models/currency-pair';
 import { observer } from 'mobx-react';
 import TrendingChip from '../common/TrendingChip';
@@ -90,13 +90,17 @@ class MarketItem extends React.Component<Props, State> {
           </Tooltip>
         </TableCell>
         <TableCell align="right">
-          {lastTradePrice.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+          <Typography component="span" noWrap>
+            {lastTradePrice.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+          </Typography>
         </TableCell>
         <TableCell align="right">
           <TrendingChip value={changeRate24h} />
         </TableCell>
         <TableCell align="right">
-          {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+          <Typography component="span" noWrap>
+            {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+          </Typography>
         </TableCell>
       </TableRow>
     );

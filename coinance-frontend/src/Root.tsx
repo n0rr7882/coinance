@@ -15,6 +15,7 @@ import { getPaletteType } from './utils/theme';
 import OrderStore from './stores/order';
 import WalletStore from './stores/wallet';
 import OrderBookStore from './stores/order-book';
+import TradeHistoryStore from './stores/trade-history';
 
 const browserHistory = createBrowserHistory();
 const routerStore = new RouterStore();
@@ -29,6 +30,7 @@ const stores = {
   orderStore: new OrderStore(),
   walletStore: new WalletStore(),
   orderBookStore: new OrderBookStore(),
+  tradeHistoryStore: new TradeHistoryStore(),
 }
 
 const theme = createMuiTheme({
