@@ -44,6 +44,12 @@ class CurrencyPair(TimeStampedModel, SoftDeletableModel):
     def to_ws_group_name(self) -> str:
         return f'currency-pair.{self.pk}'
 
+    @property
+    def exchange_rate_registered(self):
+        from currency.models import ExchangeRate
+
+        return ExchangeRate.objects.filter(currency_pair=self).exists()
+
     @classmethod
     def is_exchange_rate_update_able(cls, poloniex_id: int) -> bool:
         seconds_ago_for_throttle = datetime.now() - timedelta(seconds=3)

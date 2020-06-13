@@ -61,3 +61,9 @@ class Wallet(TimeStampedModel):
             - Decimal(str(amount_in_buying_transaction))
             - Decimal(str(amount_in_selling_transaction))
         )
+
+    @property
+    def aggregated_amount_to_start_currency_price(self) -> Decimal:
+        from trading.aggregations.wallet import aggregate_wallet_amount_to_start_currency_price
+
+        return aggregate_wallet_amount_to_start_currency_price(self)
