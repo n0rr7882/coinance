@@ -1,6 +1,6 @@
 import logging
 
-from decimal import Decimal
+from decimal import Decimal, ROUND_DOWN
 from queue import Queue
 from typing import List
 
@@ -14,7 +14,9 @@ def aggregate_wallet_amount_to_start_currency_price(wallet: Wallet):
     from_currency = wallet.currency
     to_currency = wallet.user.setting.start_currency
 
-    return wallet.amount / aggregate_weighted_price(from_currency, to_currency)
+    return (
+        wallet.amount / aggregate_weighted_price(from_currency, to_currency)
+    ).quantize(Decimal('0.00000001'), rounding=ROUND_DOWN)
 
 
 class WeightedPriceQueueData:

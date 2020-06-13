@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_DOWN
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -41,7 +41,7 @@ class Wallet(TimeStampedModel):
     @property
     def available_amount(self) -> Decimal:
         if self.amount == 0:
-            return Decimal('0')
+            return Decimal('0').quantize(Decimal('0.00000001'))
 
         amount_in_buying_transaction = (
             self.user.orders
@@ -60,7 +60,7 @@ class Wallet(TimeStampedModel):
             self.amount
             - Decimal(str(amount_in_buying_transaction))
             - Decimal(str(amount_in_selling_transaction))
-        )
+        ).quantize(Decimal('0.00000001'), rounding=ROUND_DOWN)
 
     @property
     def aggregated_amount_to_start_currency_price(self) -> Decimal:
