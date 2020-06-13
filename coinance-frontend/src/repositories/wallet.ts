@@ -3,7 +3,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { AuthenticatedRepository } from "./common";
 import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
 import { ICommonParams } from '../models/common';
-import { Wallet } from '../models/wallet';
+import { Wallet, WalletSummary } from '../models/wallet';
 import { getAuthToken } from '../utils/token';
 import { User } from '../models/user';
 
@@ -23,6 +23,12 @@ class WalletRepository extends AuthenticatedRepository {
     const res = await this.api.get<Wallet[]>('/', { params });
 
     return res.data.map(w => new Wallet(w));
+  }
+
+  public async summary() {
+    const res = await this.api.get<WalletSummary>('/summary/');
+
+    return new WalletSummary(res.data);
   }
 
   public subscribeWS() {

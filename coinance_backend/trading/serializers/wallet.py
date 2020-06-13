@@ -4,12 +4,14 @@ from rest_framework import serializers
 
 from currency.serializers.currency import CurrencySerializer
 from trading.models import Wallet
+from user.models import UserSetting
 
 
 class WalletSerializer(serializers.ModelSerializer):
     currency = CurrencySerializer()
     available_amount = serializers.SerializerMethodField()
     aggregated_amount_to_start_currency_price = serializers.SerializerMethodField()
+    start_currency = CurrencySerializer(source='user.setting.start_currency')
 
     class Meta:
         model = Wallet
@@ -19,6 +21,7 @@ class WalletSerializer(serializers.ModelSerializer):
             'amount',
             'available_amount',
             'aggregated_amount_to_start_currency_price',
+            'start_currency',
             'created',
             'modified',
         ]

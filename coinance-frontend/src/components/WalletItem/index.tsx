@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { Wallet } from "../../models/wallet";
 import { observer } from "mobx-react";
-import { TableRow, TableCell, Tooltip, Chip } from '@material-ui/core';
+import { TableRow, TableCell, Tooltip, Chip } from "@material-ui/core";
 
 interface IProps {
   wallet: Wallet;
@@ -11,19 +11,28 @@ interface IProps {
 class WalletItem extends React.Component<IProps> {
   render() {
     const { wallet } = this.props;
-    const symbol = wallet.currency.symbol;
-    const name = wallet.currency.name;
-    const amount = wallet.amount;
-
     return (
       <TableRow key={wallet.id}>
         <TableCell component="th" scope="row">
-          <Tooltip title={name}>
-            <b>{symbol}</b>
+          <Tooltip title={wallet.currency.name}>
+            <b>{wallet.currency.symbol}</b>
           </Tooltip>
         </TableCell>
         <TableCell align="right">
-          {amount} <Chip label={symbol} variant="outlined" size="small" />
+          {wallet.amount}{" "}
+          <Chip
+            label={wallet.currency.symbol}
+            variant="outlined"
+            size="small"
+          />
+        </TableCell>
+        <TableCell align="right">
+          {wallet.aggregated_amount_to_start_currency_price}{" "}
+          <Chip
+            label={wallet.start_currency.symbol}
+            variant="outlined"
+            size="small"
+          />
         </TableCell>
       </TableRow>
     );

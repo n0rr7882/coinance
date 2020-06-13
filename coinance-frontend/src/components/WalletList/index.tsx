@@ -8,6 +8,7 @@ import { observer } from 'mobx-react';
 export enum WalletListTableColumn {
   symbol = 'Symbol',
   amount = '보유량',
+  aggregatedAmountForStartCurrencyPrice = '보유량(초기자금기준)'
 }
 
 const WalletListToolbar: React.FC = () => {
@@ -35,7 +36,7 @@ interface WalletListProps {
   setOrderBy: (orderBy: string) => void;
 }
 
-const WalletList: React.FC<WalletListProps> = props => {
+const WalletList: React.FC<WalletListProps> = observer(props => {
   const classes = useWalletListStyles();
 
   const setOrderBy = (orderBy: string) => {
@@ -52,10 +53,11 @@ const WalletList: React.FC<WalletListProps> = props => {
         ? (a.currency.symbol > b.currency.symbol ? 0 : -1)
         : (a.currency.symbol < b.currency.symbol ? 0 : -1);
 
-    } else if (props.orderBy === WalletListTableColumn.amount) {
+    } else if (props.orderBy === WalletListTableColumn.aggregatedAmountForStartCurrencyPrice) {
       return props.order === 'asc'
-        ? (a.amount > b.amount ? 0 : -1)
-        : (a.amount < b.amount ? 0 : -1);
+        ? (a.aggregated_amount_to_start_currency_price > b.aggregated_amount_to_start_currency_price ? 0 : -1)
+        : (a.aggregated_amount_to_start_currency_price < b.aggregated_amount_to_start_currency_price ? 0 : -1);
+
     } else {
       return 0;
     }
@@ -88,12 +90,16 @@ const WalletList: React.FC<WalletListProps> = props => {
                 </TableSortLabel>
               </TableCell>
 
-              <TableCell align="right" sortDirection={props.orderBy === WalletListTableColumn.amount ? props.order : false}>
+              <TableCell align="right">
+                {WalletListTableColumn.amount}
+              </TableCell>
+
+              <TableCell align="right" sortDirection={props.orderBy === WalletListTableColumn.aggregatedAmountForStartCurrencyPrice ? props.order : false}>
                 <TableSortLabel
-                  active={props.orderBy === WalletListTableColumn.amount}
+                  active={props.orderBy === WalletListTableColumn.aggregatedAmountForStartCurrencyPrice}
                   direction={props.order}
-                  onClick={() => setOrderBy(WalletListTableColumn.amount)}>
-                  {WalletListTableColumn.amount}
+                  onClick={() => setOrderBy(WalletListTableColumn.aggregatedAmountForStartCurrencyPrice)}>
+                  {WalletListTableColumn.aggregatedAmountForStartCurrencyPrice}
                 </TableSortLabel>
               </TableCell>
 
@@ -108,6 +114,6 @@ const WalletList: React.FC<WalletListProps> = props => {
       </TableContainer>
     </Card>
   );
-}
+});
 
-export default observer(WalletList);
+export default WalletList;
