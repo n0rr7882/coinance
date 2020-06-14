@@ -6,6 +6,7 @@ import TradingPage from '../pages/TradingPage';
 import RankingPage from '../pages/RankingPage';
 import MyPage from '../pages/MyPage';
 import { makeStyles } from '@material-ui/core';
+import AuthenticatedRoute from './common/AuthenticatedRoute';
 
 const useStyles = makeStyles({
   main: {
@@ -22,9 +23,9 @@ export default function App() {
       <AppBarContainer />
       <div className={classes.main}>
         <Switch>
+          <AuthenticatedRoute path="/mypage" component={MyPage} />
           <Route path="/trading/:id" component={TradingPage} />
           <Route path="/ranking" component={RankingPage} />
-          <Route path="/mypage" component={MyPage} />
           <Route path="/" component={IndexPage} />
         </Switch>
       </div>
