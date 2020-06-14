@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { COINANCE_API_ENTRY_POINT } from '../constants';
-import { User } from '../models/user';
-import { getAuthToken } from '../utils/token';
+import axios from "axios";
+import { COINANCE_API_ENTRY_POINT } from "../constants";
+import { User } from "../models/user";
+import { getAuthToken } from "../utils/token";
 
 const USER_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/users`;
 
@@ -32,7 +32,6 @@ class UserRepository {
     const headers = { authorization: `Bearer ${getAuthToken().access}` };
     await this.api.delete(`/${user.id}/`, { headers });
   }
-
 }
 
 export const userRepository = new UserRepository();

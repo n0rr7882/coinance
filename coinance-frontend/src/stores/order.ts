@@ -7,7 +7,6 @@ import { User } from "../models/user";
 import { boundClass } from "autobind-decorator";
 import { CurrencyPair } from "../models/currency-pair";
 
-
 const initializeOrderForm = (orderType: OrderType): OrderForm => ({
   order_type: orderType,
   price: 0,
@@ -43,7 +42,7 @@ export default class OrderStore {
 
   @action
   public async updateOrder(order: Order) {
-    const index = this.orders.findIndex(o => o.id === order.id);
+    const index = this.orders.findIndex((o) => o.id === order.id);
     if (index === -1) {
       this.orders.push(order);
     } else {

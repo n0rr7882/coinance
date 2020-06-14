@@ -1,11 +1,28 @@
-import React from 'react';
-import { TradeHistory as TradeHistoryModel } from '../../models/trade-history';
-import { CurrencyPair } from '../../models/currency-pair';
-import { Card, CardContent, Typography, Divider, TableContainer, TableHead, Table, TableRow, TableCell, makeStyles, WithStyles, withStyles, TableBody, Tooltip, Button } from '@material-ui/core';
-import { useHighlightedRowStyles } from '../../utils/styles';
-import { OrderType } from '../../models/order';
+import React from "react";
+import { TradeHistory as TradeHistoryModel } from "../../models/trade-history";
+import { CurrencyPair } from "../../models/currency-pair";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableCell,
+  makeStyles,
+  WithStyles,
+  withStyles,
+  TableBody,
+  Tooltip,
+  Button,
+} from "@material-ui/core";
+import { useHighlightedRowStyles } from "../../utils/styles";
+import { OrderType } from "../../models/order";
 
-interface TradeHistoryItemProps extends WithStyles<typeof useHighlightedRowStyles> {
+interface TradeHistoryItemProps
+  extends WithStyles<typeof useHighlightedRowStyles> {
   tradeHistory: TradeHistoryModel;
   onRowClick: () => void;
 }
@@ -50,8 +67,11 @@ const TradeHistoryItem = withStyles(useHighlightedRowStyles)(
     render() {
       const { classes, tradeHistory } = this.props;
 
-      const color = tradeHistory.type === OrderType.buy ? 'primary' : 'secondary';
-      const rowClass = this.state.highlighted ? classes.highlightedNormal : classes.highlightedDefault;
+      const color =
+        tradeHistory.type === OrderType.buy ? "primary" : "secondary";
+      const rowClass = this.state.highlighted
+        ? classes.highlightedNormal
+        : classes.highlightedDefault;
 
       return (
         <TableRow className={rowClass}>
@@ -61,7 +81,10 @@ const TradeHistoryItem = withStyles(useHighlightedRowStyles)(
             </Typography>
           </TableCell>
           <TableCell align="left">
-            <Tooltip title={`${tradeHistory.rate.toFixed(8)} 로 거래창 가격 채우기`} placement="right">
+            <Tooltip
+              title={`${tradeHistory.rate.toFixed(8)} 로 거래창 가격 채우기`}
+              placement="right"
+            >
               <Button
                 color={color}
                 onClick={this.props.onRowClick}
@@ -89,7 +112,6 @@ const TradeHistoryItem = withStyles(useHighlightedRowStyles)(
   }
 );
 
-
 interface Props {
   tradeHistories: TradeHistoryModel[];
   currencyPair?: CurrencyPair;
@@ -102,7 +124,11 @@ const useTradeHistoryStyles = makeStyles({
   },
 });
 
-const TradeHistory: React.FC<Props> = ({ tradeHistories, currencyPair, onPriceClick }) => {
+const TradeHistory: React.FC<Props> = ({
+  tradeHistories,
+  currencyPair,
+  onPriceClick,
+}) => {
   const classes = useTradeHistoryStyles();
 
   return (
@@ -119,12 +145,16 @@ const TradeHistory: React.FC<Props> = ({ tradeHistories, currencyPair, onPriceCl
             <TableRow>
               <TableCell align="left">체결일시(UTC)</TableCell>
               <TableCell align="left">가격</TableCell>
-              <TableCell align="right">수량({currencyPair?.currency_to.symbol || '...'})</TableCell>
-              <TableCell align="right">총액({currencyPair?.currency_from.symbol || '...'})</TableCell>
+              <TableCell align="right">
+                수량({currencyPair?.currency_to.symbol || "..."})
+              </TableCell>
+              <TableCell align="right">
+                총액({currencyPair?.currency_from.symbol || "..."})
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {tradeHistories.map(tradeHistory => (
+            {tradeHistories.map((tradeHistory) => (
               <TradeHistoryItem
                 key={tradeHistory.globalTradeID}
                 tradeHistory={tradeHistory}

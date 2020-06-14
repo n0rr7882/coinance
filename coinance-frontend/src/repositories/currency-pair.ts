@@ -1,8 +1,11 @@
-import axios from 'axios';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
-import { ICommonParams } from '../models/common';
-import { CurrencyPair } from '../models/currency-pair';
+import axios from "axios";
+import ReconnectingWebSocket from "reconnecting-websocket";
+import {
+  COINANCE_API_ENTRY_POINT,
+  COINANCE_WS_ENTRY_POINT,
+} from "../constants";
+import { ICommonParams } from "../models/common";
+import { CurrencyPair } from "../models/currency-pair";
 
 const CURRENCY_PAIR_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/currency/currency-pairs`;
 const CURRENCY_PAIR_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/currency-pairs/`;
@@ -18,14 +21,14 @@ class CurrencyPairRepository {
   }
 
   public async list(params: ICommonParams) {
-    const res = await this.api.get<CurrencyPair[]>('/', { params });
+    const res = await this.api.get<CurrencyPair[]>("/", { params });
 
-    return res.data.map(c => new CurrencyPair(c));
+    return res.data.map((c) => new CurrencyPair(c));
   }
 
   public subscribeWS(currencyPair: CurrencyPair) {
     const payload = JSON.stringify({
-      type: 'subscription',
+      type: "subscription",
       currency_pair_id: currencyPair.id,
     });
     this.sendWS(payload);
@@ -33,7 +36,7 @@ class CurrencyPairRepository {
 
   public unsubscribeWS(currencyPair: CurrencyPair) {
     const payload = JSON.stringify({
-      type: 'unsubscription',
+      type: "unsubscription",
       currency_pair_id: currencyPair.id,
     });
     this.sendWS(payload);
@@ -48,14 +51,16 @@ class CurrencyPairRepository {
   }
 
   public addHandlerWS(handler: (currencyPair: CurrencyPair) => void) {
-    this.ws.onmessage = event => {
-      const raw: { type: string, data: CurrencyPair } = JSON.parse(event.data.toString());
+    this.ws.onmessage = (event) => {
+      const raw: { type: string; data: CurrencyPair } = JSON.parse(
+        event.data.toString()
+      );
 
-      if (raw.type === 'update_exchange_rate') {
+      if (raw.type === "update_exchange_rate") {
         const currencyPair = new CurrencyPair(raw.data);
         handler(currencyPair);
       }
-    }
+    };
   }
 }
 

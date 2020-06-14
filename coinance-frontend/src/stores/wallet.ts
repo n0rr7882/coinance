@@ -18,7 +18,7 @@ export default class WalletStore {
 
   @action
   public async updateWallet(wallet: Wallet) {
-    const index = this.wallets.findIndex(w => w.id === wallet.id);
+    const index = this.wallets.findIndex((w) => w.id === wallet.id);
     if (index === -1) {
       this.wallets.push(wallet);
     } else {

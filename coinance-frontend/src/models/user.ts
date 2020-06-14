@@ -35,7 +35,7 @@ export class User {
     this.email = data.email;
     this.setting = data.setting
       ? new UserSetting(data.setting)
-      : new UserSetting({ nickname: '', start_currency: 0, start_amount: 0 });
+      : new UserSetting({ nickname: "", start_currency: 0, start_amount: 0 });
     this.is_staff = data.is_staff;
     this.is_active = data.is_active;
     this.is_superuser = data.is_superuser;

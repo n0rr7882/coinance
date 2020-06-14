@@ -27,10 +27,14 @@ export default class OrderBookStore {
       this.loadOrderBook(currencyPair);
 
       const current = toMsTimestamp(new Date());
-      const base = Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS
+      const base =
+        Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS;
       const next = base + this.FETCH_INTERVAL_MS;
 
-      this.timer = setTimeout(() => this.orderBookTimer(currencyPair), (next - current));
+      this.timer = setTimeout(
+        () => this.orderBookTimer(currencyPair),
+        next - current
+      );
     }
   }
 

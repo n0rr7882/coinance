@@ -1,8 +1,15 @@
-import React from 'react';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, FormHelperText } from '@material-ui/core';
-import { Currency } from '../../models/currency-pair';
-import { currencyRepository } from '../../repositories/currency';
-import { boundClass } from 'autobind-decorator';
+import React from "react";
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormHelperText,
+} from "@material-ui/core";
+import { Currency } from "../../models/currency-pair";
+import { currencyRepository } from "../../repositories/currency";
+import { boundClass } from "autobind-decorator";
 
 interface StartCurrencyFieldProps {
   value: number;
@@ -16,13 +23,18 @@ interface StartCurrencyFieldState {
 }
 
 @boundClass
-export default class StartCurrencyField extends React.Component<StartCurrencyFieldProps, StartCurrencyFieldState> {
+export default class StartCurrencyField extends React.Component<
+  StartCurrencyFieldProps,
+  StartCurrencyFieldState
+> {
   state: StartCurrencyFieldState = {
     currencies: [],
-  }
+  };
 
   async componentDidMount() {
-    const currencies = await currencyRepository.list({ available_for_start: true });
+    const currencies = await currencyRepository.list({
+      available_for_start: true,
+    });
     this.setState({ currencies });
   }
 
@@ -34,12 +46,21 @@ export default class StartCurrencyField extends React.Component<StartCurrencyFie
     return (
       <FormControl component="fieldset" error={this.props.error}>
         <FormLabel component="legend">화폐</FormLabel>
-        <RadioGroup area-label="currency" name="start-currency" value={this.props.value} onChange={this.onChange}>
-          {this.state.currencies.map(c => (
+        <RadioGroup
+          area-label="currency"
+          name="start-currency"
+          value={this.props.value}
+          onChange={this.onChange}
+        >
+          {this.state.currencies.map((c) => (
             <FormControlLabel
               key={c.id}
               value={c.id}
-              control={<Radio color={this.props.value === c.id ? 'primary' : 'default'} />}
+              control={
+                <Radio
+                  color={this.props.value === c.id ? "primary" : "default"}
+                />
+              }
               label={`${c.name}(${c.symbol})`}
               labelPlacement="end"
             />

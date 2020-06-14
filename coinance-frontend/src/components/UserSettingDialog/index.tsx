@@ -1,22 +1,30 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, LinearProgress } from '@material-ui/core';
-import { Status, IErrorData } from '../../models/common';
-import { AxiosError } from 'axios';
-import { UserSetting } from '../../models/user';
-import ErrorAlert from '../common/ErrorAlert';
-import { observer } from 'mobx-react';
-import StartCurrencyField from '../StartCurrencyField';
-import { Currency } from '../../models/currency-pair';
-import { currencyRepository } from '../../repositories/currency';
-import ConfirmButton from '../common/ConfirmButton';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Skeleton from "@material-ui/lab/Skeleton";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  LinearProgress,
+} from "@material-ui/core";
+import { Status, IErrorData } from "../../models/common";
+import { AxiosError } from "axios";
+import { UserSetting } from "../../models/user";
+import ErrorAlert from "../common/ErrorAlert";
+import { observer } from "mobx-react";
+import StartCurrencyField from "../StartCurrencyField";
+import { Currency } from "../../models/currency-pair";
+import { currencyRepository } from "../../repositories/currency";
+import ConfirmButton from "../common/ConfirmButton";
 
 interface UserSettingShowDialogProps {
   userSetting: UserSetting;
@@ -28,13 +36,18 @@ interface UserSettingShowDialogState {
   startCurrency?: Currency;
 }
 
-class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, UserSettingShowDialogState> {
+class UserSettingShowDialog extends React.Component<
+  UserSettingShowDialogProps,
+  UserSettingShowDialogState
+> {
   state: UserSettingShowDialogState = {
     startCurrency: undefined,
   };
 
   async componentDidMount() {
-    const startCurrency = await currencyRepository.one(this.props.userSetting.start_currency);
+    const startCurrency = await currencyRepository.one(
+      this.props.userSetting.start_currency
+    );
     this.setState({ startCurrency });
   }
 
@@ -42,9 +55,7 @@ class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, 
     return (
       <>
         <DialogContent>
-          <DialogContentText>
-            설정하신 정보입니다.
-          </DialogContentText>
+          <DialogContentText>설정하신 정보입니다.</DialogContentText>
           <TableContainer>
             <Table>
               <TableHead>
@@ -58,9 +69,11 @@ class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, 
                 <TableRow>
                   <TableCell>{this.props.userSetting.nickname}</TableCell>
                   <TableCell>
-                    {this.state.startCurrency
-                      ? `${this.state.startCurrency.name}(${this.state.startCurrency.symbol})`
-                      : <Skeleton />}
+                    {this.state.startCurrency ? (
+                      `${this.state.startCurrency.name}(${this.state.startCurrency.symbol})`
+                    ) : (
+                      <Skeleton />
+                    )}
                   </TableCell>
                   <TableCell>{this.props.userSetting.start_amount}</TableCell>
                 </TableRow>
@@ -84,9 +97,7 @@ class UserSettingShowDialog extends React.Component<UserSettingShowDialogProps, 
           </ConfirmButton>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose}>
-            닫기
-          </Button>
+          <Button onClick={this.props.onClose}>닫기</Button>
         </DialogActions>
       </>
     );
@@ -99,62 +110,67 @@ interface UserSettingCreateDialogProps {
   onCreate: () => void;
 }
 
-const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer(props => (
-  <>
-    <DialogContent>
-      <DialogContentText>
-        본격적인 암호화폐 모의 투자를 위해 필요한 몇가지 정보를 입력해주세요.
-      </DialogContentText>
-      <TextField
-        autoFocus
-        id="nickname"
-        margin="dense"
-        variant="outlined"
-        label="닉네임"
-        value={props.userSetting.nickname}
-        onChange={e => props.userSetting.nickname = e.target.value}
-        error={!!props.errors?.response?.data.nickname}
-        helperText={props.errors?.response?.data.nickname}
-      />
-    </DialogContent>
-    <DialogTitle>초기자금 설정</DialogTitle>
-    <DialogContent>
-      <DialogContentText>
-        모의 투자 시 사용 할 초기자금을 설정해주세요.<br />
-        설정 후 언제든지 초기화 할 수 있습니다.
-      </DialogContentText>
-      <StartCurrencyField
-        value={props.userSetting.start_currency}
-        onChange={v => props.userSetting.start_currency = v}
-        error={!!props.errors?.response?.data.start_currency}
-        helperText={props.errors?.response?.data.start_currency}
-      />
-      <TextField
-        fullWidth
-        autoFocus
-        id="start-amount"
-        margin="dense"
-        variant="outlined"
-        label="금액"
-        type="number"
-        value={props.userSetting.start_amount}
-        onChange={e => props.userSetting.start_amount = Number(e.target.value)}
-        error={!!props.errors?.response?.data.start_amount}
-        helperText={props.errors?.response?.data.start_amount}
-      />
-    </DialogContent>
-    <DialogActions>
-      <Button
-        disableElevation
-        onClick={props.onCreate}
-        color="primary"
-        variant="contained"
-      >
-        모의 투자 시작하기!
-      </Button>
-    </DialogActions>
-  </>
-));
+const UserSettingCreateDialog: React.FC<UserSettingCreateDialogProps> = observer(
+  (props) => (
+    <>
+      <DialogContent>
+        <DialogContentText>
+          본격적인 암호화폐 모의 투자를 위해 필요한 몇가지 정보를 입력해주세요.
+        </DialogContentText>
+        <TextField
+          autoFocus
+          id="nickname"
+          margin="dense"
+          variant="outlined"
+          label="닉네임"
+          value={props.userSetting.nickname}
+          onChange={(e) => (props.userSetting.nickname = e.target.value)}
+          error={!!props.errors?.response?.data.nickname}
+          helperText={props.errors?.response?.data.nickname}
+        />
+      </DialogContent>
+      <DialogTitle>초기자금 설정</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          모의 투자 시 사용 할 초기자금을 설정해주세요.
+          <br />
+          설정 후 언제든지 초기화 할 수 있습니다.
+        </DialogContentText>
+        <StartCurrencyField
+          value={props.userSetting.start_currency}
+          onChange={(v) => (props.userSetting.start_currency = v)}
+          error={!!props.errors?.response?.data.start_currency}
+          helperText={props.errors?.response?.data.start_currency}
+        />
+        <TextField
+          fullWidth
+          autoFocus
+          id="start-amount"
+          margin="dense"
+          variant="outlined"
+          label="금액"
+          type="number"
+          value={props.userSetting.start_amount}
+          onChange={(e) =>
+            (props.userSetting.start_amount = Number(e.target.value))
+          }
+          error={!!props.errors?.response?.data.start_amount}
+          helperText={props.errors?.response?.data.start_amount}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          disableElevation
+          onClick={props.onCreate}
+          color="primary"
+          variant="contained"
+        >
+          모의 투자 시작하기!
+        </Button>
+      </DialogActions>
+    </>
+  )
+);
 
 interface UserSettingDialogProps {
   status: Status;
@@ -166,28 +182,32 @@ interface UserSettingDialogProps {
   onDelete: () => void;
 }
 
-const UserSettingDialog: React.FC<UserSettingDialogProps> = props => {
-
+const UserSettingDialog: React.FC<UserSettingDialogProps> = (props) => {
   return (
     <>
       <Dialog open={props.open} aria-labelledby="user-setting-title">
         <DialogTitle id="user-setting-title">사용자 설정</DialogTitle>
         {props.status === Status.pending ? <LinearProgress /> : <></>}
-        <ErrorAlert open={props.status === Status.error} errors={props.errors} />
-        {!!props.userSetting.id
-          ? <UserSettingShowDialog
+        <ErrorAlert
+          open={props.status === Status.error}
+          errors={props.errors}
+        />
+        {!!props.userSetting.id ? (
+          <UserSettingShowDialog
             userSetting={props.userSetting}
             onClose={props.onClose}
             onDelete={props.onDelete}
           />
-          : <UserSettingCreateDialog
+        ) : (
+          <UserSettingCreateDialog
             errors={props.errors}
             userSetting={props.userSetting}
             onCreate={props.onCreate}
-          />}
+          />
+        )}
       </Dialog>
     </>
   );
-}
+};
 
 export default UserSettingDialog;

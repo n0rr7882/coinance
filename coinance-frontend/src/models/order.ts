@@ -2,14 +2,14 @@ import { observable } from "mobx";
 import { CurrencyPair } from "./currency-pair";
 
 export enum OrderType {
-  buy = 'buy',
-  sell = 'sell',
+  buy = "buy",
+  sell = "sell",
 }
 
 export enum OrderStatus {
-  ordered = 'ordered',
-  tarded = 'traded',
-  cancelled = 'cancelled',
+  ordered = "ordered",
+  tarded = "traded",
+  cancelled = "cancelled",
 }
 
 export class Order {

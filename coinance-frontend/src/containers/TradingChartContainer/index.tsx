@@ -1,10 +1,10 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { RouterStore } from 'mobx-react-router';
-import CurrencyPairStore from '../../stores/currency-pair';
-import CandleChartStore from '../../stores/candle-chart';
-import TradingChart from '../../components/TradingChart';
-import { ChartType } from '../../models/candle-chart';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import { RouterStore } from "mobx-react-router";
+import CurrencyPairStore from "../../stores/currency-pair";
+import CandleChartStore from "../../stores/candle-chart";
+import TradingChart from "../../components/TradingChart";
+import { ChartType } from "../../models/candle-chart";
 
 interface IProps {
   routerStore?: RouterStore;
@@ -12,7 +12,7 @@ interface IProps {
   currencyPairStore?: CurrencyPairStore;
 }
 
-@inject('routerStore', 'candleChartStore', 'currencyPairStore')
+@inject("routerStore", "candleChartStore", "currencyPairStore")
 @observer
 export default class TradingChartContainer extends React.Component<IProps> {
   constructor(props: IProps) {
@@ -35,13 +35,21 @@ export default class TradingChartContainer extends React.Component<IProps> {
     const currencyPairStore = this.props.currencyPairStore!;
     const candleChartStore = this.props.candleChartStore!;
 
-    const currencyPairId = Number(routerStore.location.pathname.split('/').filter(i => i !== '').pop());
+    const currencyPairId = Number(
+      routerStore.location.pathname
+        .split("/")
+        .filter((i) => i !== "")
+        .pop()
+    );
 
     await currencyPairStore.fetchOne(currencyPairId);
 
     if (currencyPairStore.currencyPair) {
       currencyPairStore.subscribe(currencyPairStore.currencyPair);
-      candleChartStore.subscribe(currencyPairStore.currencyPair, ChartType.daily);
+      candleChartStore.subscribe(
+        currencyPairStore.currencyPair,
+        ChartType.daily
+      );
     }
   }
 

@@ -15,7 +15,9 @@ export class Wallet {
     this.currency = new Currency(data.currency);
     this.amount = Number(data.amount);
     this.available_amount = Number(data.available_amount);
-    this.aggregated_amount_to_start_currency_price = Number(data.aggregated_amount_to_start_currency_price);
+    this.aggregated_amount_to_start_currency_price = Number(
+      data.aggregated_amount_to_start_currency_price
+    );
     this.start_currency = new Currency(data.start_currency);
     this.created = new Date(data.created);
     this.modified = new Date(data.modified);
@@ -33,10 +35,10 @@ export class WalletSummary {
 
   constructor(data: WalletSummary) {
     this.start_currency = new Currency(data.start_currency);
-    this.start_amount = Number(data.start_amount)
+    this.start_amount = Number(data.start_amount);
     this.total = Number(data.total);
     this.count = Number(data.count);
-    this.profit_amount = Number(data.profit_amount)
+    this.profit_amount = Number(data.profit_amount);
     this.profit_rate = Number(data.profit_rate);
     this.aggregated = new Date(data.aggregated);
   }

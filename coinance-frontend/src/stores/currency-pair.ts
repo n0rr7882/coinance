@@ -36,7 +36,7 @@ export default class CurrencyPairStore {
       this.currencyPair = currencyPair;
     }
 
-    const index = this.currencyPairs.findIndex(c => c.id === currencyPair.id);
+    const index = this.currencyPairs.findIndex((c) => c.id === currencyPair.id);
     if (index === -1) return;
 
     this.currencyPairs[index] = currencyPair;
@@ -63,7 +63,7 @@ export default class CurrencyPairStore {
 
   @action
   public subscribeAll() {
-    this.currencyPairs.forEach(currencyPair => {
+    this.currencyPairs.forEach((currencyPair) => {
       currencyPairRepository.subscribeWS(currencyPair);
     });
   }
@@ -75,9 +75,8 @@ export default class CurrencyPairStore {
 
   @action
   public unsubscribeAll() {
-    this.currencyPairs.forEach(currencyPair => {
+    this.currencyPairs.forEach((currencyPair) => {
       currencyPairRepository.unsubscribeWS(currencyPair);
     });
   }
-
 }

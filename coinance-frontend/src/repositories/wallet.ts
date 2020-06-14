@@ -1,11 +1,14 @@
-import axios from 'axios';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+import axios from "axios";
+import ReconnectingWebSocket from "reconnecting-websocket";
 import { AuthenticatedRepository } from "./common";
-import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
-import { ICommonParams } from '../models/common';
-import { Wallet, WalletSummary } from '../models/wallet';
-import { getAuthToken } from '../utils/token';
-import { User } from '../models/user';
+import {
+  COINANCE_API_ENTRY_POINT,
+  COINANCE_WS_ENTRY_POINT,
+} from "../constants";
+import { ICommonParams } from "../models/common";
+import { Wallet, WalletSummary } from "../models/wallet";
+import { getAuthToken } from "../utils/token";
+import { User } from "../models/user";
 
 const WALLET_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/trading/wallets`;
 const WALLET_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/wallets/`;
@@ -20,20 +23,20 @@ class WalletRepository extends AuthenticatedRepository {
   }
 
   public async list(params: ICommonParams) {
-    const res = await this.api.get<Wallet[]>('/', { params });
+    const res = await this.api.get<Wallet[]>("/", { params });
 
-    return res.data.map(w => new Wallet(w));
+    return res.data.map((w) => new Wallet(w));
   }
 
   public async summary() {
-    const res = await this.api.get<WalletSummary>('/summary/');
+    const res = await this.api.get<WalletSummary>("/summary/");
 
     return new WalletSummary(res.data);
   }
 
   public subscribeWS() {
     const payload = JSON.stringify({
-      type: 'subscription',
+      type: "subscription",
       access: getAuthToken().access,
     });
     this.sendWS(payload);
@@ -41,7 +44,7 @@ class WalletRepository extends AuthenticatedRepository {
 
   public unsubscribeWS(user: User) {
     const payload = JSON.stringify({
-      type: 'unsubscription',
+      type: "unsubscription",
       user_id: user.id,
     });
     this.sendWS(payload);
@@ -56,14 +59,16 @@ class WalletRepository extends AuthenticatedRepository {
   }
 
   public addHandlerWS(handler: (wallet: Wallet) => void) {
-    this.ws.onmessage = event => {
-      const raw: { type: string, data: Wallet } = JSON.parse(event.data.toString());
+    this.ws.onmessage = (event) => {
+      const raw: { type: string; data: Wallet } = JSON.parse(
+        event.data.toString()
+      );
 
-      if (['wallet_updated'].includes(raw.type)) {
+      if (["wallet_updated"].includes(raw.type)) {
         const wallet = new Wallet(raw.data);
         handler(wallet);
       }
-    }
+    };
   }
 }
 

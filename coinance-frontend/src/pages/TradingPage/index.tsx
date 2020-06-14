@@ -1,13 +1,11 @@
-import React from 'react';
-import TradingChartContainer from '../../containers/TradingChartContainer';
-import { Container, Paper, Grid } from '@material-ui/core';
-import { usePaperStyles, useContainerStyles } from '../../utils/styles';
-import OrderListCurrencyContainer from '../../containers/OrderListCurrencyContainer';
-import OrderBookContainer from '../../containers/OrderBookContainer';
-import OrderFormWrapper from '../../components/OrderFormWrapper';
-import TradeHistoryContainer from '../../containers/TradeHistoryContainer';
-
-
+import React from "react";
+import TradingChartContainer from "../../containers/TradingChartContainer";
+import { Container, Paper, Grid } from "@material-ui/core";
+import { usePaperStyles, useContainerStyles } from "../../utils/styles";
+import OrderListCurrencyContainer from "../../containers/OrderListCurrencyContainer";
+import OrderBookContainer from "../../containers/OrderBookContainer";
+import OrderFormWrapper from "../../components/OrderFormWrapper";
+import TradeHistoryContainer from "../../containers/TradeHistoryContainer";
 
 const TradingPage = () => {
   const { container } = useContainerStyles();

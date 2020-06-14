@@ -16,7 +16,9 @@ export default class TradeHistoryStore {
   @action
   private async loadTradeHistories(currencyPair: CurrencyPair) {
     try {
-      this.tradeHistories = await tradeHistoryRepository.getTradeHistories(currencyPair);
+      this.tradeHistories = await tradeHistoryRepository.getTradeHistories(
+        currencyPair
+      );
     } catch (e) {
       console.error(e);
     }
@@ -27,10 +29,14 @@ export default class TradeHistoryStore {
       this.loadTradeHistories(currencyPair);
 
       const current = toMsTimestamp(new Date());
-      const base = Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS
+      const base =
+        Math.floor(current / this.FETCH_INTERVAL_MS) * this.FETCH_INTERVAL_MS;
       const next = base + this.FETCH_INTERVAL_MS;
 
-      this.timer = setTimeout(() => this.tardeHistoriesTimer(currencyPair), (next - current));
+      this.timer = setTimeout(
+        () => this.tardeHistoriesTimer(currencyPair),
+        next - current
+      );
     }
   }
 

@@ -26,7 +26,9 @@ const WalletChart: React.FC<Props> = ({ wallets }) => {
             paddingAngle={3}
             fill="#8884d8"
             dataKey="value"
-            label={({ name, percent }) => `${name}(${(Number(percent || 0) * 100).toFixed(0)}%)`}
+            label={({ name, percent }) =>
+              `${name}(${(Number(percent || 0) * 100).toFixed(0)}%)`
+            }
           >
             {composed.map((wallet, i) => (
               <Cell key={wallet.id} fill={COLORS[i % COLORS.length]} />

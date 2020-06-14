@@ -1,13 +1,19 @@
-import React from 'react'
-import { Backdrop, CircularProgress, makeStyles, Theme, createStyles } from '@material-ui/core';
+import React from "react";
+import {
+  Backdrop,
+  CircularProgress,
+  makeStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     backdrop: {
       zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
+      color: "#fff",
     },
-  }),
+  })
 );
 
 interface IProps {
@@ -22,6 +28,6 @@ const LoadingBackdrop: React.FC<IProps> = ({ open }) => {
       <CircularProgress color="inherit" />
     </Backdrop>
   );
-}
+};
 
 export default LoadingBackdrop;

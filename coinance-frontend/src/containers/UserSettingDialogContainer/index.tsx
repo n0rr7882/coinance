@@ -1,21 +1,27 @@
-import React from 'react';
-import UserSettingDialog from '../../components/UserSettingDialog';
-import { inject, observer } from 'mobx-react';
-import AuthStore from '../../stores/auth';
-import UserSettingStore from '../../stores/user-setting';
-import LayoutStore from '../../stores/layout';
-import OrderStore from '../../stores/order';
-import WalletStore from '../../stores/wallet';
+import React from "react";
+import UserSettingDialog from "../../components/UserSettingDialog";
+import { inject, observer } from "mobx-react";
+import AuthStore from "../../stores/auth";
+import UserSettingStore from "../../stores/user-setting";
+import LayoutStore from "../../stores/layout";
+import OrderStore from "../../stores/order";
+import WalletStore from "../../stores/wallet";
 
 interface Props {
-  authStore?: AuthStore,
+  authStore?: AuthStore;
   userSettingStore?: UserSettingStore;
   layoutStore?: LayoutStore;
   orderStore?: OrderStore;
   walletStore?: WalletStore;
 }
 
-@inject('authStore', 'userSettingStore', 'layoutStore', 'orderStore', 'walletStore')
+@inject(
+  "authStore",
+  "userSettingStore",
+  "layoutStore",
+  "orderStore",
+  "walletStore"
+)
 @observer
 export default class UserSettingDialogContainer extends React.Component<Props> {
   constructor(props: Props) {

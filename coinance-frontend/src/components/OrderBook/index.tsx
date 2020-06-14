@@ -1,11 +1,28 @@
-import React from 'react';
-import { OrderBook as OrderBookModel } from '../../models/order-book';
-import { Card, CardContent, Typography, Divider, Table, TableContainer, makeStyles, TableRow, TableHead, TableCell, TableBody, WithStyles, withStyles, Button, Tooltip } from '@material-ui/core';
-import { CurrencyPair } from '../../models/currency-pair';
-import { f } from '../../utils/number';
-import { useHighlightedRowStyles } from '../../utils/styles';
+import React from "react";
+import { OrderBook as OrderBookModel } from "../../models/order-book";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Table,
+  TableContainer,
+  makeStyles,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  WithStyles,
+  withStyles,
+  Button,
+  Tooltip,
+} from "@material-ui/core";
+import { CurrencyPair } from "../../models/currency-pair";
+import { f } from "../../utils/number";
+import { useHighlightedRowStyles } from "../../utils/styles";
 
-interface OrderBookItemProps extends WithStyles<typeof useHighlightedRowStyles> {
+interface OrderBookItemProps
+  extends WithStyles<typeof useHighlightedRowStyles> {
   isBuy: boolean;
   orderBookItem: Array<string | number>;
   onRowClick: () => void;
@@ -60,17 +77,22 @@ const OrderBookItem = withStyles(useHighlightedRowStyles)(
     render() {
       const { classes, isBuy, orderBookItem } = this.props;
 
-      const color = isBuy ? 'primary' : 'secondary';
+      const color = isBuy ? "primary" : "secondary";
       const price = Number(orderBookItem[0]);
       const amountCurrencyTo = Number(orderBookItem[1]);
       const amountCurrencyFrom = f(price * amountCurrencyTo);
 
-      const rowClass = this.state.highlighted ? classes.highlightedNormal : classes.highlightedDefault;
+      const rowClass = this.state.highlighted
+        ? classes.highlightedNormal
+        : classes.highlightedDefault;
 
       return (
         <TableRow className={rowClass}>
           <TableCell align="left">
-            <Tooltip title={`${price.toFixed(8)} 로 거래창 가격 채우기`} placement="right">
+            <Tooltip
+              title={`${price.toFixed(8)} 로 거래창 가격 채우기`}
+              placement="right"
+            >
               <Button
                 color={color}
                 onClick={this.props.onRowClick}
@@ -106,7 +128,12 @@ const useOrderBookListStyles = makeStyles({
   },
 });
 
-const OrderBookList: React.FC<OrderBookListProps> = ({ currencyPair, asks, bids, onPriceClick }) => {
+const OrderBookList: React.FC<OrderBookListProps> = ({
+  currencyPair,
+  asks,
+  bids,
+  onPriceClick,
+}) => {
   const classes = useOrderBookListStyles();
 
   return (
@@ -122,19 +149,24 @@ const OrderBookList: React.FC<OrderBookListProps> = ({ currencyPair, asks, bids,
           <TableHead>
             <TableRow>
               <TableCell align="left">가격</TableCell>
-              <TableCell align="right">총액({currencyPair?.currency_from.symbol || '...'})</TableCell>
+              <TableCell align="right">
+                총액({currencyPair?.currency_from.symbol || "..."})
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {bids.slice().reverse().map(orderBookItem => (
-              <OrderBookItem
-                key={orderBookItem[0]}
-                isBuy={true}
-                orderBookItem={orderBookItem}
-                onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
-              />
-            ))}
-            {asks.map(orderBookItem => (
+            {bids
+              .slice()
+              .reverse()
+              .map((orderBookItem) => (
+                <OrderBookItem
+                  key={orderBookItem[0]}
+                  isBuy={true}
+                  orderBookItem={orderBookItem}
+                  onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
+                />
+              ))}
+            {asks.map((orderBookItem) => (
               <OrderBookItem
                 key={orderBookItem[0]}
                 isBuy={false}
@@ -155,7 +187,7 @@ interface Props {
   onPriceClick: (price: number) => void;
 }
 
-const OrderBook: React.FC<Props> = props => (
+const OrderBook: React.FC<Props> = (props) => (
   <OrderBookList
     currencyPair={props.currencyPair}
     asks={props.orderBook?.asks || []}

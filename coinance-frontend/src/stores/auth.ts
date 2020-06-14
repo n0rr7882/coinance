@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { boundClass } from 'autobind-decorator';
+import { boundClass } from "autobind-decorator";
 import { Status, IErrorData } from "../models/common";
 import { AxiosError } from "axios";
 import { User } from "../models/user";

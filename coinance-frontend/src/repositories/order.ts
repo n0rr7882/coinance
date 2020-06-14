@@ -1,11 +1,14 @@
-import axios from 'axios';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-import { COINANCE_API_ENTRY_POINT, COINANCE_WS_ENTRY_POINT } from '../constants';
-import { ICommonParams } from '../models/common';
-import { Order, OrderForm } from '../models/order';
-import { getAuthToken } from '../utils/token';
-import { User } from '../models/user';
-import { AuthenticatedRepository } from './common';
+import axios from "axios";
+import ReconnectingWebSocket from "reconnecting-websocket";
+import {
+  COINANCE_API_ENTRY_POINT,
+  COINANCE_WS_ENTRY_POINT,
+} from "../constants";
+import { ICommonParams } from "../models/common";
+import { Order, OrderForm } from "../models/order";
+import { getAuthToken } from "../utils/token";
+import { User } from "../models/user";
+import { AuthenticatedRepository } from "./common";
 
 const ORDER_API_ENTRY_POINT = `${COINANCE_API_ENTRY_POINT}/trading/orders`;
 const ORDER_WS_ENTRY_POINT = `${COINANCE_WS_ENTRY_POINT}/orders/`;
@@ -20,13 +23,13 @@ class OrderRepository extends AuthenticatedRepository {
   }
 
   public async list(params: ICommonParams) {
-    const res = await this.api.get<Order[]>('/', { params });
+    const res = await this.api.get<Order[]>("/", { params });
 
-    return res.data.map(o => new Order(o));
+    return res.data.map((o) => new Order(o));
   }
 
   public async create(order: OrderForm) {
-    const res = await this.api.post<Order>('/', order);
+    const res = await this.api.post<Order>("/", order);
 
     return new Order(res.data);
   }
@@ -37,7 +40,7 @@ class OrderRepository extends AuthenticatedRepository {
 
   public subscribeWS() {
     const payload = JSON.stringify({
-      type: 'subscription',
+      type: "subscription",
       access: getAuthToken().access,
     });
     this.sendWS(payload);
@@ -45,7 +48,7 @@ class OrderRepository extends AuthenticatedRepository {
 
   public unsubscribeWS(user: User) {
     const payload = JSON.stringify({
-      type: 'unsubscription',
+      type: "unsubscription",
       user_id: user.id,
     });
     this.sendWS(payload);
@@ -60,14 +63,20 @@ class OrderRepository extends AuthenticatedRepository {
   }
 
   public addHandlerWS(handler: (order: Order) => void) {
-    this.ws.onmessage = event => {
-      const raw: { type: string, data: Order } = JSON.parse(event.data.toString());
+    this.ws.onmessage = (event) => {
+      const raw: { type: string; data: Order } = JSON.parse(
+        event.data.toString()
+      );
 
-      if (['order_created', 'order_processed', 'order_cancelled'].includes(raw.type)) {
+      if (
+        ["order_created", "order_processed", "order_cancelled"].includes(
+          raw.type
+        )
+      ) {
         const order = new Order(raw.data);
         handler(order);
       }
-    }
+    };
   }
 }
 

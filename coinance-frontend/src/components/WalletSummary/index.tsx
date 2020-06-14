@@ -56,7 +56,7 @@ const WalletSummaryTextArea: React.FC<WalletSummaryTextAreaProps> = ({
     <Typography variant="h4" component="p">
       <b>{summary.total}</b>
     </Typography>
-    <div style={{ height: '100%' }}></div>
+    <div style={{ height: "100%" }}></div>
     <Typography variant="caption" color="textSecondary">
       {summary.aggregated.toLocaleString()} 기준
     </Typography>
@@ -68,7 +68,7 @@ const WalletSummaryTextAreaSkeleton: React.FC = () => (
     <Typography variant="body1" component="label" color="textSecondary">
       수익률
     </Typography>
-    <Skeleton height={112}  />
+    <Skeleton height={112} />
     <br />
     <Typography variant="body1" component="label" color="textSecondary">
       수익금
@@ -94,7 +94,7 @@ const WalletSummary: React.FC<Props> = ({ wallets, summary }) => {
     <Card elevation={0}>
       <CardContent>
         <Typography variant="h5" component="h3">
-            Summary
+          Summary
         </Typography>
       </CardContent>
       <Divider />

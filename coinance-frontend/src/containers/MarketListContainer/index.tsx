@@ -1,9 +1,9 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import CurrencyPairStore from '../../stores/currency-pair';
-import MarketList, { MarketListTableColumn } from '../../components/MarketList';
-import { Order } from '../../models/common';
-import { Currency } from '../../models/currency-pair';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import CurrencyPairStore from "../../stores/currency-pair";
+import MarketList, { MarketListTableColumn } from "../../components/MarketList";
+import { Order } from "../../models/common";
+import { Currency } from "../../models/currency-pair";
 
 interface Props {
   currencyPairStore?: CurrencyPairStore;
@@ -15,11 +15,11 @@ interface State {
   selectedCurrencyFrom?: Currency;
 }
 
-@inject('currencyPairStore')
+@inject("currencyPairStore")
 @observer
 export default class MarketListContainer extends React.Component<Props, State> {
   state: State = {
-    order: 'desc',
+    order: "desc",
     orderBy: MarketListTableColumn.volume,
   };
 
@@ -54,15 +54,17 @@ export default class MarketListContainer extends React.Component<Props, State> {
 
   render() {
     const currencyPairStore = this.props.currencyPairStore!;
-    return <MarketList
-      status={currencyPairStore.status}
-      currencyPairs={currencyPairStore.currencyPairs}
-      selectedCurrencyFrom={this.state.selectedCurrencyFrom}
-      order={this.state.order}
-      orderBy={this.state.orderBy}
-      setSelectedCurrencyFrom={this.setSelectedCurrencyFrom}
-      setOrder={this.setOrder}
-      setOrderBy={this.setOrderBy}
-    />;
+    return (
+      <MarketList
+        status={currencyPairStore.status}
+        currencyPairs={currencyPairStore.currencyPairs}
+        selectedCurrencyFrom={this.state.selectedCurrencyFrom}
+        order={this.state.order}
+        orderBy={this.state.orderBy}
+        setSelectedCurrencyFrom={this.setSelectedCurrencyFrom}
+        setOrder={this.setOrder}
+        setOrderBy={this.setOrderBy}
+      />
+    );
   }
 }

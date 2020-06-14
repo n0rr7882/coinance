@@ -1,7 +1,7 @@
 import { OrderType } from "./order";
 
 export class TradeHistoryOption {
-  public command = 'returnTradeHistory';
+  public command = "returnTradeHistory";
   public currencyPair?: string;
 }
 

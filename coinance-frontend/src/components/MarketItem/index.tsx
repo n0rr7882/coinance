@@ -1,10 +1,19 @@
-import React from 'react';
-import { TableRow, TableCell, Chip, Tooltip, WithStyles, withStyles, Button, Typography } from '@material-ui/core';
-import { CurrencyPair } from '../../models/currency-pair';
-import { observer } from 'mobx-react';
-import TrendingChip from '../common/TrendingChip';
-import { useHighlightedRowStyles } from '../../utils/styles';
-import { Link } from 'react-router-dom';
+import React from "react";
+import {
+  TableRow,
+  TableCell,
+  Chip,
+  Tooltip,
+  WithStyles,
+  withStyles,
+  Button,
+  Typography,
+} from "@material-ui/core";
+import { CurrencyPair } from "../../models/currency-pair";
+import { observer } from "mobx-react";
+import TrendingChip from "../common/TrendingChip";
+import { useHighlightedRowStyles } from "../../utils/styles";
+import { Link } from "react-router-dom";
 
 interface Props extends WithStyles<typeof useHighlightedRowStyles> {
   currencyPair: CurrencyPair;
@@ -25,8 +34,10 @@ class MarketItem extends React.Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const prevLastTradePrice = prevProps.currencyPair.exchange_rate.last_trade_price;
-    const nextLastTradePrice = this.props.currencyPair.exchange_rate.last_trade_price;
+    const prevLastTradePrice =
+      prevProps.currencyPair.exchange_rate.last_trade_price;
+    const nextLastTradePrice = this.props.currencyPair.exchange_rate
+      .last_trade_price;
 
     if (prevLastTradePrice < nextLastTradePrice) {
       this.toggleHighlightedUp();
@@ -50,17 +61,17 @@ class MarketItem extends React.Component<Props, State> {
 
   private toggleHighlightedUp() {
     this.clearHighlight();
-    this.setState(state => ({ ...state, highlightedUp: true }));
+    this.setState((state) => ({ ...state, highlightedUp: true }));
     this.timer = setTimeout(() => {
-      this.setState(state => ({ ...state, highlightedUp: false }));
+      this.setState((state) => ({ ...state, highlightedUp: false }));
     }, 50);
   }
 
   private toggleHighlightedDown() {
     this.clearHighlight();
-    this.setState(state => ({ ...state, highlightedDown: true }));
+    this.setState((state) => ({ ...state, highlightedDown: true }));
     this.timer = setTimeout(() => {
-      this.setState(state => ({ ...state, highlightedDown: false }))
+      this.setState((state) => ({ ...state, highlightedDown: false }));
     }, 50);
   }
 
@@ -71,12 +82,15 @@ class MarketItem extends React.Component<Props, State> {
     const nameFrom = currencyPair.currency_from.name;
     const nameTo = currencyPair.currency_to.name;
     const lastTradePrice = currencyPair.exchange_rate?.last_trade_price;
-    const changeRate24h = Math.round(currencyPair.exchange_rate?.change_rate_24h * 10000) / 100;
+    const changeRate24h =
+      Math.round(currencyPair.exchange_rate?.change_rate_24h * 10000) / 100;
     const baseVolume24h = currencyPair.exchange_rate?.base_volume_24h;
 
-    const rowClass = this.state.highlightedUp ? classes.highlightedUp
-      : this.state.highlightedDown ? classes.highlightedDown
-        : classes.highlightedDefault;
+    const rowClass = this.state.highlightedUp
+      ? classes.highlightedUp
+      : this.state.highlightedDown
+      ? classes.highlightedDown
+      : classes.highlightedDefault;
 
     return (
       <TableRow key={currencyPair.id} className={rowClass}>
@@ -84,14 +98,17 @@ class MarketItem extends React.Component<Props, State> {
           <Tooltip title={`${nameTo} / ${nameFrom}`}>
             <Link to={`/trading/${currencyPair.id}`}>
               <Button variant="outlined">
-                <b>{symbolTo}/{symbolFrom}</b>
+                <b>
+                  {symbolTo}/{symbolFrom}
+                </b>
               </Button>
             </Link>
           </Tooltip>
         </TableCell>
         <TableCell align="right">
           <Typography component="span" noWrap>
-            {lastTradePrice.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+            {lastTradePrice.toFixed(8)}{" "}
+            <Chip variant="outlined" size="small" label={symbolFrom} />
           </Typography>
         </TableCell>
         <TableCell align="right">
@@ -99,7 +116,8 @@ class MarketItem extends React.Component<Props, State> {
         </TableCell>
         <TableCell align="right">
           <Typography component="span" noWrap>
-            {baseVolume24h.toFixed(8)} <Chip variant="outlined" size="small" label={symbolFrom} />
+            {baseVolume24h.toFixed(8)}{" "}
+            <Chip variant="outlined" size="small" label={symbolFrom} />
           </Typography>
         </TableCell>
       </TableRow>

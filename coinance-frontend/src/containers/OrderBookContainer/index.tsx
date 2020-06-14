@@ -1,10 +1,10 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { RouterStore } from 'mobx-react-router';
-import OrderBookStore from '../../stores/order-book';
-import CurrencyPairStore from '../../stores/currency-pair';
-import OrderBook from '../../components/OrderBook';
-import OrderStore from '../../stores/order';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import { RouterStore } from "mobx-react-router";
+import OrderBookStore from "../../stores/order-book";
+import CurrencyPairStore from "../../stores/currency-pair";
+import OrderBook from "../../components/OrderBook";
+import OrderStore from "../../stores/order";
 
 interface Props {
   routerStore?: RouterStore;
@@ -13,7 +13,7 @@ interface Props {
   orderStore?: OrderStore;
 }
 
-@inject('routerStore', 'orderBookStore', 'currencyPairStore', 'orderStore')
+@inject("routerStore", "orderBookStore", "currencyPairStore", "orderStore")
 @observer
 export default class OrderBookContainer extends React.Component<Props> {
   constructor(props: Props) {
@@ -26,7 +26,12 @@ export default class OrderBookContainer extends React.Component<Props> {
     const currencyPairStore = this.props.currencyPairStore as CurrencyPairStore;
     const orderBookStore = this.props.orderBookStore as OrderBookStore;
 
-    const currencyPairId = Number(routerStore.location.pathname.split('/').filter(i => i !== '').pop());
+    const currencyPairId = Number(
+      routerStore.location.pathname
+        .split("/")
+        .filter((i) => i !== "")
+        .pop()
+    );
 
     await currencyPairStore.fetchOne(currencyPairId);
 

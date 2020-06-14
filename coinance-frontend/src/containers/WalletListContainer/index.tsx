@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import WalletStore from "../../stores/wallet";
 import { inject, observer } from "mobx-react";
 import WalletList, { WalletListTableColumn } from "../../components/WalletList";
@@ -13,11 +13,11 @@ interface State {
   orderBy: string;
 }
 
-@inject('walletStore')
+@inject("walletStore")
 @observer
 export default class WalletListContainer extends React.Component<Props, State> {
   state: State = {
-    order: 'desc',
+    order: "desc",
     orderBy: WalletListTableColumn.aggregatedAmountForStartCurrencyPrice,
   };
 
@@ -38,13 +38,15 @@ export default class WalletListContainer extends React.Component<Props, State> {
   render() {
     const walletStore = this.props.walletStore as WalletStore;
 
-    return <WalletList
-      status={walletStore.status}
-      wallets={walletStore.wallets}
-      order={this.state.order}
-      orderBy={this.state.orderBy}
-      setOrder={this.setOrder}
-      setOrderBy={this.setOrderBy}
-    />;
+    return (
+      <WalletList
+        status={walletStore.status}
+        wallets={walletStore.wallets}
+        order={this.state.order}
+        orderBy={this.state.orderBy}
+        setOrder={this.setOrder}
+        setOrderBy={this.setOrderBy}
+      />
+    );
   }
 }

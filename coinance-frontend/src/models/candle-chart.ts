@@ -1,11 +1,11 @@
 import { fromTimestamp } from "../utils/timestamp";
 
 export enum ChartType {
-  full = 'full',
-  yearly = 'yearly',
-  monthly = 'monthly',
-  weekly = 'weekly',
-  daily = 'daily',
+  full = "full",
+  yearly = "yearly",
+  monthly = "monthly",
+  weekly = "weekly",
+  daily = "daily",
 }
 
 export enum ChartPeriod {
@@ -25,7 +25,7 @@ export class ChartOption {
   public end: number;
 
   constructor(period: ChartPeriod, start: number, end: number) {
-    this.command = 'returnChartData';
+    this.command = "returnChartData";
     this.currencyPair = undefined;
     this.period = period;
     this.start = start;

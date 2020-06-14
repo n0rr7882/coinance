@@ -1,21 +1,21 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import AuthStore from '../../stores/auth';
-import AppBar from '../../components/AppBar';
-import { hasAuthToken } from '../../utils/token';
-import LayoutStore from '../../stores/layout';
-import OrderStore from '../../stores/order';
-import { Status } from '../../models/common';
-import WalletStore from '../../stores/wallet';
+import React from "react";
+import { inject, observer } from "mobx-react";
+import AuthStore from "../../stores/auth";
+import AppBar from "../../components/AppBar";
+import { hasAuthToken } from "../../utils/token";
+import LayoutStore from "../../stores/layout";
+import OrderStore from "../../stores/order";
+import { Status } from "../../models/common";
+import WalletStore from "../../stores/wallet";
 
 interface Props {
   authStore?: AuthStore;
   orderStore?: OrderStore;
-  walletStore?: WalletStore,
+  walletStore?: WalletStore;
   layoutStore?: LayoutStore;
 }
 
-@inject('authStore', 'orderStore', 'walletStore', 'layoutStore')
+@inject("authStore", "orderStore", "walletStore", "layoutStore")
 @observer
 export default class AppBarContainer extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -72,13 +72,15 @@ export default class AppBarContainer extends React.Component<Props, {}> {
   render() {
     const layoutStore = this.props.layoutStore!;
     const authStore = this.props.authStore!;
-    return <AppBar
-      login={this.login}
-      logout={this.logout}
-      toggleUserSettingDialog={layoutStore.toggleUserSettingDialog}
-      logined={authStore.me ? true : false}
-      status={authStore.status}
-      me={authStore.me}
-    />;
+    return (
+      <AppBar
+        login={this.login}
+        logout={this.logout}
+        toggleUserSettingDialog={layoutStore.toggleUserSettingDialog}
+        logined={authStore.me ? true : false}
+        status={authStore.status}
+        me={authStore.me}
+      />
+    );
   }
 }

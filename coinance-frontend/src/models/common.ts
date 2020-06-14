@@ -6,13 +6,13 @@ export interface ICommonParams {
 }
 
 export enum Status {
-  pending = 'pending',
-  done = 'done',
-  error = 'error',
+  pending = "pending",
+  done = "done",
+  error = "error",
 }
 
 export interface IErrorData {
   readonly [field: string]: string[] | string | undefined;
 }
 
-export type Order = 'asc' | 'desc';
+export type Order = "asc" | "desc";

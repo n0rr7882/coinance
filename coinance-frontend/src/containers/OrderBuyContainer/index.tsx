@@ -1,12 +1,12 @@
-import React from 'react';
-import Order from '../../components/Order';
-import { inject, observer } from 'mobx-react';
-import OrderStore from '../../stores/order';
-import WalletStore from '../../stores/wallet';
-import CurrencyPairStore from '../../stores/currency-pair';
-import { OrderType } from '../../models/order';
-import { autorun, IReactionDisposer } from 'mobx';
-import { f } from '../../utils/number';
+import React from "react";
+import Order from "../../components/Order";
+import { inject, observer } from "mobx-react";
+import OrderStore from "../../stores/order";
+import WalletStore from "../../stores/wallet";
+import CurrencyPairStore from "../../stores/currency-pair";
+import { OrderType } from "../../models/order";
+import { autorun, IReactionDisposer } from "mobx";
+import { f } from "../../utils/number";
 
 interface Props {
   orderStore?: OrderStore;
@@ -18,7 +18,7 @@ interface State {
   useMarketPrice: boolean;
 }
 
-@inject('orderStore', 'walletStore', 'currencyPairStore')
+@inject("orderStore", "walletStore", "currencyPairStore")
 @observer
 export default class OrderBuyContainer extends React.Component<Props, State> {
   useMarketPriceDisposer?: IReactionDisposer;
@@ -38,7 +38,8 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
 
     this.useMarketPriceDisposer = autorun(() => {
       if (this.state.useMarketPrice && currencyPairStore.currencyPair) {
-        orderStore.buy.form.price = currencyPairStore.currencyPair.exchange_rate.lowest_ask;
+        orderStore.buy.form.price =
+          currencyPairStore.currencyPair.exchange_rate.lowest_ask;
       }
     });
   }
@@ -52,8 +53,9 @@ export default class OrderBuyContainer extends React.Component<Props, State> {
   private get wallet() {
     const walletStore = this.props.walletStore!;
     const currencyPairStore = this.props.currencyPairStore;
-    return walletStore.wallets
-      .find(w => w.currency.id === currencyPairStore?.currencyPair?.currency_from.id);
+    return walletStore.wallets.find(
+      (w) => w.currency.id === currencyPairStore?.currencyPair?.currency_from.id
+    );
   }
 
   private async create() {

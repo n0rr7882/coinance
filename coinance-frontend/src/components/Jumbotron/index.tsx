@@ -1,5 +1,11 @@
-import React from 'react';
-import { Card, Typography, makeStyles, Theme, CardContent } from '@material-ui/core';
+import React from "react";
+import {
+  Card,
+  Typography,
+  makeStyles,
+  Theme,
+  CardContent,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -9,12 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 256,
   },
   title: {
-    fontFamily: 'Orbitron',
+    fontFamily: "Orbitron",
     fontWeight: 600,
   },
   sub: {
-    fontFamily: 'Orbitron',
-  }
+    fontFamily: "Orbitron",
+  },
 }));
 
 const Jumbotron: React.FC = () => {

@@ -1,12 +1,12 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom';
-import AppBarContainer from '../containers/AppBarContainer';
-import IndexPage from '../pages/IndexPage';
-import TradingPage from '../pages/TradingPage';
-import RankingPage from '../pages/RankingPage';
-import MyPage from '../pages/MyPage';
-import { makeStyles } from '@material-ui/core';
-import AuthenticatedRoute from './common/AuthenticatedRoute';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import AppBarContainer from "../containers/AppBarContainer";
+import IndexPage from "../pages/IndexPage";
+import TradingPage from "../pages/TradingPage";
+import RankingPage from "../pages/RankingPage";
+import MyPage from "../pages/MyPage";
+import { makeStyles } from "@material-ui/core";
+import AuthenticatedRoute from "./common/AuthenticatedRoute";
 
 const useStyles = makeStyles({
   main: {
