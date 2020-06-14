@@ -51,7 +51,7 @@ const theme = createMuiTheme({
   },
   shape: {
     borderRadius: 0,
-  }
+  },
 });
 
 const history = syncHistoryWithStore(browserHistory, routerStore);

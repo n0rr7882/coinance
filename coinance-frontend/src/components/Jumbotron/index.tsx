@@ -22,16 +22,18 @@ const Jumbotron: React.FC = () => {
   const title = <span className={classes.title}>coinance</span>;
 
   return (
-    <Card elevation={0}>
-      <CardContent>
-        <Typography className={classes.title} variant="h2" component="h1">
-          {title}
-        </Typography>
-        <Typography className={classes.sub} color="textSecondary">
-          Cryptocurrency exchange <b>for MOCK TRADING</b>
-        </Typography>
-      </CardContent>
-    </Card>
+    <header role="banner">
+      <Card elevation={0}>
+        <CardContent>
+          <Typography className={classes.title} variant="h2" component="h1">
+            {title}
+          </Typography>
+          <Typography className={classes.sub} color="textSecondary">
+            Cryptocurrency exchange <b>for MOCK TRADING</b>
+          </Typography>
+        </CardContent>
+      </Card>
+    </header>
   );
 };
 

@@ -16,9 +16,6 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     appBar: {
       borderBottom: `5px solid ${theme.palette.primary.main}`,
     },
@@ -142,45 +139,45 @@ const AppBar: React.FC<Props> = props => {
   }
 
   return (
-    <div className={classes.root}>
-      <MuiAppBar
-        className={classes.appBar}
-        color="inherit"
-        position="fixed"
-        elevation={0}
-      >
-        <Toolbar variant="dense">
-          <Link to='/'>
-            <Typography variant="h6" className={classes.title}>
-              coinance
-            </Typography>
-          </Link>
-          <span className={classes.spacer} />
-          <Link to='/'>
-            <Tooltip title="거래소 홈">
-              <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <AssessmentOutlined />
-              </IconButton>
-            </Tooltip>
-          </Link>
-          <Link to='/ranking'>
-            <Tooltip title="랭킹">
-              <IconButton color="inherit" size="small" className={classes.menuButton}>
-                <ListAltOutlined />
-              </IconButton>
-            </Tooltip>
-          </Link>
-          <Tooltip title="테마 변경">
-            <IconButton color="inherit" size="small" className={classes.menuButton} onClick={switchTheme}>
-              <SettingsBrightnessOutlined />
+    <MuiAppBar
+      className={classes.appBar}
+      color="inherit"
+      position="fixed"
+      elevation={0}
+      component="nav"
+      role="navigation"
+    >
+      <Toolbar variant="dense">
+        <Link to='/'>
+          <Typography variant="h6" className={classes.title}>
+            coinance
+          </Typography>
+        </Link>
+        <span className={classes.spacer} />
+        <Link to='/'>
+          <Tooltip title="거래소 홈">
+            <IconButton color="inherit" size="small" className={classes.menuButton}>
+              <AssessmentOutlined />
             </IconButton>
           </Tooltip>
-          {props.status === Status.pending
-            ? <CircularProgress color="inherit" size={24} />
-            : appBarButton}
-        </Toolbar>
-      </MuiAppBar>
-    </div >
+        </Link>
+        <Link to='/ranking'>
+          <Tooltip title="랭킹">
+            <IconButton color="inherit" size="small" className={classes.menuButton}>
+              <ListAltOutlined />
+            </IconButton>
+          </Tooltip>
+        </Link>
+        <Tooltip title="테마 변경">
+          <IconButton color="inherit" size="small" className={classes.menuButton} onClick={switchTheme}>
+            <SettingsBrightnessOutlined />
+          </IconButton>
+        </Tooltip>
+        {props.status === Status.pending
+          ? <CircularProgress color="inherit" size={24} />
+          : appBarButton}
+      </Toolbar>
+    </MuiAppBar>
   );
 }
 
