@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TradingChartContainer from "../../containers/TradingChartContainer";
 import { Container, Paper, Grid } from "@material-ui/core";
 import { usePaperStyles, useContainerStyles } from "../../utils/styles";
@@ -10,6 +10,10 @@ import TradeHistoryContainer from "../../containers/TradeHistoryContainer";
 const TradingPage = () => {
   const { container } = useContainerStyles();
   const { paper } = usePaperStyles();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   return (
     <Container maxWidth="lg" className={container}>

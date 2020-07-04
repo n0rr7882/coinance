@@ -194,8 +194,12 @@ const CandleCharts: React.FC<CandleChartsProps> = observer(({ data }) => {
       textColor: theme.palette.text.primary,
     },
     timeScale: {
+      borderColor: theme.palette.background.default,
       timeVisible: true,
       secondsVisible: false,
+    },
+    priceScale: {
+      borderColor: theme.palette.background.default,
     },
     grid: {
       vertLines: {
@@ -204,6 +208,15 @@ const CandleCharts: React.FC<CandleChartsProps> = observer(({ data }) => {
       horzLines: {
         color: theme.palette.background.default,
       },
+    },
+    crosshair: {
+      vertLine: {
+        color: theme.palette.background.default,
+      },
+      horzLine: {
+        color: theme.palette.background.default,
+      },
+      mode: 1,
     },
   };
   const candlestickSeries = {

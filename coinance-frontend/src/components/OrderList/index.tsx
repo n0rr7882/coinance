@@ -12,7 +12,6 @@ import {
   makeStyles,
   Chip,
   Divider,
-  Button,
   Tooltip,
 } from "@material-ui/core";
 import { OrderType, OrderStatus, Order } from "../../models/order";
@@ -78,43 +77,30 @@ const OrderStatusChip: React.FC<OrderStatusChipProps> = ({
 };
 
 interface OrderItemProps {
-  showCurrency: boolean;
   order: Order;
   onCancel: (order: Order) => void;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({
-  showCurrency,
-  order,
-  onCancel,
-}) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, onCancel }) => {
   return (
     <TableRow>
-      {showCurrency ? (
-        <TableCell>
-          <Link to={`/trading/${order.currency_pair.id}`}>
-            <Button size="small" variant="outlined">
-              {order.currency_pair.currency_to.symbol}/
-              {order.currency_pair.currency_from.symbol}
-            </Button>
-          </Link>
-        </TableCell>
-      ) : (
-        <></>
-      )}
       <TableCell align="right">
-        <Typography
-          color={order.order_type === OrderType.buy ? "primary" : "secondary"}
-          component="span"
-        >
-          {order.price.toFixed(8)}{" "}
-          <Chip
-            label={order.currency_pair.currency_from.symbol}
-            variant="outlined"
-            size="small"
+        <Link to={`/trading/${order.currency_pair.id}`}>
+          <Typography
             color={order.order_type === OrderType.buy ? "primary" : "secondary"}
-          />
-        </Typography>
+            component="span"
+          >
+            {order.price.toFixed(8)}{" "}
+            <Chip
+              label={order.currency_pair.currency_from.symbol}
+              variant="outlined"
+              size="small"
+              color={
+                order.order_type === OrderType.buy ? "primary" : "secondary"
+              }
+            />
+          </Typography>
+        </Link>
       </TableCell>
       <TableCell align="right">
         <Typography component="span">
@@ -129,7 +115,6 @@ const OrderItem: React.FC<OrderItemProps> = ({
 interface OrderListProps {
   status: Status;
   errors?: AxiosError<IErrorData>;
-  showCurrency: boolean;
   orders: Order[];
   onCancel: (order: Order) => void;
 }
@@ -143,7 +128,6 @@ const useOrderListStyles = makeStyles({
 const OrderList: React.FC<OrderListProps> = ({
   status,
   errors,
-  showCurrency,
   orders,
   onCancel,
 }) => {
@@ -162,7 +146,6 @@ const OrderList: React.FC<OrderListProps> = ({
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
-              {showCurrency ? <TableCell>마켓</TableCell> : <></>}
               <TableCell align="right">가격</TableCell>
               <TableCell align="right">수량</TableCell>
             </TableRow>
@@ -170,18 +153,13 @@ const OrderList: React.FC<OrderListProps> = ({
           <TableBody>
             {orders.length === 0 ? (
               <TableRow>
-                <TableCell align="center" colSpan={showCurrency ? 3 : 2}>
+                <TableCell align="center" colSpan={2}>
                   <Typography>거래내역이 없습니다.</Typography>
                 </TableCell>
               </TableRow>
             ) : (
               orders.map((order) => (
-                <OrderItem
-                  key={order.id}
-                  showCurrency={showCurrency}
-                  order={order}
-                  onCancel={onCancel}
-                />
+                <OrderItem key={order.id} order={order} onCancel={onCancel} />
               ))
             )}
           </TableBody>

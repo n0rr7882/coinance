@@ -14,9 +14,8 @@ import {
   TableBody,
   WithStyles,
   withStyles,
-  Button,
   Tooltip,
-  Grid,
+  Chip,
 } from "@material-ui/core";
 import { CurrencyPair } from "../../models/currency-pair";
 import { f } from "../../utils/number";
@@ -94,15 +93,13 @@ const OrderBookItem = withStyles(useHighlightedRowStyles)(
               title={`${price.toFixed(8)} 로 거래창 가격 채우기`}
               placement="right"
             >
-              <Button
+              <Chip
+                clickable
+                label={price.toFixed(8)}
                 color={color}
-                onClick={this.props.onRowClick}
                 size="small"
-                variant="contained"
-                disableElevation
-              >
-                {price.toFixed(8)}
-              </Button>
+                onClick={this.props.onRowClick}
+              />
             </Tooltip>
           </TableCell>
           <TableCell align="right">
@@ -145,56 +142,39 @@ const OrderBookList: React.FC<OrderBookListProps> = ({
         </Typography>
       </CardContent>
       <Divider />
-      <Grid container>
-        <Grid item xs={6}>
-          <TableContainer className={classes.container}>
-            <Table size="small" stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">가격</TableCell>
-                  <TableCell align="right">
-                    총액({currencyPair?.currency_from.symbol || "..."})
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {bids.map((orderBookItem) => (
-                  <OrderBookItem
-                    key={orderBookItem[0]}
-                    isBuy={true}
-                    orderBookItem={orderBookItem}
-                    onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={6}>
-          <TableContainer className={classes.container}>
-            <Table size="small" stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">가격</TableCell>
-                  <TableCell align="right">
-                    총액({currencyPair?.currency_from.symbol || "..."})
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {asks.map((orderBookItem) => (
-                  <OrderBookItem
-                    key={orderBookItem[0]}
-                    isBuy={false}
-                    orderBookItem={orderBookItem}
-                    onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-      </Grid>
+      <TableContainer className={classes.container}>
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">가격</TableCell>
+              <TableCell align="right">
+                총액({currencyPair?.currency_from.symbol || "..."})
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bids
+              .slice()
+              .reverse()
+              .map((orderBookItem) => (
+                <OrderBookItem
+                  key={orderBookItem[0]}
+                  isBuy={true}
+                  orderBookItem={orderBookItem}
+                  onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
+                />
+              ))}
+            {asks.map((orderBookItem) => (
+              <OrderBookItem
+                key={orderBookItem[0]}
+                isBuy={false}
+                orderBookItem={orderBookItem}
+                onRowClick={() => onPriceClick(Number(orderBookItem[0]))}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Card>
   );
 };

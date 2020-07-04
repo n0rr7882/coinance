@@ -16,7 +16,7 @@ import {
   withStyles,
   TableBody,
   Tooltip,
-  Button,
+  Chip,
 } from "@material-ui/core";
 import { useHighlightedRowStyles } from "../../utils/styles";
 import { OrderType } from "../../models/order";
@@ -85,15 +85,13 @@ const TradeHistoryItem = withStyles(useHighlightedRowStyles)(
               title={`${tradeHistory.rate.toFixed(8)} 로 거래창 가격 채우기`}
               placement="right"
             >
-              <Button
+              <Chip
+                clickable
+                label={tradeHistory.rate.toFixed(8)}
                 color={color}
-                onClick={this.props.onRowClick}
                 size="small"
-                variant="contained"
-                disableElevation
-              >
-                {tradeHistory.rate.toFixed(8)}
-              </Button>
+                onClick={this.props.onRowClick}
+              />
             </Tooltip>
           </TableCell>
           <TableCell align="right">

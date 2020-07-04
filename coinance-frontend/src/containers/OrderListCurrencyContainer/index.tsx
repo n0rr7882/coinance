@@ -44,7 +44,6 @@ export default class OrderListCurrencyContainer extends React.Component<Props> {
       <OrderList
         status={orderStore.status}
         errors={orderStore.errors}
-        showCurrency={false}
         orders={composedOrders}
         onCancel={orderStore.cancel}
       />
