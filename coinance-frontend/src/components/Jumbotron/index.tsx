@@ -29,7 +29,7 @@ const Jumbotron: React.FC = () => {
 
   return (
     <header role="banner">
-      <Card elevation={0}>
+      <Card elevation={10}>
         <CardContent>
           <Typography className={classes.title} variant="h2" component="h1">
             {title}

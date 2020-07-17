@@ -97,7 +97,7 @@ const WalletList: React.FC<WalletListProps> = observer((props) => {
     .sort(sort);
 
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <WalletListToolbar />
       {props.status === Status.pending ? <LinearProgress /> : <></>}
       <TableContainer>

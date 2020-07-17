@@ -4,7 +4,7 @@ import { Skeleton } from "@material-ui/lab";
 import { OrderType } from "../../models/order";
 
 const OrderSkeleton: React.FC<{ orderType: OrderType }> = ({ orderType }) => (
-  <Card elevation={0}>
+  <Card elevation={10}>
     <CardContent>
       <Skeleton variant="text" height={40} width={100} animation="wave" />
       <Skeleton variant="text" height={25} width={150} animation="wave" />

@@ -211,10 +211,10 @@ const CandleCharts: React.FC<CandleChartsProps> = observer(({ data }) => {
     },
     crosshair: {
       vertLine: {
-        color: theme.palette.background.default,
+        color: theme.palette.type === 'dark' ? theme.palette.common.white : theme.palette.common.black,
       },
       horzLine: {
-        color: theme.palette.background.default,
+        color: theme.palette.type === 'dark' ? theme.palette.common.white : theme.palette.common.black,
       },
       mode: 1,
     },
@@ -254,7 +254,7 @@ interface TradingChartProps {
 }
 
 const TradingChart: React.FC<TradingChartProps> = observer((props) => (
-  <Card elevation={0}>
+  <Card elevation={10}>
     <ErrorAlert open={props.status === Status.error} errors={props.errors} />
     <CardContent>
       {!props.currencyPair || props.status === Status.pending ? (

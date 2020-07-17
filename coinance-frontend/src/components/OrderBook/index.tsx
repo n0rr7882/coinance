@@ -135,7 +135,7 @@ const OrderBookList: React.FC<OrderBookListProps> = ({
   const classes = useOrderBookListStyles();
 
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <CardContent>
         <Typography variant="h5" component="h3">
           주문 장부

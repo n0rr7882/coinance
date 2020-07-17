@@ -139,7 +139,7 @@ const MarketList: React.FC<MarketListProps> = props => {
     .sort(sort);
 
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <MarketListToolbar
         selected={props.selectedCurrencyFrom}
         onSelect={props.setSelectedCurrencyFrom}
@@ -147,7 +147,7 @@ const MarketList: React.FC<MarketListProps> = props => {
       />
       <LoadingBackdrop open={props.status === Status.pending} />
       <TableContainer>
-        <Table aria-label="market list" stickyHeader>
+        <Table aria-label="market list">
           <TableHead>
             <TableRow>
 

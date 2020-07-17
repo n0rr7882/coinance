@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import MuiAppBar from "@material-ui/core/AppBar";
@@ -18,7 +18,6 @@ import {
   Tune,
   ExitToApp,
   AssessmentOutlined,
-  ListAltOutlined,
   SettingsBrightnessOutlined,
   VpnKeyOutlined,
   AccountBoxOutlined,
@@ -33,8 +32,11 @@ import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    appBar: {
+    appBarNotElevated: {
       borderBottom: `5px solid ${theme.palette.primary.main}`,
+    },
+    appBarElevated: {
+      borderBottom: 'none',
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -77,6 +79,16 @@ const AppBar: React.FC<Props> = (props) => {
     setUserMenuAnchorEl(null);
     props.toggleUserSettingDialog();
   };
+  const [elevated, setElevated] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isTop = window.scrollY === 0;
+      setElevated(!isTop);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const userButton = (
     <>
@@ -95,6 +107,7 @@ const AppBar: React.FC<Props> = (props) => {
         id="simple-menu"
         anchorEl={userMenuanchorEl}
         keepMounted
+        elevation={15}
         open={Boolean(userMenuanchorEl)}
         onClose={() => setUserMenuAnchorEl(null)}
       >
@@ -160,10 +173,10 @@ const AppBar: React.FC<Props> = (props) => {
 
   return (
     <MuiAppBar
-      className={classes.appBar}
+      className={elevated ? classes.appBarElevated : classes.appBarNotElevated}
       color="inherit"
       position="fixed"
-      elevation={0}
+      elevation={elevated ? 15 : 0}
       component="nav"
       role="navigation"
     >
@@ -182,17 +195,6 @@ const AppBar: React.FC<Props> = (props) => {
               className={classes.menuButton}
             >
               <AssessmentOutlined />
-            </IconButton>
-          </Tooltip>
-        </Link>
-        <Link to="/ranking">
-          <Tooltip title="랭킹">
-            <IconButton
-              color="inherit"
-              size="small"
-              className={classes.menuButton}
-            >
-              <ListAltOutlined />
             </IconButton>
           </Tooltip>
         </Link>

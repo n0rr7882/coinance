@@ -91,7 +91,7 @@ interface Props {
 
 const WalletSummary: React.FC<Props> = ({ wallets, summary }) => {
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <CardContent>
         <Typography variant="h5" component="h3">
           Summary

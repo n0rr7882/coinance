@@ -134,7 +134,7 @@ const OrderList: React.FC<OrderListProps> = ({
   const classes = useOrderListStyles();
 
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <CardContent>
         <Typography variant="h5" component="h3">
           나의 주문내역

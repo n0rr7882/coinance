@@ -130,7 +130,7 @@ const TradeHistory: React.FC<Props> = ({
   const classes = useTradeHistoryStyles();
 
   return (
-    <Card elevation={0}>
+    <Card elevation={10}>
       <CardContent>
         <Typography variant="h5" component="h3">
           거래내역
@@ -141,7 +141,7 @@ const TradeHistory: React.FC<Props> = ({
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell align="left">체결일시(UTC)</TableCell>
+              <TableCell align="left">체결일시</TableCell>
               <TableCell align="left">가격</TableCell>
               <TableCell align="right">
                 수량({currencyPair?.currency_to.symbol || "..."})

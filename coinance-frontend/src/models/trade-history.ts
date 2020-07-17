@@ -17,10 +17,15 @@ export class TradeHistory {
   constructor(data: TradeHistory) {
     this.globalTradeID = Number(data.globalTradeID);
     this.tradeID = Number(data.tradeID);
-    this.date = new Date(data.date);
     this.type = data.type;
     this.rate = Number(data.rate);
     this.amount = Number(data.amount);
     this.total = Number(data.total);
+
+    if (typeof(data.date) === 'string') {
+      this.date = new Date(String(data.date).replace(' ','T') + 'Z');
+    } else {
+      this.date = new Date(data.date);
+    }
   }
 }

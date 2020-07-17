@@ -9,7 +9,8 @@ export const useContainerStyles = makeStyles((theme: Theme) => ({
 export const usePaperStyles = makeStyles((theme: Theme) => ({
   paper: {
     margin: theme.spacing(1),
-    border: `1px solid ${theme.palette.primary.main}`,
+    // border: `1px solid ${theme.palette.primary.main}`,
+    border: "none",
   },
 }));
 
