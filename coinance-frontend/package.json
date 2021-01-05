@@ -22,7 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "autobind-decorator": "^2.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-eslint": "10.0.3",
     "babel-loader": "8.0.6",
     "babel-plugin-named-asset-import": "^0.3.6",
