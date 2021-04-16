@@ -1,5 +1,5 @@
 -r production.txt
 
-django-debug-toolbar==2.2
+django-debug-toolbar==2.2.1
 pylint==2.4.4
 autopep8==1.5
